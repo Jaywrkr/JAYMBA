@@ -5,1023 +5,1459 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#f7f6f3;--ink:#111;--ink2:#444;--muted:#999;--border:#e0ddd6;
-  --surface:#efefeb;--surface2:#e8e7e2;--accent:#111;
-  --success:#2a6e47;--warn:#8a5c00;
-}
-html,body{height:100%;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;overflow:hidden}
+:root{--bg:#f8f7f4;--ink:#0f0f0f;--ink2:#3a3a3a;--muted:#888;--border:#e2dfd8;--surface:#f0ede6;--s2:#e8e5de;--green:#1e6e42;--red:#8a1f1f;--gold:#7a5c00}
+html,body{height:100%;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
 button{font-family:inherit;cursor:pointer}
-
-/* ── SCREENS ── */
 .screen{position:absolute;inset:0;overflow-y:auto;display:none;flex-direction:column}
 .screen.active{display:flex}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--border)}
 
-/* ── HOME ── */
+/* HOME */
 #home{padding:0}
-.home-header{padding:40px 32px 0;border-bottom:1px solid var(--border);padding-bottom:32px}
-.home-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.home-title{font-size:32px;font-weight:500;line-height:1.15;margin-bottom:4px}
-.home-sub{font-size:13px;color:var(--ink2)}
-.home-progress-row{display:flex;align-items:center;gap:12px;margin-top:20px}
-.home-prog-bar{flex:1;height:2px;background:var(--border)}
-.home-prog-fill{height:100%;background:var(--ink);transition:width .5s}
-.home-prog-label{font-size:11px;color:var(--muted);white-space:nowrap}
-
-.modules-list{padding:24px 32px 40px;flex:1}
-.layer-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:24px 0 12px;display:flex;align-items:center;gap:10px}
+.home-hero{padding:40px 28px 28px;border-bottom:1px solid var(--border)}
+.eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.home-title{font-size:30px;font-weight:500;line-height:1.15;margin-bottom:6px}
+.home-sub{font-size:13px;color:var(--ink2);margin-bottom:20px}
+.prog-row{display:flex;align-items:center;gap:10px}
+.prog-bar{flex:1;height:2px;background:var(--border)}
+.prog-fill{height:100%;background:var(--ink);transition:width .5s}
+.prog-label{font-size:11px;color:var(--muted);white-space:nowrap}
+.modules-list{padding:20px 28px 60px}
+.layer-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:24px 0 10px;display:flex;align-items:center;gap:10px}
 .layer-label::after{content:'';flex:1;height:1px;background:var(--border)}
-
-.mod-card{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s}
-.mod-card:hover{opacity:.7}
-.mod-card:last-child{border-bottom:none}
-.mod-num{font-size:10px;letter-spacing:.1em;color:var(--muted);width:28px;flex-shrink:0}
+.mod-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s}
+.mod-row:hover{opacity:.65}
+.mod-num{font-size:10px;color:var(--muted);width:28px;flex-shrink:0;letter-spacing:.05em}
 .mod-info{flex:1}
-.mod-title{font-size:15px;font-weight:500;color:var(--ink)}
-.mod-meta{font-size:12px;color:var(--muted);margin-top:2px}
-.mod-status{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
-.mod-status.done{background:var(--ink);border-color:var(--ink);color:var(--bg)}
-.mod-status.active{border-color:var(--ink)}
-.mod-status.locked{opacity:.35}
+.mod-title{font-size:14px;font-weight:500}
+.mod-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.mod-ico{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:all .2s}
+.mod-ico.done{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 
-/* ── MODULE SCREEN ── */
+/* MODULE LIST */
 #module{padding:0}
-.mod-topbar{display:flex;align-items:center;gap:12px;padding:20px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
-.back-btn{font-size:13px;background:none;border:none;color:var(--ink2);display:flex;align-items:center;gap:6px;padding:0}
-.mod-topbar-title{font-size:13px;font-weight:500;flex:1;text-align:center}
-.mod-topbar-right{font-size:11px;color:var(--muted);width:60px;text-align:right}
+.topbar{display:flex;align-items:center;gap:12px;padding:18px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
+.back{font-size:13px;background:none;border:none;color:var(--ink2);padding:0;display:flex;align-items:center;gap:5px}
+.tb-title{font-size:13px;font-weight:500;flex:1;text-align:center}
+.tb-right{font-size:11px;color:var(--muted);width:48px;text-align:right}
+.unit-rows{padding:20px 24px 48px}
+.unit-row{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.unit-row:hover .ur-title{text-decoration:underline}
+.ur-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--border);margin-top:5px;flex-shrink:0;transition:all .2s}
+.ur-dot.done{background:var(--ink);border-color:var(--ink)}
+.ur-body{flex:1}
+.ur-title{font-size:14px;font-weight:500;margin-bottom:2px}
+.ur-meta{font-size:11px;color:var(--muted)}
+.ur-tag{display:inline-block;font-size:10px;padding:2px 8px;border:1px solid var(--border);color:var(--ink2);margin-top:5px;letter-spacing:.04em}
+.xp-badge{font-size:11px;color:var(--muted);font-weight:500}
 
-.unit-list{padding:24px}
-.unit-item{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid var(--border);cursor:pointer}
-.unit-item:hover .unit-item-title{text-decoration:underline}
-.unit-dot{width:8px;height:8px;border-radius:50%;border:1px solid var(--ink);margin-top:6px;flex-shrink:0;transition:background .2s}
-.unit-dot.done{background:var(--ink)}
-.unit-item-body{flex:1}
-.unit-item-title{font-size:15px;font-weight:500;margin-bottom:3px}
-.unit-item-meta{font-size:12px;color:var(--muted)}
-.unit-item-mechanic{font-size:11px;color:var(--ink2);margin-top:4px;font-style:italic}
-
-/* ── UNIT SCREEN ── */
+/* UNIT */
 #unit{padding:0}
-.unit-topbar{display:flex;align-items:center;gap:12px;padding:20px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
-.unit-progress-dots{display:flex;gap:5px}
-.unit-prog-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:background .3s}
-.unit-prog-dot.done{background:var(--ink)}
-.unit-prog-dot.current{background:var(--ink2)}
+.unit-topbar{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
+.u-dots{display:flex;gap:4px;flex:1;justify-content:center}
+.u-dot{width:22px;height:3px;border-radius:2px;background:var(--border);transition:background .3s}
+.u-dot.done{background:var(--ink)}
+.u-dot.cur{background:var(--ink2)}
+.unit-body{flex:1;overflow-y:auto;padding:28px 24px}
+.u-eyebrow{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.u-heading{font-size:22px;font-weight:500;line-height:1.25;margin-bottom:20px}
+.prose{font-size:14px;color:var(--ink2);line-height:1.85;margin-bottom:18px}
+.prose strong{color:var(--ink);font-weight:500}
+.prose em{font-style:italic;color:var(--ink)}
+.callout{border-left:2px solid var(--ink);padding:14px 16px;background:var(--surface);margin:18px 0;font-size:13px;line-height:1.7;color:var(--ink2)}
+.callout strong{color:var(--ink);display:block;margin-bottom:4px;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.unit-footer{padding:16px 24px;border-top:1px solid var(--border);flex-shrink:0;display:flex;gap:8px}
+.btn-p{flex:1;padding:14px;background:var(--ink);color:var(--bg);border:none;font-size:13px;font-weight:500;letter-spacing:.02em;transition:opacity .15s}
+.btn-p:hover{opacity:.8}
+.btn-s{padding:14px 18px;background:transparent;border:1px solid var(--border);color:var(--ink2);font-size:13px}
+.btn-s:hover{background:var(--surface)}
 
-.unit-content{flex:1;padding:32px 24px;overflow-y:auto}
-.unit-eyebrow{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
-.unit-heading{font-size:24px;font-weight:500;line-height:1.25;margin-bottom:20px}
-.unit-body-text{font-size:15px;color:var(--ink2);line-height:1.75;margin-bottom:20px}
-.unit-body-text strong{color:var(--ink);font-weight:500}
+/* XP bar */
+.xp-bar-wrap{display:flex;align-items:center;gap:8px;margin:12px 0 24px}
+.xp-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.xp-track{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.xp-fill{height:100%;background:var(--ink);border-radius:2px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.xp-pts{font-size:11px;color:var(--ink2);font-weight:500;white-space:nowrap}
 
-.unit-footer{padding:20px 24px;border-top:1px solid var(--border);flex-shrink:0;display:flex;gap:10px}
-.btn-primary{flex:1;padding:14px;background:var(--ink);color:var(--bg);border:none;font-size:14px;font-weight:500;letter-spacing:.02em}
-.btn-secondary{padding:14px 20px;background:transparent;border:1px solid var(--border);color:var(--ink2);font-size:14px}
+/* DRAG */
+.drag-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.dcol-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.drop-zone{min-height:100px;border:1px dashed var(--border);padding:8px;display:flex;flex-direction:column;gap:5px;transition:background .2s}
+.drop-zone.over{background:var(--s2)}
+.chip{padding:9px 12px;background:var(--surface);border:1px solid var(--border);font-size:13px;cursor:grab;user-select:none;line-height:1.4}
+.chip:active{cursor:grabbing;opacity:.6}
+.chip.ok{background:#e6f2ec;border-color:#a8d4b8;color:var(--green)}
+.chip.bad{background:#fae8e8;border-color:#e0a8a8;color:var(--red)}
+.chip-pool{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
+.drag-result{font-size:13px;color:var(--muted);margin-top:8px;min-height:18px}
 
-/* ── INTERACTIONS ── */
+/* SLIDER REVEAL */
+.slider-reveal{margin:16px 0}
+.slider-item{margin-bottom:16px}
+.slider-q{font-size:14px;font-weight:500;margin-bottom:8px;line-height:1.45}
+.slider-track{position:relative;height:4px;background:var(--border);border-radius:2px;margin:10px 0}
+.slider-thumb{position:absolute;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:var(--bg);border:2px solid var(--ink);cursor:pointer;transition:left .1s}
+.slider-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:2px}
+.slider-reveal-text{font-size:13px;line-height:1.65;padding:10px 12px;background:var(--surface);border-left:2px solid var(--ink);margin-top:8px;display:none;color:var(--ink2)}
+.slider-reveal-text.show{display:block}
 
-/* M01 · Drag map */
-.drag-map{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
-.drag-col-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-.drag-zone{min-height:120px;border:1px dashed var(--border);padding:10px;display:flex;flex-direction:column;gap:6px;transition:background .2s}
-.drag-zone.over{background:var(--surface2)}
-.drag-chip{padding:9px 12px;background:var(--surface);border:1px solid var(--border);font-size:13px;cursor:grab;user-select:none;transition:opacity .15s}
-.drag-chip:active{cursor:grabbing;opacity:.6}
-.drag-chip.correct{background:#e8f2ec;border-color:#b8d9c4;color:var(--success)}
-.drag-chip.wrong{background:#fde8e8;border-color:#f0b0b0;color:#8a2020}
-.drag-bank{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
-
-/* M02 · Conversation sim */
-.convo-window{border:1px solid var(--border);margin:16px 0;background:#fff}
-.convo-history{padding:16px;min-height:140px;max-height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
-.msg{max-width:80%;padding:10px 14px;font-size:13px;line-height:1.55}
+/* CONVO */
+.convo-box{border:1px solid var(--border);margin:14px 0}
+.convo-hist{padding:14px;min-height:120px;max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:82%;padding:10px 13px;font-size:13px;line-height:1.6}
 .msg.them{background:var(--surface);align-self:flex-start;border-radius:0 10px 10px 10px}
 .msg.you{background:var(--ink);color:var(--bg);align-self:flex-end;border-radius:10px 0 10px 10px}
-.msg.feedback{background:#fffbe6;border:1px solid #f0e09a;align-self:stretch;font-size:12px;color:#6b5700;border-radius:4px}
-.convo-options{padding:12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
-.convo-option{text-align:left;padding:10px 12px;background:transparent;border:1px solid var(--border);font-size:13px;color:var(--ink);transition:background .15s}
-.convo-option:hover{background:var(--surface)}
+.msg.fb{background:#fffce6;border:1px solid #e8d870;align-self:stretch;font-size:12px;color:#5a4800;border-radius:4px;max-width:100%}
+.msg.fb.good{background:#e8f4ec;border-color:#8fcca8;color:#1a4a2e}
+.msg.fb.bad{background:#fae8e8;border-color:#e0a8a8;color:#5a1a1a}
+.convo-opts{padding:10px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px}
+.copt{text-align:left;padding:10px 12px;background:transparent;border:1px solid var(--border);font-size:13px;color:var(--ink);transition:background .15s;line-height:1.4}
+.copt:hover{background:var(--surface)}
+.copt:disabled{opacity:.5;cursor:default}
 
-/* M03 · Canvas */
-.canvas-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
-.canvas-cell{border:1px solid var(--border);padding:12px}
-.canvas-cell-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.canvas-cell textarea{width:100%;border:none;background:transparent;font-family:inherit;font-size:13px;color:var(--ink);resize:none;outline:none;min-height:70px;line-height:1.6}
-.canvas-cell textarea::placeholder{color:var(--muted)}
+/* CANVAS */
+.canvas-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.cv-cell{border:1px solid var(--border);padding:12px}
+.cv-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.cv-hint{font-size:11px;color:var(--muted);margin-bottom:6px;line-height:1.5;font-style:italic}
+.cv-cell textarea{width:100%;border:none;background:transparent;font-family:inherit;font-size:13px;color:var(--ink);resize:none;outline:none;min-height:72px;line-height:1.65}
+.cv-cell textarea::placeholder{color:var(--border)}
 
-/* M04 · Finance decisions */
-.finance-scenario{background:var(--surface);border:1px solid var(--border);padding:16px;margin:16px 0;font-size:14px;line-height:1.6}
-.finance-scenario strong{font-weight:500}
-.finance-opts{display:flex;flex-direction:column;gap:8px;margin:12px 0}
-.finance-opt{padding:12px 14px;border:1px solid var(--border);background:transparent;text-align:left;font-size:13px;color:var(--ink);display:flex;gap:10px;align-items:flex-start;transition:background .15s}
-.finance-opt:hover{background:var(--surface)}
-.finance-opt.selected-good{background:#e8f2ec;border-color:#b8d9c4}
-.finance-opt.selected-bad{background:#fde8e8;border-color:#f0b0b0}
-.finance-opt .opt-letter{font-weight:500;width:18px;flex-shrink:0}
-.finance-feedback{font-size:13px;padding:12px 14px;border-left:3px solid var(--ink);background:var(--surface);margin-top:8px;line-height:1.6;display:none}
+/* FINANCE */
+.fin-scenario{background:var(--surface);padding:14px 16px;font-size:13px;line-height:1.7;margin:14px 0;border-left:2px solid var(--border)}
+.fin-opts{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.fopt{padding:12px 14px;border:1px solid var(--border);background:transparent;text-align:left;font-size:13px;color:var(--ink);display:flex;gap:10px;align-items:flex-start;transition:background .15s;line-height:1.45}
+.fopt:hover:not(:disabled){background:var(--surface)}
+.fopt.good{background:#e8f4ec;border-color:#8fcca8}
+.fopt.bad{background:#fae8e8;border-color:#e0a8a8}
+.fopt .fl{font-weight:600;width:16px;flex-shrink:0;font-size:12px}
+.fin-fb{font-size:13px;padding:12px 14px;background:var(--surface);border-left:2px solid var(--ink);margin-top:8px;line-height:1.7;display:none}
+.fin-score{font-size:12px;color:var(--muted);margin-top:12px;text-align:right}
 
-/* M05 · Pipeline */
-.pipeline-stage{margin-bottom:16px}
-.pipeline-stage-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.pipeline-stage-label::after{content:'';flex:1;height:1px;background:var(--border)}
-.pipeline-input-row{display:flex;gap:8px;align-items:stretch}
-.pipeline-input{flex:1;padding:10px 12px;border:1px solid var(--border);background:var(--bg);font-family:inherit;font-size:13px;color:var(--ink)}
-.pipeline-input:focus{outline:none;border-color:var(--ink)}
-.pipeline-add-btn{padding:0 14px;background:transparent;border:1px solid var(--border);font-size:13px;color:var(--ink2)}
-.pipeline-add-btn:hover{background:var(--surface)}
-.pipeline-items{display:flex;flex-direction:column;gap:4px;margin-top:8px}
-.pipeline-item{padding:9px 12px;background:var(--surface);border:1px solid var(--border);font-size:13px;display:flex;justify-content:space-between;align-items:center}
-.pipeline-item-del{background:none;border:none;color:var(--muted);font-size:16px;line-height:1}
+/* PIPELINE */
+.pip-stage{margin-bottom:14px}
+.pip-stage-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:flex;align-items:center;gap:8px}
+.pip-stage-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.pip-row{display:flex;gap:6px}
+.pip-in{flex:1;padding:9px 11px;border:1px solid var(--border);background:var(--bg);font-family:inherit;font-size:13px;color:var(--ink)}
+.pip-in:focus{outline:none;border-color:var(--ink)}
+.pip-add{padding:0 13px;background:transparent;border:1px solid var(--border);font-size:13px;color:var(--ink2)}
+.pip-add:hover{background:var(--surface)}
+.pip-items{margin-top:6px;display:flex;flex-direction:column;gap:3px}
+.pip-item{padding:8px 11px;background:var(--surface);border:1px solid var(--border);font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.pip-del{background:none;border:none;color:var(--muted);font-size:15px;line-height:1}
+.pip-summary{margin-top:16px;padding:14px;border:1px solid var(--border);font-size:13px;line-height:1.7;display:none}
+.pip-summary strong{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 
-/* M06 · Team builder */
-.org-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
-.person-card{border:1px solid var(--border);padding:14px 12px;background:var(--bg);cursor:pointer;transition:border-color .2s}
-.person-card:hover,.person-card.selected{border-color:var(--ink)}
-.person-name{font-size:13px;font-weight:500;margin-bottom:3px}
-.person-role{font-size:11px;color:var(--muted)}
-.person-score{font-size:11px;margin-top:6px;color:var(--ink2)}
-.mode-badge{display:inline-block;font-size:10px;padding:2px 8px;border:1px solid var(--border);letter-spacing:.05em;margin-top:6px}
-.detail-panel{border:1px solid var(--border);padding:16px;margin-top:8px;background:var(--surface);font-size:13px;line-height:1.7;display:none}
-.detail-panel.open{display:block}
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0}
+.pcard{border:1px solid var(--border);padding:14px;cursor:pointer;transition:border-color .2s;background:var(--bg)}
+.pcard:hover,.pcard.sel{border-color:var(--ink)}
+.pn{font-size:13px;font-weight:500}
+.pr{font-size:11px;color:var(--muted);margin-top:2px}
+.p-bars{margin-top:8px;display:flex;flex-direction:column;gap:5px}
+.p-bar-row{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
+.p-bar-track{flex:1;height:3px;background:var(--border);border-radius:2px}
+.p-bar-fill{height:100%;background:var(--ink);border-radius:2px}
+.p-mode{font-size:10px;padding:3px 8px;border:1px solid var(--border);display:inline-block;margin-top:6px;letter-spacing:.04em;color:var(--ink2)}
+.detail-box{border:1px solid var(--border);padding:16px;font-size:13px;line-height:1.75;display:none;margin-top:2px;background:var(--surface)}
+.detail-box.open{display:block}
+.detail-box h4{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
 
-/* M07 · Decision tree */
-.decision-node{border:1px solid var(--border);padding:16px;margin:12px 0;background:var(--bg)}
-.decision-q{font-size:14px;font-weight:500;margin-bottom:12px;line-height:1.5}
-.decision-opts{display:flex;flex-direction:column;gap:6px}
-.decision-opt{padding:10px 14px;background:transparent;border:1px solid var(--border);text-align:left;font-size:13px;color:var(--ink);transition:background .15s}
-.decision-opt:hover{background:var(--surface)}
-.decision-opt.chosen{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.decision-path{font-size:12px;color:var(--muted);margin-bottom:8px;font-style:italic}
-.decision-outcome{padding:14px;background:var(--surface2);border:1px solid var(--border);font-size:13px;line-height:1.65;margin-top:8px}
-.outcome-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+/* DECISION TREE */
+.dtree-path{font-size:11px;color:var(--muted);font-style:italic;margin-bottom:8px;line-height:1.6}
+.dnode{border:1px solid var(--border);padding:16px;margin-bottom:10px;background:var(--bg)}
+.dq{font-size:14px;font-weight:500;line-height:1.5;margin-bottom:12px}
+.dopts{display:flex;flex-direction:column;gap:5px}
+.dopt{padding:11px 14px;background:transparent;border:1px solid var(--border);text-align:left;font-size:13px;color:var(--ink);transition:background .15s;line-height:1.4}
+.dopt:hover:not(:disabled){background:var(--surface)}
+.dopt.chosen{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.doutcome{padding:14px 16px;border-left:3px solid var(--ink);background:var(--surface);font-size:13px;line-height:1.75;margin-top:8px}
+.doutcome.good{border-left-color:var(--green);background:#e8f4ec}
+.doutcome.bad{border-left-color:var(--red);background:#fae8e8}
+.doutcome.ok{border-left-color:var(--gold);background:#fdf8e8}
+.dout-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.dout-label.good{color:var(--green)}.dout-label.bad{color:var(--red)}.dout-label.ok{color:var(--gold)}
 
-/* M08 · Brand builder */
-.brand-q{margin-bottom:20px}
-.brand-q-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.brand-q-text{font-size:14px;font-weight:500;margin-bottom:8px}
-.brand-input{width:100%;padding:12px;border:1px solid var(--border);background:var(--bg);font-family:inherit;font-size:13px;color:var(--ink);resize:none}
-.brand-input:focus{outline:none;border-color:var(--ink)}
-.brand-preview{border:1px solid var(--border);padding:20px;margin-top:16px;background:var(--ink);color:var(--bg)}
-.brand-preview-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px}
-.brand-preview-name{font-size:22px;font-weight:500;margin-bottom:4px}
-.brand-preview-role{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:16px}
-.brand-preview-bio{font-size:13px;color:rgba(255,255,255,.8);line-height:1.7}
+/* BRAND */
+.brand-q{margin-bottom:18px}
+.brand-ql{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.brand-qt{font-size:14px;font-weight:500;margin-bottom:6px;line-height:1.4}
+.brand-qh{font-size:12px;color:var(--muted);margin-bottom:8px;font-style:italic;line-height:1.5}
+.brand-ta{width:100%;padding:11px;border:1px solid var(--border);background:var(--bg);font-family:inherit;font-size:13px;color:var(--ink);resize:none;line-height:1.65}
+.brand-ta:focus{outline:none;border-color:var(--ink)}
+.brand-prev{background:var(--ink);color:var(--bg);padding:20px;margin-top:16px}
+.bp-lbl{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:10px}
+.bp-name{font-size:20px;font-weight:500;margin-bottom:3px}
+.bp-role{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px}
+.bp-bio{font-size:13px;color:rgba(255,255,255,.75);line-height:1.75;min-height:40px}
 
-/* ── COMPLETION ── */
-.completion-screen{padding:40px 32px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;flex:1}
-.completion-check{font-size:48px;margin-bottom:24px}
-.completion-title{font-size:28px;font-weight:500;margin-bottom:8px}
-.completion-sub{font-size:15px;color:var(--ink2);margin-bottom:32px;line-height:1.65}
-.completion-insight{border-left:2px solid var(--ink);padding:14px 16px;font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:32px}
+/* TOGGLE REVEAL */
+.toggle-group{margin:14px 0;display:flex;flex-direction:column;gap:5px}
+.toggle-item{border:1px solid var(--border)}
+.toggle-head{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;cursor:pointer;font-size:13px;font-weight:500;background:var(--bg);transition:background .15s;line-height:1.4}
+.toggle-head:hover{background:var(--surface)}
+.toggle-head .arr{font-size:12px;color:var(--muted);transition:transform .25s}
+.toggle-head.open .arr{transform:rotate(90deg)}
+.toggle-body{display:none;padding:12px 14px;font-size:13px;line-height:1.75;color:var(--ink2);border-top:1px solid var(--border);background:var(--surface)}
+.toggle-body.show{display:block}
 
-/* scroll */
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-thumb{background:var(--border)}
+/* REVEAL SEQUENCE */
+.reveal-seq{margin:14px 0}
+.rs-step{padding:14px;border:1px solid var(--border);margin-bottom:5px;cursor:pointer;transition:background .2s;position:relative;overflow:hidden}
+.rs-step:not(.unlocked){opacity:.4;cursor:default}
+.rs-step.unlocked{background:var(--bg)}
+.rs-step.unlocked:hover{background:var(--surface)}
+.rs-step.opened{background:var(--surface)}
+.rs-step-num{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.rs-step-title{font-size:13px;font-weight:500;margin-bottom:6px}
+.rs-step-content{font-size:13px;line-height:1.7;color:var(--ink2);display:none}
+.rs-step.opened .rs-step-content{display:block}
+.rs-step-lock{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--muted)}
+
+/* SCALE */
+.scale-wrap{margin:16px 0}
+.scale-item{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.scale-item:last-child{border-bottom:none}
+.scale-label{font-size:13px;font-weight:500;margin-bottom:4px}
+.scale-sub{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.scale-track{position:relative;height:6px;background:var(--border);border-radius:3px;margin:0 0 8px}
+.scale-fill{height:100%;background:var(--ink);border-radius:3px;width:50%;transition:width .2s}
+.scale-input{width:100%;-webkit-appearance:none;appearance:none;height:6px;background:transparent;position:absolute;inset:0;cursor:pointer;opacity:0}
+.scale-pct{font-size:12px;color:var(--ink2);text-align:right}
+.scale-feedback{font-size:12px;color:var(--muted);font-style:italic;margin-top:4px;line-height:1.5;min-height:16px}
+
+/* SORT */
+.sort-list{display:flex;flex-direction:column;gap:5px;margin:14px 0}
+.sort-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface);border:1px solid var(--border);cursor:grab;font-size:13px;user-select:none;transition:opacity .2s}
+.sort-item.dragging{opacity:.4;cursor:grabbing}
+.sort-handle{color:var(--muted);font-size:16px;line-height:1}
+.sort-feedback{font-size:13px;color:var(--muted);margin-top:8px;min-height:18px}
+
+/* COMPLETION */
+.comp-wrap{padding:40px 28px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.comp-mark{font-size:48px;margin-bottom:20px}
+.comp-title{font-size:26px;font-weight:500;margin-bottom:8px}
+.comp-sub{font-size:14px;color:var(--ink2);margin-bottom:24px;line-height:1.7}
+.comp-insight{border-left:2px solid var(--ink);padding:14px 16px;font-size:13px;color:var(--ink2);line-height:1.75;margin-bottom:28px}
+.comp-xp{font-size:22px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.comp-xp-label{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px}
 </style>
 </head>
 <body>
 
-<!-- ════════════ HOME ════════════ -->
+<!-- HOME -->
 <div class="screen active" id="home">
-  <div class="home-header">
-    <div class="home-eyebrow">Jay MBA Applied</div>
+  <div class="home-hero">
+    <div class="eyebrow">Jay MBA Applied</div>
     <div class="home-title">Tu MBA.<br>Tu contexto.</div>
-    <div class="home-sub">8 módulos · 15 min por sesión</div>
-    <div class="home-progress-row">
-      <div class="home-prog-bar"><div class="home-prog-fill" id="home-prog" style="width:0%"></div></div>
-      <div class="home-prog-label" id="home-prog-label">0 / 8 módulos</div>
+    <div class="home-sub">8 módulos · Diseñado para sesiones de 15 min</div>
+    <div class="prog-row">
+      <div class="prog-bar"><div class="prog-fill" id="hprog" style="width:0%"></div></div>
+      <div class="prog-label" id="hprog-lbl">0%</div>
     </div>
   </div>
-
-  <div class="modules-list">
-    <div class="layer-label">Capa 1 · Identidad y Liderazgo</div>
-    <div class="mod-card" onclick="openModule(0)">
-      <div class="mod-num">M01</div>
-      <div class="mod-info">
-        <div class="mod-title">De PM técnico a líder estratégico</div>
-        <div class="mod-meta">4 unidades · Mapeo de transición</div>
-      </div>
-      <div class="mod-status active" id="ms-0">→</div>
-    </div>
-    <div class="mod-card" onclick="openModule(1)">
-      <div class="mod-num">M02</div>
-      <div class="mod-info">
-        <div class="mod-title">Comunicación ejecutiva</div>
-        <div class="mod-meta">4 unidades · Simulador de conversación</div>
-      </div>
-      <div class="mod-status active" id="ms-1">→</div>
-    </div>
-
-    <div class="layer-label">Capa 2 · Negocio y Estrategia</div>
-    <div class="mod-card" onclick="openModule(2)">
-      <div class="mod-num">M03</div>
-      <div class="mod-info">
-        <div class="mod-title">Pensamiento estratégico para TI</div>
-        <div class="mod-meta">4 unidades · Canvas estratégico</div>
-      </div>
-      <div class="mod-status active" id="ms-2">→</div>
-    </div>
-    <div class="mod-card" onclick="openModule(3)">
-      <div class="mod-num">M04</div>
-      <div class="mod-info">
-        <div class="mod-title">Finanzas aplicadas al liderazgo TI</div>
-        <div class="mod-meta">4 unidades · Decisiones financieras</div>
-      </div>
-      <div class="mod-status active" id="ms-3">→</div>
-    </div>
-    <div class="mod-card" onclick="openModule(4)">
-      <div class="mod-num">M05</div>
-      <div class="mod-info">
-        <div class="mod-title">Ventas y desarrollo de negocio</div>
-        <div class="mod-meta">4 unidades · Pipeline builder</div>
-      </div>
-      <div class="mod-status active" id="ms-4">→</div>
-    </div>
-
-    <div class="layer-label">Capa 3 · Operación y Cultura</div>
-    <div class="mod-card" onclick="openModule(5)">
-      <div class="mod-num">M06</div>
-      <div class="mod-info">
-        <div class="mod-title">Construcción y desarrollo de equipo</div>
-        <div class="mod-meta">4 unidades · Org chart vivo</div>
-      </div>
-      <div class="mod-status active" id="ms-5">→</div>
-    </div>
-    <div class="mod-card" onclick="openModule(6)">
-      <div class="mod-num">M06</div>
-      <div class="mod-info">
-        <div class="mod-title">Decisiones bajo presión</div>
-        <div class="mod-meta">4 unidades · Árbol de decisiones</div>
-      </div>
-      <div class="mod-status active" id="ms-6">→</div>
-    </div>
-    <div class="mod-card" onclick="openModule(7)">
-      <div class="mod-num">M08</div>
-      <div class="mod-info">
-        <div class="mod-title">Marca personal y liderazgo de influencia</div>
-        <div class="mod-meta">4 unidades · Brand builder</div>
-      </div>
-      <div class="mod-status active" id="ms-7">→</div>
-    </div>
-  </div>
+  <div class="modules-list" id="mod-list"></div>
 </div>
 
-<!-- ════════════ MODULE ════════════ -->
+<!-- MODULE -->
 <div class="screen" id="module">
-  <div class="mod-topbar">
-    <button class="back-btn" onclick="goHome()">← Inicio</button>
-    <div class="mod-topbar-title" id="mod-topbar-title"></div>
-    <div class="mod-topbar-right" id="mod-units-done"></div>
+  <div class="topbar">
+    <button class="back" onclick="goHome()">← Inicio</button>
+    <div class="tb-title" id="tb-title"></div>
+    <div class="tb-right" id="tb-right"></div>
   </div>
-  <div class="unit-list" id="unit-list"></div>
+  <div class="unit-rows" id="unit-rows"></div>
 </div>
 
-<!-- ════════════ UNIT ════════════ -->
+<!-- UNIT -->
 <div class="screen" id="unit">
   <div class="unit-topbar">
-    <button class="back-btn" onclick="goModule()">← Módulo</button>
-    <div style="flex:1;display:flex;justify-content:center">
-      <div class="unit-progress-dots" id="unit-prog-dots"></div>
-    </div>
+    <button class="back" onclick="goMod()">← Módulo</button>
+    <div class="u-dots" id="udots"></div>
     <div style="width:60px"></div>
   </div>
-  <div class="unit-content" id="unit-content"></div>
-  <div class="unit-footer" id="unit-footer"></div>
+  <div class="unit-body" id="ubody"></div>
+  <div class="unit-footer" id="ufoot"></div>
 </div>
 
 <script>
-// ═══════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════
-const MODULES = [
+// ──────────────────────────────
+// XP SYSTEM
+// ──────────────────────────────
+let totalXP = 0;
+const XP_PER_UNIT = 100;
 
-// M01
-{title:"De PM técnico a líder estratégico", units:[
-  {title:"PM vs. Líder — el cambio de mentalidad",mechanic:"lectura + mapeo",time:"12 min",
-   type:"drag",
-   content:{
-     heading:"¿Cuál es la diferencia real?",
-     text:"El PM técnico resuelve. El líder estratégico <strong>define qué hay que resolver</strong>. No es un cambio de cargo — es un cambio de perspectiva. La pregunta del PM es <em>¿cómo lo hacemos?</em> La del líder es <em>¿por qué lo estamos haciendo?</em>",
-     chips:["¿Cómo lo hacemos?","¿Por qué lo hacemos?","Asigna y controla","Desarrolla y delega","Ve este sprint","Ve los próximos 12 meses","Reporta avances","Gestiona la relación","Busca más datos","Decide con lo que hay"],
-     colA:"PM Técnico", colB:"Líder Estratégico",
-     correct:{0:"A",1:"B",2:"A",3:"B",4:"A",5:"B",6:"A",7:"B",8:"A",9:"B"}
-   }
-  },
-  {title:"El techo invisible del PM técnico",mechanic:"lectura",time:"8 min",
-   type:"read",
-   content:{
-     heading:"Por qué la competencia técnica se convierte en un límite",
-     text:"Cuando tu mayor valor es saber cómo funciona la infraestructura, cada problema se convierte en un problema técnico. Pero la empresa necesita que alguien piense en <strong>qué problemas resolver</strong>, en qué dirección ir, en qué clientes desarrollar.<br><br>El techo no es de capacidad. Es de perspectiva. Y para atravesarlo no necesitás dejar de ser técnico — necesitás <strong>añadir una capa estratégica encima</strong>.<br><br>Eso significa hablar de impacto antes de hablar de solución. Significa hacer preguntas antes de dar respuestas. Significa estar en la conversación de negocio, no solo en la de implementación.",
-   }
-  },
-  {title:"Cómo hablar con dirección sin perder al equipo",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"Dos audiencias, una sola credibilidad",
-     text:"La dirección quiere <strong>negocio</strong>: riesgo, plazos, dinero, decisiones. El equipo técnico quiere <strong>criterio</strong>: que entiendas lo que hacen, que sus estimaciones sean respetadas, que los protejas.<br><br>Si elegís solo uno, perdés al otro. La solución no es actuar diferente — es saber <strong>qué parte de vos mostrar en cada contexto</strong>.<br><br>Con dirección: outcomes, no actividades. No 'completamos la migración' sino 'los clientes no tuvieron downtime y el SLA se mantuvo'.<br><br>Con el equipo: nunca corrijas estimaciones en público. Asumí los errores como propios frente a clientes. Eso construye lealtad real.",
-   }
-  },
-  {title:"Tu mapa de transición personal",mechanic:"canvas",time:"15 min",
-   type:"canvas",
-   content:{
-     heading:"De dónde venís, adónde vas",
-     text:"Antes de continuar, necesitás tener claro el delta — la distancia entre el PM que sos hoy y el líder que querés ser en 12 meses.",
-     cells:[
-       {label:"Rol hoy",placeholder:"¿Qué hacés principalmente?"},
-       {label:"Rol en 12 meses",placeholder:"¿Dónde querés estar?"},
-       {label:"Decisiones que tomás hoy",placeholder:"¿De qué tipo?"},
-       {label:"Decisiones que deberías tomar",placeholder:"¿Qué falta?"},
-       {label:"Tu mayor fortaleza actual",placeholder:"¿Qué te hace valioso hoy?"},
-       {label:"Tu brecha principal",placeholder:"¿Qué necesitás desarrollar?"},
-     ]
-   }
-  },
-]},
+function xpBar(earned, max) {
+  return `<div class="xp-bar-wrap">
+    <div class="xp-label">XP</div>
+    <div class="xp-track"><div class="xp-fill" id="xpf" style="width:${Math.round(earned/max*100)}%"></div></div>
+    <div class="xp-pts" id="xpp">${earned} / ${max}</div>
+  </div>`;
+}
 
-// M02
-{title:"Comunicación ejecutiva", units:[
-  {title:"El idioma del negocio vs. el idioma técnico",mechanic:"lectura",time:"8 min",
-   type:"read",
-   content:{
-     heading:"Por qué el idioma importa más que el contenido",
-     text:"Podés tener la mejor solución técnica del mundo y perder la conversación porque la presentaste en el idioma equivocado.<br><br>La dirección no toma decisiones en base a arquitecturas. Las toma en base a <strong>riesgo, costo, tiempo y relación con el cliente</strong>. Si presentás una propuesta técnica sin traducirla al idioma del negocio, la decisión se toma sin tu input real.<br><br>El cambio es simple pero no fácil: antes de hablar de la solución, hablar del <strong>problema de negocio que resuelve</strong>.",
-   }
-  },
-  {title:"Simulador — cliente que presiona por fechas",mechanic:"simulación",time:"15 min",
-   type:"convo",
-   content:{
-     heading:"Un cliente real, decisiones reales",
-     text:"Markus acaba de escribirte. Lee su mensaje y elegí cómo respondés. Cada decisión tiene consecuencias.",
-     scenario:[
-       {speaker:"them",msg:"Jay, necesito que el proyecto quede listo para el viernes. Es crítico para nosotros y la dirección ya lo comprometió con el cliente final.",
-        options:[
-          {text:"Entendido Markus, lo hacemos para el viernes.", score:"bad", feedback:"Comprometiste algo sin validar con el equipo. Si no se cumple, el daño a la relación es mayor que si hubieras puesto límites desde el inicio."},
-          {text:"Markus, el equipo necesita hasta el miércoles de la semana siguiente para hacerlo bien. ¿Qué parte es crítica para el viernes?", score:"good", feedback:"Correcto. Respondés con honestidad, no prometés lo imposible, y abrís la conversación para priorizar lo que realmente importa."},
-          {text:"Eso no es posible técnicamente.", score:"ok", feedback:"Es honesto, pero no constructivo. No ofrecés alternativa ni mostrás comprensión del contexto del cliente."},
-        ]
-       },
-       {speaker:"them",msg:"La parte crítica es que el acceso VPN esté funcionando para el equipo de ventas. El resto puede esperar.",
-        options:[
-          {text:"Perfecto, eso lo podemos tener listo el jueves.", score:"good", feedback:"Excelente. Priorizar y comprometer solo lo que es viable — eso es gestión ejecutiva."},
-          {text:"Bien, pero necesito que eso quede documentado en caso de que algo falle.", score:"ok", feedback:"No está mal, pero el tono defensivo puede dañar la relación. La documentación es necesaria, pero no es lo primero que decís."},
-          {text:"Entonces por qué no lo dijiste antes, eso cambia todo.", score:"bad", feedback:"Aunque tenés razón, el tono es incorrecto. Culpar al cliente nunca construye relación."},
-        ]
-       },
-     ]
-   }
-  },
-  {title:"Cómo estructurar una propuesta ejecutiva",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"La estructura que la dirección espera",
-     text:"Toda propuesta ejecutiva tiene la misma estructura implícita que la dirección busca:<br><br><strong>1. El problema</strong> — qué está pasando y por qué importa ahora.<br><strong>2. Las opciones</strong> — qué se puede hacer (siempre al menos dos).<br><strong>3. La recomendación</strong> — qué recomendás vos y por qué.<br><strong>4. El riesgo</strong> — qué pasa si no se hace o si sale mal.<br><strong>5. Lo que necesitás</strong> — decisión, presupuesto, tiempo, personas.<br><br>Si falta cualquiera de estos elementos, la dirección los va a pedir — o va a decidir sin ellos.",
-   }
-  },
-  {title:"Simulador — presentar malas noticias",mechanic:"simulación",time:"15 min",
-   type:"convo",
-   content:{
-     heading:"Nadie quiere dar malas noticias. Hay que saber cómo.",
-     text:"Un proyecto tiene un problema de presupuesto. Tenés que comunicárselo a la dirección.",
-     scenario:[
-       {speaker:"them",msg:"Jay, ¿cómo va el proyecto de Indurama? El cliente está preguntando.",
-        options:[
-          {text:"Todo bien, estamos en seguimiento.", score:"bad", feedback:"Evitar la realidad no la resuelve. Cuando el problema sea más grande, la pérdida de confianza también."},
-          {text:"Hay un tema que necesito contarte. El proyecto tiene un desvío de alcance que impacta el presupuesto. Tengo tres opciones para manejarlo.", score:"good", feedback:"Perfecto. Reportás el problema, tomás ownership y llegás con opciones — no solo con problemas."},
-          {text:"Hay un problema grave que nos van a reclamar los clientes.", score:"ok", feedback:"Honesto pero alarmista. La dirección necesita contexto y opciones, no solo la magnitud del problema."},
-        ]
-       },
-     ]
-   }
-  },
-]},
+// ──────────────────────────────
+// MODULES DATA
+// ──────────────────────────────
+const MODS = [
 
-// M03
-{title:"Pensamiento estratégico para TI", units:[
-  {title:"Qué es estrategia y qué no lo es",mechanic:"lectura",time:"8 min",
-   type:"read",
-   content:{
-     heading:"Estrategia no es un plan",
-     text:"La mayoría de los planes operativos se llaman estrategia cuando no lo son. Un plan dice <em>qué vas a hacer</em>. Una estrategia dice <em>por qué ese camino y no otro</em>.<br><br>La estrategia implica <strong>elegir qué no hacer</strong>. Una empresa TI que quiere ser excelente en ciberseguridad, líder en cloud y referente en infraestructura al mismo tiempo, no tiene estrategia — tiene ambición dispersa.<br><br>La pregunta estratégica real es: <strong>¿en qué vamos a ser los mejores, para quién, y por qué nos van a elegir a nosotros?</strong>",
+// ════ M01 ════
+{title:"De PM técnico a líder estratégico", layer:1,
+ units:[
+  // U1
+  {title:"El cambio de mentalidad", time:"15 min", tag:"Lectura + Clasificación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M01 · Unidad 1</div>
+<div class="u-heading">No es un cambio de cargo. Es un cambio de pregunta.</div>
+<div class="prose">Hay un momento en la carrera de casi todo Project Manager técnico en el que se da cuenta de que algo no cuadra. Ejecuta bien — quizás mejor que nadie en la empresa. Los proyectos salen a tiempo, los vendors están coordinados, los clientes están satisfechos. Pero siente que está corriendo en una cinta: llega a destino, vuelve al inicio, y empieza de nuevo.</div>
+<div class="prose">El problema no es la capacidad. Es que toda esa capacidad está apuntando en una sola dirección: <strong>resolver</strong>. Y resolver es valioso, pero no es suficiente para liderar.</div>
+<div class="callout"><strong>La diferencia fundamental</strong>El PM técnico se pregunta <em>¿cómo lo hacemos?</em> El líder estratégico se pregunta <em>¿por qué lo estamos haciendo?</em> y <em>¿qué deberíamos hacer en cambio?</em> La segunda pregunta no reemplaza a la primera — la precede.</div>
+<div class="prose">Esta distinción no es filosófica. Tiene consecuencias prácticas directas: el PM técnico recibe proyectos. El líder estratégico define qué proyectos tiene sentido tomar. El PM técnico coordina vendors. El líder estratégico decide con qué vendors conviene construir relaciones de largo plazo. El PM técnico reporta avances. El líder estratégico gestiona expectativas antes de que haya algo que reportar.</div>
+<div class="prose">El salto no implica dejar de ser técnico. Implica usar el criterio técnico para tomar <strong>decisiones de negocio</strong>, no solo de implementación.</div>
+<div class="prose">A continuación, clasificá cada comportamiento en la columna que corresponde. Si dudás, eso es una señal — la línea no siempre es obvia.</div>
+${dragHTML(0)}`;
+    dragInit(0);
+    f.innerHTML=`<button class="btn-s" onclick="checkDrag(0)">Verificar clasificación</button><button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
    }
   },
-  {title:"Canvas de posicionamiento estratégico",mechanic:"canvas",time:"15 min",
-   type:"canvas",
-   content:{
-     heading:"¿Dónde está parada Coresolutions?",
-     text:"Completá este canvas pensando en tu empresa — no en un proyecto específico sino en la dirección general.",
-     cells:[
-       {label:"¿Qué problema resuelve Coresolutions?",placeholder:"El problema central que justifica la existencia de la empresa"},
-       {label:"¿Para quién lo resuelve mejor?",placeholder:"El segmento donde realmente hay ventaja"},
-       {label:"¿Por qué nos eligen a nosotros y no a otro?",placeholder:"La ventaja diferencial real"},
-       {label:"¿Qué estamos haciendo que no deberíamos?",placeholder:"Lo que dispersa el foco"},
-       {label:"¿Qué deberíamos hacer que no estamos haciendo?",placeholder:"La oportunidad desatendida"},
-       {label:"En 12 meses, ¿qué tiene que ser verdad?",placeholder:"El resultado concreto de la estrategia"},
-     ]
+  // U2
+  {title:"El techo invisible", time:"12 min", tag:"Lectura + Sliders",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M01 · Unidad 2</div>
+<div class="u-heading">Por qué la competencia técnica se convierte en un límite</div>
+<div class="prose">Hay una paradoja en el desarrollo de los líderes técnicos: las mismas habilidades que los hacen excelentes en un nivel se convierten en obstáculo en el siguiente. No porque sean malas — sino porque el juego cambia y ellos siguen jugando el anterior.</div>
+<div class="prose">Cuando sos el experto técnico del equipo, tu valor es claro: sabés cómo funciona la infraestructura, podés diagnosticar un problema en minutos, podés hablar con los vendors de igual a igual. Eso genera confianza inmediata. Pero también genera una trampa: todos te buscan para resolver, y vos terminás resolviendo en lugar de pensar.</div>
+<div class="callout"><strong>El costo de ser el que sabe</strong>Cada vez que resolvés algo que otra persona podría resolver, hacés dos cosas: te quitás tiempo estratégico y le quitás a alguien la oportunidad de crecer. El líder técnico que no puede soltar el teclado no lidera — ejecuta con un cargo más alto.</div>
+<div class="prose">El techo invisible se ve cuando te preguntás: ¿estoy en las conversaciones donde se decide qué hace la empresa, o solo en las que se decide cómo se hace? ¿Me consultan cuando hay un problema de negocio, o solo cuando hay un problema técnico? ¿Tengo influencia sobre la estrategia, o solo sobre la ejecución?</div>
+<div class="prose">Evaluá honestamente tu situación actual. Los sliders no tienen respuesta correcta — son para que veas el mapa.</div>
+${scaleHTML()}`;
+    scaleInit();
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
    }
   },
-  {title:"Análisis competitivo para empresas TI",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"Quiénes son tu competencia real",
-     text:"En mercados TI como Ecuador, la competencia no siempre es obvia. No es solo otra empresa de infraestructura — es el departamento TI interno del cliente, es el proveedor internacional que vende directo, es la decisión de no hacer nada.<br><br>El análisis competitivo útil responde tres preguntas:<br><br><strong>¿Quién más puede hacer lo que hacemos?</strong> — competidores directos.<br><strong>¿Por qué el cliente podría no comprarnos aunque necesite lo que ofrecemos?</strong> — competencia indirecta y sustitutos.<br><strong>¿Qué hace que nos elijan una y otra vez?</strong> — ventaja sostenible.",
+  // U3
+  {title:"Dos audiencias, una credibilidad", time:"14 min", tag:"Lectura + Revelación secuencial",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M01 · Unidad 3</div>
+<div class="u-heading">Cómo hablar con dirección sin perder al equipo técnico</div>
+<div class="prose">Uno de los errores más comunes en el ascenso de líderes técnicos es asumir que tienen que elegir una audiencia. O hablan en términos de negocio para ganarse a la dirección, o mantienen el lenguaje técnico para conservar la credibilidad con el equipo. Los que hacen eso terminan perdiendo a los dos.</div>
+<div class="prose">La realidad es que necesitás <strong>dos modos distintos para el mismo mensaje</strong>, sin cambiar lo que sos. Con la dirección: outcomes, riesgo, dinero, decisiones. Con el equipo: criterio técnico, respeto por las estimaciones, protección cuando algo sale mal.</div>
+<div class="callout"><strong>La prueba de fuego</strong>Si tu equipo técnico empieza a filtrar lo que te dice porque siente que "vas a venderlo mal arriba", perdiste credibilidad con ellos. Si la dirección empieza a bypassearte para hablar directo con el equipo técnico, perdiste credibilidad con ellos. Ambas son señales de que el modo no está funcionando.</div>
+<div class="prose">Abrí cada principio para ver cómo se aplica en la práctica.</div>
+${toggleHTML()}`;
+    toggleInit();
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
    }
   },
-  {title:"De estrategia a prioridades ejecutables",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"La estrategia que no se traduce en acciones no existe",
-     text:"Una estrategia solo vale si podés responder: <strong>¿qué hacemos diferente esta semana porque tenemos esta estrategia?</strong><br><br>El puente entre estrategia y ejecución son las <strong>prioridades no negociables</strong>: las 3 cosas que, si pasan, todo lo demás se facilita. Si tenés más de 3 prioridades, no tenés prioridades — tenés una lista de tareas.<br><br>Para un líder de empresa TI, esas prioridades suelen ser: desarrollar una capacidad diferencial, consolidar relaciones con cuentas clave, y construir el equipo que ejecuta la visión.",
+  // U4
+  {title:"Tu mapa de transición", time:"15 min", tag:"Canvas personal",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M01 · Unidad 4 · Entregable</div>
+<div class="u-heading">De dónde venís. Adónde vas. Qué falta en el medio.</div>
+<div class="prose">Este canvas no es un ejercicio académico. Es el mapa de trabajo del módulo. Todo lo que completés acá va a ser referencia para los módulos siguientes. Sé específico — "mejorar la comunicación" no es útil, "hablar en términos de impacto comercial en reuniones con dirección" sí lo es.</div>
+<div class="canvas-grid">
+  <div class="cv-cell"><div class="cv-label">Rol hoy</div><div class="cv-hint">¿Qué hacés la mayor parte de tu tiempo?</div><textarea placeholder="Ej: Coordino proyectos de infraestructura, gestiono vendors, reporto avances..." id="cv0"></textarea></div>
+  <div class="cv-cell"><div class="cv-label">Rol en 12 meses</div><div class="cv-hint">¿Qué querés estar haciendo que hoy no hacés?</div><textarea placeholder="Ej: Definir qué proyectos hace Coresolutions, tener influencia en la estrategia..." id="cv1"></textarea></div>
+  <div class="cv-cell"><div class="cv-label">Decisiones que tomás hoy</div><div class="cv-hint">Sé honesto — ¿son técnicas, operativas, estratégicas?</div><textarea placeholder="Ej: Alcance técnico, timelines, asignación de recursos..." id="cv2"></textarea></div>
+  <div class="cv-cell"><div class="cv-label">Decisiones que deberías tomar</div><div class="cv-hint">Las que hoy se toman sin tu input real</div><textarea placeholder="Ej: Qué clientes desarrollar, qué servicios lanzar..." id="cv3"></textarea></div>
+  <div class="cv-cell"><div class="cv-label">Tu mayor fortaleza actual</div><div class="cv-hint">La que te hace valioso hoy y seguirá siéndolo</div><textarea placeholder="Ej: Criterio técnico profundo, confianza del equipo..." id="cv4"></textarea></div>
+  <div class="cv-cell"><div class="cv-label">Tu brecha principal</div><div class="cv-hint">La más honesta, no la más presentable</div><textarea placeholder="Ej: Comunicación ejecutiva, visión de negocio..." id="cv5"></textarea></div>
+</div>`;
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Guardar mapa →</button>`;
    }
   },
-]},
+ ]
+},
 
-// M04
-{title:"Finanzas aplicadas al liderazgo TI", units:[
-  {title:"Cómo leer un negocio, no solo un proyecto",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"Los números que un líder TI necesita entender",
-     text:"No necesitás ser contador. Necesitás entender <strong>tres preguntas financieras</strong> que la dirección siempre se hace:<br><br><strong>¿Esto genera margen?</strong> — ingresos menos costos directos. Un proyecto grande con margen pequeño puede ser peor que uno chico con margen alto.<br><br><strong>¿Cuándo recuperamos la inversión?</strong> — payback period. Especialmente importante para proyectos de infraestructura con CAPEX alto.<br><br><strong>¿Genera flujo o solo utilidad en papel?</strong> — cash flow. Una empresa puede ser rentable en papel y quedarse sin caja.",
+// ════ M02 ════
+{title:"Comunicación ejecutiva", layer:1,
+ units:[
+  // U1
+  {title:"El idioma del negocio", time:"14 min", tag:"Lectura + Revelación secuencial",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M02 · Unidad 1</div>
+<div class="u-heading">Por qué el idioma importa más que el contenido</div>
+<div class="prose">Podés tener la mejor solución técnica del mundo y perderla porque la presentaste en el idioma equivocado. No porque la dirección no entienda de tecnología — sino porque no la presentaste en términos de <em>lo que les importa</em>.</div>
+<div class="prose">La dirección no toma decisiones en base a arquitecturas ni a especificaciones técnicas. Toma decisiones en base a cuatro variables: <strong>riesgo, costo, tiempo y relación con el cliente</strong>. Si tu propuesta no toca esas variables de forma explícita, la decisión se toma sin tu input real.</div>
+<div class="callout"><strong>El error clásico</strong>"Propongo implementar una solución SIEM con correlación de eventos en tiempo real y conectores para Check Point y VMware." vs. "Hoy si hay un incidente de seguridad, lo enteramos 48 horas después. Esta solución lo detecta en minutos — y para una empresa financiera, esa diferencia puede ser la diferencia entre un incidente y una multa regulatoria."</div>
+<div class="prose">Descubrí los cinco principios de comunicación ejecutiva — uno por uno. Cada uno tiene una aplicación concreta para tu contexto.</div>
+${revealSeqHTML()}`;
+    revealSeqInit();
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
    }
   },
-  {title:"Decisiones financieras — escenarios reales",mechanic:"finance",time:"15 min",
-   type:"finance",
-   content:{
-     heading:"Tres decisiones, un criterio financiero",
-     text:"Elegí la mejor opción desde el punto de vista de negocio. No hay trampa — hay contexto.",
-     scenarios:[
-       {
-         situation:"Un cliente te pide descontar un 20% en un proyecto de $80,000 para cerrar en esta semana. Tu margen actual es 35%. Si aceptás, el margen cae a 15%.",
-         options:[
-           {text:"Aceptar — necesitamos el proyecto este mes.", letter:"A"},
-           {text:"No aceptar — el margen mínimo de la empresa es 25%.", letter:"B"},
-           {text:"Contraoferta — 8% de descuento y ampliar el alcance con servicios de soporte.", letter:"C"},
-         ],
-         good:2, feedback:"La contraoferta es la mejor opción. Protege el margen, agrega valor al cliente y no crea el precedente de ceder el 20% solo porque el cliente presiona."
-       },
-       {
-         situation:"Tenés que proponer renovar el contrato de licencias VMware. El nuevo modelo de Broadcom cuesta $45,000 más por año. ¿Cómo lo presentás al cliente?",
-         options:[
-           {text:"Informar el aumento directamente y esperar su reacción.", letter:"A"},
-           {text:"Presentar el aumento junto con el valor que justifica el costo y alternativas (VCF vs. por CPU).", letter:"B"},
-           {text:"Esperar a que el cliente pregunte para no generar conflicto.", letter:"C"},
-         ],
-         good:1, feedback:"Anticiparte con contexto y alternativas es lo correcto. Muestra que gestionás la relación proactivamente, no solo ejecutás pedidos."
-       },
-     ]
-   }
-  },
-  {title:"Cómo estructurar un argumento financiero",mechanic:"lectura",time:"8 min",
-   type:"read",
-   content:{
-     heading:"El ROI no se calcula — se construye",
-     text:"Cuando proponés una inversión tecnológica, la dirección no quiere una tabla de ROI — quiere entender <strong>qué problema resuelve y cuánto cuesta no resolverlo</strong>.<br><br>El argumento correcto va así:<br><strong>1.</strong> El costo actual del problema (tiempo, riesgo, ineficiencia).<br><strong>2.</strong> El costo de la solución propuesta.<br><strong>3.</strong> La diferencia en el tiempo.<br><strong>4.</strong> El riesgo si no se hace nada.<br><br>Un SIEM no se vende con features — se vende con 'hoy un incidente de seguridad no detectado puede costar X. Esta solución lo detecta en Y minutos'.",
-   }
-  },
-  {title:"Presupuesto, forecasting y gestión de caja",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"Planificar para liderar, no para reportar",
-     text:"Un presupuesto que se usa solo para reportar al final del mes es una herramienta desperdiciada. El presupuesto sirve para <strong>tomar decisiones antes de que el dinero sea el problema</strong>.<br><br>El forecasting — proyección dinámica de ingresos y gastos — es la diferencia entre reaccionar y anticipar. Un líder que puede decir 'en base al pipeline actual, en Q3 vamos a tener un bache de caja de X' tiene tiempo para actuar. Uno que lo descubre en Q3 solo puede apagar incendios.",
-   }
-  },
-]},
-
-// M05
-{title:"Ventas y desarrollo de negocio", units:[
-  {title:"El líder técnico que vende sin vender",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"Vender no es convencer — es alinear",
-     text:"Los mejores vendedores de servicios TI no son los que tienen mejor pitch — son los que entienden <strong>qué problema tiene el cliente antes de proponer una solución</strong>.<br><br>Como líder técnico, tenés una ventaja enorme: la credibilidad. El cliente sabe que no le estás vendiendo algo que no necesita porque entendés lo que hace. La clave es usar esa credibilidad para hacer las preguntas correctas antes de hablar de soluciones.",
-   }
-  },
-  {title:"Constructor de pipeline comercial",mechanic:"pipeline",time:"15 min",
-   type:"pipeline",
-   content:{
-     heading:"Tu pipeline actual — armalo ahora",
-     text:"Un pipeline real tiene etapas claras. Cada oportunidad vive en una etapa. Lo que no está en el pipeline, no existe.",
-     stages:[
-       {label:"Identificadas — sabemos que existe la oportunidad", placeholder:"Ej: Renovación Check Point — BANCO DEL AUSTRO"},
-       {label:"Calificadas — tienen presupuesto y decisor identificado", placeholder:"Ej: Proyecto SIEM — COOPERATIVA X"},
-       {label:"Propuesta enviada — esperando respuesta", placeholder:"Ej: Ampliación VMware — INDURAMA"},
-       {label:"Negociación — en conversación activa", placeholder:"Ej: Soporte anual — SOLCA"},
-     ]
-   }
-  },
-  {title:"Cómo construir relaciones comerciales de largo plazo",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"La cuenta que te llama antes de necesitar",
-     text:"El objetivo de la relación comercial no es cerrar ventas — es que el cliente piense en vos primero cuando tiene un problema.<br><br>Eso se construye con <strong>tres hábitos</strong>:<br><br><strong>Visibilidad proactiva</strong> — contacto regular que no es solo para vender. Un análisis de su situación, una alerta de seguridad relevante, una oportunidad que viste.<br><br><strong>Memoria de relación</strong> — recordar lo que importa para el cliente. Sus plazos críticos, sus preocupaciones, sus restricciones de presupuesto.<br><br><strong>Honestidad sostenible</strong> — decirles cuando algo no es la solución correcta. Eso construye más confianza que cualquier presentación.",
-   }
-  },
-  {title:"De proyecto a cuenta — pensar en LTV",mechanic:"lectura",time:"8 min",
-   type:"read",
-   content:{
-     heading:"El cliente más caro es el que tuviste que conseguir dos veces",
-     text:"LTV — Lifetime Value — es el valor total que un cliente puede generar durante toda la relación. En servicios TI, un cliente que compra un proyecto de infraestructura, renueva soporte, amplía licencias y eventualmente hace una migración cloud puede valer 10 veces el valor del primer proyecto.<br><br>El error es gestionar cada proyecto como si fuera el único. El líder estratégico piensa en <strong>qué necesita este cliente en los próximos 3 años y cómo Coresolutions puede estar ahí en cada momento</strong>.",
-   }
-  },
-]},
-
-// M06
-{title:"Construcción y desarrollo de equipo", units:[
-  {title:"Quién tenés y qué necesitás",mechanic:"lectura",time:"8 min",
-   type:"read",
-   content:{
-     heading:"El equipo que ejecuta tu visión",
-     text:"No podés ser líder estratégico sin un equipo que ejecute. Y no podés tener ese equipo sin entender <strong>dónde está cada persona hoy y qué necesita para crecer</strong>.<br><br>El error más común: evaluar al equipo en bloque. 'El equipo está bien' o 'el equipo está flojo' no dice nada útil. Lo útil es saber quién es excelente en qué, quién necesita desarrollo en qué, y quién está en el rol equivocado.",
-   }
-  },
-  {title:"Mapa de equipo — competencia y motivación",mechanic:"team",time:"15 min",
-   type:"team",
-   content:{
-     heading:"Tu equipo en una vista",
-     text:"Para cada persona, el modo de liderazgo correcto depende de su competencia y motivación en cada tarea. Seleccioná a alguien para ver el análisis.",
-     people:[
-       {name:"Joel",role:"Ingeniero de infraestructura",comp:4,mot:3,notes:"Alta competencia técnica. Motivación variable según el proyecto. Necesita desafíos nuevos para mantenerse enganchado. Modo recomendado: Delegar en técnico, Apoyar en comunicación cliente."},
-       {name:"Ingeniero junior",role:"Soporte y configuración",comp:2,mot:5,notes:"Alta motivación, competencia en desarrollo. Necesita dirección clara y feedback frecuente. Modo recomendado: Instruir en la mayoría de tareas."},
-       {name:"Vos — Jay",role:"PM / Futuro líder",comp:4,mot:5,notes:"Alta competencia técnica y alta motivación estratégica. El desarrollo clave es el nivel ejecutivo — comunicación con dirección, visión de negocio. Modo: Delegar técnico, desarrollar estratégico."},
-     ]
-   }
-  },
-  {title:"Cómo delegar sin perder el control",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"Delegar no es soltar — es transferir con criterio",
-     text:"El miedo a delegar viene de dos lugares: no confiar en que el otro lo hará bien, o no querer asumir la responsabilidad si algo sale mal. Ambos son problemas de liderazgo, no del equipo.<br><br>Delegar correctamente tiene tres componentes:<br><br><strong>Claridad del resultado</strong> — no instrucciones, sino qué tiene que ser verdad cuando esté listo.<br><strong>Checkpoints acordados</strong> — no microgestión, sino momentos de revisión que ambos conocen.<br><strong>Autoridad real</strong> — si delegás la tarea pero no la autoridad para tomar decisiones, no delegaste nada.",
-   }
-  },
-  {title:"Conversaciones de desarrollo — cómo tenerlas",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"Una conversación honesta vale más que diez evaluaciones",
-     text:"La mayoría de las conversaciones de desarrollo son en realidad evaluaciones disfrazadas. El líder habla, el empleado escucha, todos salen igual que entraron.<br><br>Una conversación de desarrollo real empieza con preguntas, no con feedback:<br><strong>¿Qué parte de tu trabajo te da más energía?</strong><br><strong>¿Dónde sentís que te falta herramienta?</strong><br><strong>¿En qué te gustaría ser mucho mejor en un año?</strong><br><br>Las respuestas te dicen qué desarrollar y cómo. El feedback viene después — como apoyo a lo que el otro ya quiere construir.",
-   }
-  },
-]},
-
-// M07
-{title:"Decisiones bajo presión", units:[
-  {title:"Por qué fallamos bajo presión",mechanic:"lectura",time:"8 min",
-   type:"read",
-   content:{
-     heading:"La presión no baja la calidad — la revela",
-     text:"Bajo presión tomamos decisiones más rápido. Eso a veces es correcto — y a veces es el problema.<br><br>Los tres errores más comunes bajo presión:<br><br><strong>Confirmar lo que ya creemos</strong> — buscar datos que validen la decisión ya tomada en lugar de evaluar opciones.<br><strong>Estrechar el foco</strong> — ver solo la dimensión técnica o solo la comercial, no ambas.<br><strong>Evitar el conflicto</strong> — decir que sí porque es más fácil que defender la posición correcta.",
-   }
-  },
-  {title:"Árbol de decisiones — escenario real",mechanic:"decision",time:"15 min",
-   type:"decision",
-   content:{
-     heading:"Navegá el escenario — cada decisión lleva a otro punto",
-     text:"Un cliente estratégico pide entregar en 2 semanas un proyecto que el equipo estimó en 6.",
-     tree:{
-       q:"¿Cuál es tu primer movimiento?",
+  // U2
+  {title:"Simulador — cliente bajo presión", time:"15 min", tag:"Simulación de conversación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M02 · Unidad 2</div>
+<div class="u-heading">Markus te escribe. Decide bien.</div>
+<div class="prose">Las conversaciones difíciles con clientes no se improvisan — se practican. Cada decisión que tomás acá tiene una consecuencia que se acumula. No hay respuesta perfecta, pero hay respuestas que construyen relación y respuestas que la erosionan.</div>`;
+    convoInit(c, f, [
+      {from:"them", msg:"Jay, acabo de hablar con mi director. Necesitamos que el proyecto esté listo para el viernes. Ya lo comprometió con el cliente final. No hay margen.",
        opts:[
-         {text:"Comprometerse y ver cómo se resuelve internamente",
-          next:{q:"El equipo dice que es imposible sin trabajar fines de semana.",
-            opts:[
-              {text:"Pedirles que trabajen los fines de semana",
-               outcome:{label:"Resultado",text:"Quemás al equipo, creás un precedente de presión irreal, y si no se cumple igual, el daño es doble. Esta es la peor opción."}},
-              {text:"Volver al cliente con la realidad",
-               outcome:{label:"Resultado",text:"Tardío pero necesario. Perdiste credibilidad por haber comprometido sin validar, pero podés recuperar parte si la comunicación es honesta y tiene un plan alternativo."}}
-            ]}
-         },
-         {text:"Pedir 48h para validar con el equipo antes de comprometerse",
-          next:{q:"El equipo dice que 4 semanas es el mínimo viable.",
-            opts:[
-              {text:"Proponer 4 semanas con entrega parcial en 2",
-               outcome:{label:"Resultado",text:"Excelente. Respondés con realismo, ofrecés algo concreto para la semana 2, y respetás la estimación del equipo. Así se construye confianza con ambos lados."}},
-              {text:"Proponer 3 semanas como punto medio",
-               outcome:{label:"Resultado",text:"El punto medio puede parecer diplomático pero es arbitrario. Si el equipo dijo 4 y vos ofrecés 3, ¿qué cambia? Nada técnico — solo la presión sobre el equipo."}}
-            ]}}
+        {t:"Entendido, lo vemos cómo hacer para el viernes.", q:"bad", fb:"Comprometiste sin validar. Si el equipo no puede cumplir — y probablemente no puede — el daño a la relación será mayor que si hubieras puesto el límite desde el inicio. La presión del cliente no es suficiente para comprometer lo que no es viable."},
+        {t:"Markus, el equipo estimó 3 semanas para hacerlo bien. ¿Qué parte es crítica para el viernes?", q:"good", fb:"Correcto. Respondés con honestidad, no prometés lo imposible, y abrís la conversación para priorizar. Esto es comunicación ejecutiva: no decís no, preguntás qué importa realmente."},
+        {t:"Eso técnicamente no es posible.", q:"ok", fb:"Honesto, pero sin salida. No ofrecés alternativa ni mostrás comprensión del contexto del cliente. La dirección necesita opciones, no solo límites."},
        ]
-     }
+      },
+      {from:"them", msg:"Lo crítico es que el acceso VPN esté funcionando para el equipo de ventas. El sistema nuevo puede esperar.",
+       opts:[
+        {t:"Eso lo podemos tener listo el jueves sin problema.", q:"good", fb:"Excelente. Priorizar y comprometer solo lo que es viable — eso es gestión ejecutiva. Ahora tenés un compromiso específico y realista."},
+        {t:"Bien, pero necesito que quede documentado por si algo falla.", q:"ok", fb:"No está mal, pero el tono defensivo puede dañar la relación. La documentación es necesaria, pero no es lo primero que decís — parece que ya estás buscando a quién culpar."},
+        {t:"Entonces por qué no lo aclaraste antes, eso cambia todo.", q:"bad", fb:"Aunque tenés razón en el fondo, el tono es incorrecto. Culpar al cliente nunca construye relación — aunque tengas razón."},
+       ]
+      },
+      {from:"them", msg:"Perfecto. Y una cosa más — ¿podés enviar un estado del proyecto a mi director directamente?",
+       opts:[
+        {t:"Claro, lo envío hoy con el avance y los próximos pasos.", q:"good", fb:"Proactivo y claro. Ofrecés lo que pidieron sin sobre-prometer ni complicarlo."},
+        {t:"Preferiría que eso pase por vos, para no generar confusión en la comunicación.", q:"ok", fb:"Válido como posición, pero podría leerse como resistencia. Si lo decís así, necesitás explicar el por qué con más claridad para que no parezca que estás evitando transparencia."},
+        {t:"Sí pero necesito saber exactamente qué información quiere tu director.", q:"bad", fb:"Demasiadas condiciones antes de comprometerte a algo simple. El cliente va a sentir fricción innecesaria."},
+       ]
+      },
+    ]);
+    f.innerHTML=`<button class="btn-p" id="convo-cont" onclick="completeUnit()" style="display:none">Continuar →</button>`;
    }
   },
-  {title:"El framework de decisión en 4 pasos",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"Decidir bien no es decidir rápido",
-     text:"<strong>1. Clarificar</strong> — ¿Qué exactamente hay que decidir? ¿Para cuándo? ¿Quién vive con la consecuencia? Definir el problema antes de buscar soluciones.<br><br><strong>2. Mapear opciones</strong> — Siempre al menos tres: la ideal, la conservadora, no hacer nada. Ver el espacio de posibilidades antes de elegir.<br><br><strong>3. Identificar el riesgo real</strong> — ¿Qué pasa si sale mal? ¿Es reversible? El riesgo que más duele casi nunca es el técnico — es el relacional.<br><br><strong>4. Decidir y comunicar el razonamiento</strong> — No solo el resultado. El por qué construye confianza incluso cuando la decisión es difícil.",
+  // U3
+  {title:"Estructura de una propuesta ejecutiva", time:"13 min", tag:"Lectura + Ordenar",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M02 · Unidad 3</div>
+<div class="u-heading">La estructura que la dirección espera — aunque no te lo diga</div>
+<div class="prose">Toda propuesta ejecutiva tiene una estructura implícita que la dirección busca. No siempre la piden explícitamente, pero cuando falta algún elemento, la decisión se pospone, se pide más información, o peor — se toma sin tu recomendación.</div>
+<div class="prose">La estructura no es una formalidad burocrática. Es la diferencia entre que tu propuesta genere una decisión o un pedido de más slides.</div>
+<div class="callout"><strong>El principio detrás de la estructura</strong>La dirección no lee linealmente — escanea. Primero busca entender de qué se trata. Luego busca las opciones. Luego busca la recomendación. Luego el riesgo. Si tienen que buscarlo, ya perdiste parte de la atención.</div>
+<div class="prose">Ordená los elementos de una propuesta ejecutiva de mayor a menor importancia según cómo los procesaría un director. Después vas a ver la estructura correcta y por qué.</div>
+${sortHTML()}`;
+    sortInit();
+    f.innerHTML=`<button class="btn-s" onclick="checkSort()">Verificar orden</button><button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
    }
   },
-  {title:"Cuándo no decidir también es una decisión",mechanic:"lectura",time:"8 min",
-   type:"read",
-   content:{
-     heading:"La indecisión tiene un costo",
-     text:"Posponer una decisión no elimina el problema — lo hace crecer. Cada día que no decidís, alguien más decide por vos (el cliente, el proveedor, el equipo) o el costo de decidir sube.<br><br>Hay momentos donde esperar es correcto: cuando falta información crítica que llegará pronto, cuando el problema puede resolverse solo, cuando hay más que perder decidiendo ahora que esperando.<br><br>Pero hay que ser honestos: la mayoría de las veces no esperamos porque sea racional — esperamos porque <strong>decidir incomoda y no decidir se siente neutral</strong>. No lo es.",
+  // U4
+  {title:"Dar malas noticias", time:"15 min", tag:"Simulación de conversación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M02 · Unidad 4</div>
+<div class="u-heading">Nadie quiere dar malas noticias. Hay que saber hacerlo.</div>
+<div class="prose">La forma en que das malas noticias dice más de vos como líder que la noticia en sí. Un desvío de presupuesto comunicado con contexto, opciones y ownership es una situación manejable. El mismo desvío comunicado tarde, sin opciones o con culpa externa es una crisis.</div>
+<div class="prose">El principio central: <strong>llegá con el problema y con opciones</strong>. Nunca solo con el problema. Y nunca con el problema después de que el cliente ya lo sabe.</div>`;
+    convoInit(c, f, [
+      {from:"them", msg:"Jay, ¿cómo va el proyecto de Indurama? El cliente está preguntando por el estado.",
+       opts:[
+        {t:"Todo en seguimiento, te mando el reporte esta tarde.", q:"bad", fb:"Evitar la realidad no la resuelve. Cuando el problema sea más grande — y lo será — la pérdida de confianza también. Estás comprando tiempo a un costo muy alto."},
+        {t:"Hay un tema importante que necesito contarte antes de que hables con el cliente. Hay un desvío de alcance que impacta el presupuesto. Tengo tres opciones para manejarlo.", q:"good", fb:"Perfecto. Reportás el problema, tomás ownership, y llegás con opciones. Eso es lo que hace la diferencia entre un PM que gestiona y uno que reporta."},
+        {t:"Hay un problema serio que puede afectar la relación con el cliente.", q:"ok", fb:"Honesto pero incompleto. La dirección necesita contexto y opciones, no solo la magnitud del problema. Llegaste con el problema solo."},
+       ]
+      },
+      {from:"them", msg:"¿Cuánto es el desvío y por qué pasó?",
+       opts:[
+        {t:"El cliente agregó tres requerimientos que no estaban en el alcance original. El desvío es de unos $8,000. Tengo las opciones documentadas.", q:"good", fb:"Claro, específico, y con documentación. El ownership no implica aceptar culpa de algo que no fue tuyo — implica presentar los hechos con claridad."},
+        {t:"El cliente no fue claro con los requerimientos desde el inicio, eso generó el problema.", q:"bad", fb:"Aunque sea verdad, culpar al cliente en una conversación interna sobre cómo manejarlo no ayuda. El foco tiene que estar en cómo resolver, no en quién tiene la culpa."},
+        {t:"Es difícil de cuantificar exactamente todavía.", q:"ok", fb:"Si no tenés el número exacto está bien decirlo, pero dá un rango. 'Entre $6,000 y $10,000 dependiendo de...' es mucho mejor que incertidumbre total."},
+       ]
+      },
+    ]);
+    f.innerHTML=`<button class="btn-p" id="convo-cont" onclick="completeUnit()" style="display:none">Continuar →</button>`;
    }
   },
-]},
+ ]
+},
 
-// M08
-{title:"Marca personal y liderazgo de influencia", units:[
-  {title:"Por qué la marca personal importa en TI",mechanic:"lectura",time:"8 min",
-   type:"read",
-   content:{
-     heading:"Lo que la gente dice cuando no estás en la sala",
-     text:"Tu marca personal no es tu LinkedIn ni tu Instagram. Es lo que la gente dice de vos cuando no estás en la conversación.<br><br>'Jay es el tipo que siempre llega con opciones, no con problemas.' O 'Jay es quien hace las preguntas que nadie hace.' Esas frases son tu marca — y se construyen con acciones consistentes a lo largo del tiempo, no con un bio bien escrito.<br><br>Para un líder en empresas TI, la marca tiene tres dimensiones: <strong>criterio técnico, visión de negocio, y confiabilidad</strong>. Las tres juntas son difíciles de encontrar — y muy difíciles de reemplazar.",
+// ════ M03 ════
+{title:"Pensamiento estratégico para TI", layer:2,
+ units:[
+  {title:"Qué es estrategia y qué no lo es", time:"14 min", tag:"Lectura + Clasificación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M03 · Unidad 1</div>
+<div class="u-heading">Estrategia no es un plan. No es una visión. No es una lista de objetivos.</div>
+<div class="prose">La palabra "estrategia" es de las más usadas y menos comprendidas en empresas TI. Se llama estrategia a un plan operativo con fechas. Se llama estrategia a un conjunto de objetivos anuales. Se llama estrategia a un presupuesto revisado.</div>
+<div class="prose">Nada de eso es estrategia. <strong>Estrategia es la elección deliberada de dónde competir y cómo ganar en ese espacio</strong>. Y esa definición tiene una consecuencia incómoda: implica elegir qué no hacer. Una empresa que quiere ser la mejor en ciberseguridad, en cloud y en infraestructura al mismo tiempo no tiene estrategia — tiene ambición dispersa.</div>
+<div class="callout"><strong>La pregunta estratégica real</strong>¿En qué vamos a ser los mejores, para quién, y por qué nos van a elegir a nosotros en lugar de cualquier otra opción? Si no podés responder eso en dos oraciones, no hay estrategia todavía.</div>
+<div class="prose">Clasificá cada afirmación: ¿es estrategia real o es algo que parece estrategia pero no lo es?</div>
+${dragHTML(1)}`;
+    dragInit(1);
+    f.innerHTML=`<button class="btn-s" onclick="checkDrag(1)">Verificar</button><button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
    }
   },
-  {title:"Definí tu narrativa profesional",mechanic:"brand",time:"15 min",
-   type:"brand",
-   content:{
-     heading:"En tus propias palabras",
-     text:"Respondé estas preguntas con honestidad. Al final vas a ver tu narrativa tomando forma.",
+  {title:"Canvas de posicionamiento", time:"15 min", tag:"Canvas estratégico",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M03 · Unidad 2</div>
+<div class="u-heading">¿Dónde está parada Coresolutions hoy?</div>
+<div class="prose">Antes de definir hacia dónde ir, hay que ver con claridad dónde estás. Este canvas no es para presentar a nadie — es para pensar con honestidad. Las respuestas que más incomodan son las más valiosas.</div>
+<div class="canvas-grid">
+  <div class="cv-cell"><div class="cv-label">¿Qué problema resuelve Coresolutions?</div><div class="cv-hint">El problema central que justifica la existencia de la empresa — no los servicios, sino el problema</div><textarea placeholder="Ej: Las empresas medianas en Ecuador no tienen acceso a infraestructura TI de nivel enterprise con soporte local..." id="cv0"></textarea></div>
+  <div class="cv-cell"><div class="cv-label">¿Para quién lo resuelve mejor?</div><div class="cv-hint">El segmento donde hay ventaja real, no donde hay más mercado</div><textarea placeholder="Ej: Empresas financieras medianas que necesitan compliance y no quieren depender de soporte remoto..." id="cv1"></textarea></div>
+  <div class="cv-cell"><div class="cv-label">¿Por qué nos eligen a nosotros?</div><div class="cv-hint">La ventaja diferencial honesta — no el pitch de ventas</div><textarea placeholder="Ej: Conocemos su industria, tenemos presencia local, y el equipo técnico habla con el cliente..." id="cv2"></textarea></div>
+  <div class="cv-cell"><div class="cv-label">¿Qué estamos haciendo que dispersa el foco?</div><div class="cv-hint">Lo que hacemos por inercia o por no decir que no</div><textarea placeholder="Ej: Proyectos de bajo margen que no construyen capacidad ni relación..." id="cv3"></textarea></div>
+  <div class="cv-cell"><div class="cv-label">¿Qué oportunidad estamos desatendiendo?</div><div class="cv-hint">La que ves pero nadie está priorizando</div><textarea placeholder="Ej: Servicios gestionados de seguridad para cooperativas..." id="cv4"></textarea></div>
+  <div class="cv-cell"><div class="cv-label">En 12 meses, ¿qué tiene que ser verdad?</div><div class="cv-hint">El resultado concreto, no el objetivo general</div><textarea placeholder="Ej: Tener 3 cuentas enterprise con contrato de servicios anuales..." id="cv5"></textarea></div>
+</div>`;
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Guardar canvas →</button>`;
    }
   },
-  {title:"Influencia sin autoridad formal",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"Cómo mover a personas que no te reportan",
-     text:"El liderazgo de influencia es la capacidad de generar movimiento sin usar el poder formal del cargo. En empresas de servicios TI, donde constantemente trabajás con vendors, clientes, y equipos que no dependen de vos, esta habilidad es fundamental.<br><br>Se construye con tres prácticas:<br><br><strong>Hacer que la gente quiera lo mismo que vos quiere</strong> — no convencer sino alinear intereses.<br><strong>Ser útil antes de pedir</strong> — la influencia se acumula con valor entregado, no con posición.<br><strong>Ser predecible</strong> — que la gente sepa cómo vas a actuar genera la confianza que da influencia real.",
+  {title:"Análisis competitivo real", time:"13 min", tag:"Lectura + Revelación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M03 · Unidad 3</div>
+<div class="u-heading">Tu competencia no es solo otra empresa de TI</div>
+<div class="prose">En mercados como Ecuador, el análisis competitivo que tiene más valor no es el que mapea quién más vende IBM o Check Point. Es el que entiende <strong>por qué un cliente podría no comprarte aunque necesite lo que ofrecés</strong>.</div>
+<div class="prose">La competencia real tiene tres formas: directa (otra empresa que hace lo mismo), indirecta (el departamento TI interno del cliente que decide hacerlo ellos), y la más ignorada — <strong>la inercia</strong> (el cliente que decide no hacer nada porque el costo de decidir es mayor que el costo percibido del problema).</div>
+<div class="callout"><strong>La competencia más difícil de ganar</strong>No es otra empresa de infraestructura. Es el "vamos a esperar al próximo presupuesto" o el "el TI interno puede encargarse". Ganarle a eso requiere hacer que el costo de no actuar sea más visible que el costo de actuar.</div>
+<div class="prose">Descubrí cada tipo de competencia y cómo enfrentarla.</div>
+${revealSeqHTML('comp')}`;
+    revealSeqInit('comp');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
    }
   },
-  {title:"Presencia ejecutiva — cómo desarrollarla",mechanic:"lectura",time:"10 min",
-   type:"read",
-   content:{
-     heading:"La presencia no es carisma — es claridad",
-     text:"La presencia ejecutiva no es hablar fuerte ni tener carisma natural. Es la capacidad de <strong>estar completamente presente en la conversación que importa</strong> — escuchar de verdad, responder con precisión, sostener la incomodidad sin escapar de ella.<br><br>Se desarrolla con práctica deliberada en tres áreas:<br><br><strong>Comunicación verbal</strong> — decir lo que querés decir, no lo que pensás que el otro quiere escuchar.<br><strong>Comunicación no verbal</strong> — cuerpo, mirada, ritmo. La gente lee tu estado antes de escuchar tus palabras.<br><strong>Gestión de la incomodidad</strong> — las conversaciones difíciles son donde se gana o se pierde la credibilidad.",
+  {title:"De estrategia a prioridades ejecutables", time:"12 min", tag:"Lectura + Ordenar",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M03 · Unidad 4</div>
+<div class="u-heading">La estrategia que no se traduce en acciones no existe</div>
+<div class="prose">Una estrategia solo vale si podés responder: <strong>¿qué hacemos diferente esta semana porque tenemos esta estrategia?</strong> Si la respuesta es "nada diferente", la estrategia existe en papel pero no en la operación.</div>
+<div class="prose">El puente entre estrategia y ejecución son las prioridades no negociables. No objetivos — prioridades. La diferencia es que un objetivo dice qué querés lograr. Una prioridad dice qué hacés cuando algo compite por tu tiempo y tenés que elegir.</div>
+<div class="callout"><strong>La regla de las tres prioridades</strong>Si tenés más de tres prioridades estratégicas, no tenés prioridades — tenés una lista de deseos. El foco no es una virtud abstracta, es la única forma de construir ventaja real. Elegir tres cosas implica decirle que no a todo lo demás — y eso es lo que hace la estrategia difícil.</div>
+<div class="prose">Ordená estas iniciativas de mayor a menor impacto estratégico para una empresa TI como Coresolutions.</div>
+${sortHTML('strat')}`;
+    sortInit('strat');
+    f.innerHTML=`<button class="btn-s" onclick="checkSort('strat')">Verificar</button><button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
    }
   },
-]},
+ ]
+},
+
+// ════ M04 ════
+{title:"Finanzas aplicadas al liderazgo TI", layer:2,
+ units:[
+  {title:"Cómo leer un negocio", time:"14 min", tag:"Lectura + Revelación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M04 · Unidad 1</div>
+<div class="u-heading">Los números que un líder TI necesita entender — y los que no</div>
+<div class="prose">No necesitás ser contador. Necesitás entender exactamente las preguntas financieras que la dirección se hace cuando evalúa un proyecto o una iniciativa. Si podés responderlas antes de que las hagan, tenés ventaja real en la conversación.</div>
+<div class="prose">Hay tres preguntas que importan: <strong>¿esto genera margen?</strong> (ingresos menos costos directos), <strong>¿cuándo recuperamos la inversión?</strong> (payback period), y <strong>¿genera flujo o solo utilidad en papel?</strong> (cash flow). Una empresa puede ser rentable en papel y quedarse sin caja — eso es una crisis de liquidez, no de rentabilidad, y son cosas distintas.</div>
+<div class="callout"><strong>El error más común en proyectos TI</strong>Confundir margen con rentabilidad. Un proyecto de $200,000 con 15% de margen genera $30,000. Un proyecto de $40,000 con 40% de margen genera $16,000. El primero es más grande, pero si requiere 5x más tiempo del equipo, la rentabilidad real puede ser menor.</div>
+<div class="prose">Descubrí los conceptos financieros clave — en el orden en que los necesitás para tomar decisiones.</div>
+${revealSeqHTML('fin')}`;
+    revealSeqInit('fin');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Decisiones financieras bajo presión", time:"15 min", tag:"Escenarios financieros",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M04 · Unidad 2</div>
+<div class="u-heading">Tres escenarios. Un criterio financiero.</div>
+<div class="prose">Estas situaciones son versiones de lo que pasa en empresas TI de servicios. Cada decisión tiene consecuencias financieras reales. Elegí la opción que mejor protege el negocio — no siempre es la más cómoda.</div>`;
+    finInit(c,f);
+   }
+  },
+  {title:"Cómo construir un argumento de ROI", time:"13 min", tag:"Lectura + Revelación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M04 · Unidad 3</div>
+<div class="u-heading">El ROI no se calcula — se construye</div>
+<div class="prose">Cuando proponés una inversión tecnológica, la dirección no quiere una tabla de ROI con cálculos de valor presente neto. Quiere entender <strong>qué problema resuelve y cuánto cuesta no resolverlo</strong>. La diferencia entre esas dos preguntas es enorme.</div>
+<div class="prose">Un SIEM no se vende con features técnicas. Se vende con "hoy si hay un incidente de seguridad, lo enteramos 48 horas después. Para una cooperativa de ahorro, ese tiempo puede implicar multas regulatorias de X, pérdida de clientes de Y, y daño reputacional de Z. Esta solución lo detecta en minutos."</div>
+<div class="callout"><strong>La estructura del argumento correcto</strong>1) El costo actual del problema (cuantificado). 2) El costo de la solución. 3) La diferencia en el tiempo. 4) El riesgo si no se hace nada. Esta secuencia convierte una propuesta técnica en una decisión de negocio obvia.</div>
+${revealSeqHTML('roi')}`;
+    revealSeqInit('roi');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Presupuesto y forecasting", time:"12 min", tag:"Lectura + Sliders",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M04 · Unidad 4</div>
+<div class="u-heading">Planificar para liderar, no para reportar</div>
+<div class="prose">Un presupuesto que se usa solo para reportar al final del mes es una herramienta desperdiciada. El presupuesto sirve para tomar decisiones <em>antes</em> de que el dinero sea el problema. Y el forecasting — proyección dinámica de ingresos y gastos — es la diferencia entre reaccionar y anticipar.</div>
+<div class="prose">Un líder que puede decir "en base al pipeline actual, en Q3 vamos a tener un bache de caja porque dos proyectos grandes se facturan en Q4" tiene tiempo para actuar: acelerar un proyecto, adelantar una factura, negociar un crédito. Uno que lo descubre en Q3 solo puede apagar incendios.</div>
+<div class="callout"><strong>El forecasting no es predicción</strong>No se trata de acertar el número exacto. Se trata de entender la dirección y la magnitud. ¿Vamos bien o vamos mal? ¿Cuánto mal? ¿Hay tiempo para corregir? Esas tres preguntas valen más que un modelo financiero de 40 columnas.</div>
+<div class="prose">Evaluá tu nivel de dominio actual en cada área financiera.</div>
+${scaleHTML('fin4')}`;
+    scaleInit('fin4');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+ ]
+},
+
+// ════ M05 ════
+{title:"Ventas y desarrollo de negocio", layer:2,
+ units:[
+  {title:"El líder técnico que vende sin vender", time:"13 min", tag:"Lectura + Revelación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M05 · Unidad 1</div>
+<div class="u-heading">Vender no es convencer. Es alinear.</div>
+<div class="prose">Los líderes técnicos suelen tener una relación incómoda con el concepto de "vender". Lo asocian con presión, con persuasión, con hacer que alguien compre algo que no necesita. Esa incomodidad es válida — pero también es una trampa, porque los aleja de una de las habilidades más importantes en empresas de servicios TI.</div>
+<div class="prose">La venta consultiva — que es la que aplica a servicios complejos como infraestructura, cloud o ciberseguridad — no funciona así. <strong>Vender bien en este contexto es hacer las preguntas correctas para entender el problema real del cliente antes de hablar de soluciones</strong>. El cliente compra cuando siente que entendiste su problema mejor que él mismo.</div>
+<div class="callout"><strong>La ventaja del líder técnico</strong>Tenés credibilidad que un vendedor puro no tiene. El cliente sabe que entendés lo que estás proponiendo. Usá eso para hacer preguntas que un vendedor no haría — preguntas técnicas que revelan el problema de negocio.</div>
+${revealSeqHTML('sales')}`;
+    revealSeqInit('sales');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Pipeline builder", time:"15 min", tag:"Constructor de pipeline",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M05 · Unidad 2</div>
+<div class="u-heading">Tu pipeline actual — armalo ahora</div>
+<div class="prose">Un pipeline real tiene etapas claras y cada oportunidad vive en una etapa. Lo que no está en el pipeline no existe — no en términos de gestión comercial. No importa cuántas conversaciones tengas en la cabeza si no están capturadas y priorizadas.</div>
+<div class="prose">El objetivo no es tener muchas oportunidades — es tener las correctas en el estadio correcto. Un pipeline con 20 oportunidades todas en "identificada" y ninguna en "negociación" dice algo importante sobre el proceso comercial.</div>`;
+    pipelineInit(c,f);
+   }
+  },
+  {title:"Relaciones comerciales de largo plazo", time:"13 min", tag:"Lectura + Toggles",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M05 · Unidad 3</div>
+<div class="u-heading">El cliente que te llama antes de necesitarte</div>
+<div class="prose">El objetivo de la relación comercial no es cerrar ventas — es que el cliente piense en vos primero cuando tiene un problema. Ese nivel de confianza no se logra con un buen pitch de ventas. Se construye con comportamientos consistentes a lo largo del tiempo.</div>
+<div class="prose">La diferencia entre un proveedor y un asesor de confianza es que al proveedor lo llaman cuando ya saben lo que quieren. Al asesor lo llaman cuando todavía no saben qué quieren — porque confían en que los va a ayudar a entender el problema.</div>
+<div class="callout"><strong>El momento que define la relación</strong>Cuando decís "eso que me estás pidiendo no es la mejor solución para tu problema" y lo decís antes de ganar el proyecto, no después. Esa honestidad vale más que cualquier presentación técnica.</div>
+${toggleHTML('rel')}`;
+    toggleInit('rel');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"De proyecto a cuenta — pensar en LTV", time:"12 min", tag:"Lectura + Sliders",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M05 · Unidad 4</div>
+<div class="u-heading">El cliente más caro es el que tuviste que conseguir dos veces</div>
+<div class="prose">LTV — Lifetime Value — es el valor total que un cliente puede generar durante toda la relación. En servicios TI, un cliente que compra un proyecto de infraestructura, renueva soporte, amplía licencias, migra a cloud, y eventualmente hace un proyecto de seguridad puede valer 10 veces el valor del primer proyecto.</div>
+<div class="prose">El error es gestionar cada proyecto como si fuera el único. Eso lleva a optimizar el margen del proyecto en lugar de la relación. A veces vale la pena sacrificar margen en un proyecto para construir una relación que vale mucho más.</div>
+<div class="callout"><strong>La aritmética de la retención</strong>Adquirir un cliente nuevo cuesta entre 5 y 7 veces más que retener uno existente. En servicios TI con ciclos de venta largos y proyectos complejos, esa ratio es probablemente mayor. Cada cliente que se va es una pérdida doble: la relación y el costo de adquisición que no se va a recuperar.</div>
+${scaleHTML('ltv')}`;
+    scaleInit('ltv');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+ ]
+},
+
+// ════ M06 ════
+{title:"Construcción y desarrollo de equipo", layer:3,
+ units:[
+  {title:"Quién tenés y qué necesitás", time:"14 min", tag:"Lectura + Mapa de equipo",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M06 · Unidad 1</div>
+<div class="u-heading">El equipo que ejecuta tu visión</div>
+<div class="prose">No podés ser líder estratégico sin un equipo que ejecute. Y no podés tener ese equipo sin entender dónde está cada persona hoy y qué necesita para crecer. El error más común es evaluar al equipo en bloque — "está bien" o "está flojo" no son diagnósticos útiles.</div>
+<div class="prose">Lo útil es saber quién es excelente en qué, quién necesita desarrollo en qué área específica, y quién está en el rol equivocado. Esas tres cosas son distintas y requieren acciones distintas. La misma persona puede ser excelente en ejecución técnica y necesitar desarrollo en comunicación con clientes.</div>
+<div class="callout"><strong>La matriz que importa</strong>Para cada persona y cada tipo de tarea: ¿cuánta competencia tiene? ¿Cuánta motivación? La combinación de esas dos variables determina cómo liderás esa situación. No hay un solo modo de liderazgo correcto — hay el modo correcto para esta persona en esta tarea.</div>`;
+    teamInit(c,f);
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Delegar sin perder el control", time:"13 min", tag:"Lectura + Revelación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M06 · Unidad 2</div>
+<div class="u-heading">Delegar no es soltar. Es transferir con criterio.</div>
+<div class="prose">El miedo a delegar viene de dos lugares. El primero es no confiar en que el otro lo hará bien — lo cual puede ser realista o puede ser sobreestimación propia. El segundo es no querer asumir la responsabilidad si algo sale mal — lo cual es un problema de liderazgo, no del equipo.</div>
+<div class="prose">Delegar correctamente tiene tres componentes que casi nunca se dan todos juntos: <strong>claridad del resultado</strong> (no instrucciones de cómo hacerlo, sino qué tiene que ser verdad cuando esté listo), <strong>checkpoints acordados</strong> (no microgestión, sino momentos de revisión que ambos conocen de antemano), y <strong>autoridad real</strong> (si delegás la tarea pero no la autoridad para tomar decisiones, no delegaste nada — pusiste la responsabilidad en alguien sin darle el poder para cumplirla).</div>
+<div class="callout"><strong>El síntoma de delegación sin autoridad</strong>Cuando alguien viene a consultarte por cada decisión pequeña en algo que "ya está delegado". Eso no es dependencia del equipo — es una señal de que nunca transferiste la autoridad real. Y es costoso para los dos.</div>
+${revealSeqHTML('deleg')}`;
+    revealSeqInit('deleg');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Conversaciones de desarrollo", time:"14 min", tag:"Lectura + Toggles",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M06 · Unidad 3</div>
+<div class="u-heading">Una conversación honesta vale más que diez evaluaciones</div>
+<div class="prose">La mayoría de las conversaciones de desarrollo son evaluaciones disfrazadas. El líder habla, el empleado escucha y asiente, todos salen igual que entraron. El problema no es la intención — es la estructura: empezar con feedback en lugar de preguntas.</div>
+<div class="prose">Una conversación de desarrollo real empieza por entender qué quiere construir la otra persona. El feedback viene después — como apoyo a lo que el otro ya quiere lograr, no como diagnóstico de lo que vos creés que necesita.</div>
+<div class="callout"><strong>Las tres preguntas que abren la conversación real</strong>¿Qué parte de tu trabajo te da más energía? ¿Dónde sentís que te falta herramienta? ¿En qué te gustaría ser mucho mejor en un año? Las respuestas te dicen todo lo que necesitás saber — sin que tengas que diagnosticar nada.</div>
+${toggleHTML('dev')}`;
+    toggleInit('dev');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Los cuatro modos de liderazgo", time:"15 min", tag:"Lectura + Clasificación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M06 · Unidad 4</div>
+<div class="u-heading">El modo de liderazgo correcto depende de la persona y la tarea, no de tu estilo</div>
+<div class="prose">El liderazgo situacional parte de una idea simple: no hay un solo modo de liderazgo correcto. Hay el modo correcto para esta persona en esta tarea en este momento. El error es tener un solo modo y aplicarlo a todo.</div>
+<div class="prose">Las dos variables son competencia (¿qué tan capaz es esta persona para esta tarea específica?) y motivación (¿qué tan comprometida está con hacerla?). La misma persona puede necesitar modos distintos para tareas distintas. No es sobre la persona — es sobre la situación.</div>
+<div class="callout"><strong>El error más costoso</strong>Delegar (Modo 4) a alguien que necesita instrucción (Modo 2). El resultado es bajo, se interpreta como falla del equipo, y el equipo siente que falló en algo para lo que no tenía las herramientas. El problema fue el modo de liderazgo, no la capacidad de la persona.</div>
+${dragHTML(2)}`;
+    dragInit(2);
+    f.innerHTML=`<button class="btn-s" onclick="checkDrag(2)">Verificar</button><button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+ ]
+},
+
+// ════ M07 ════
+{title:"Decisiones bajo presión", layer:3,
+ units:[
+  {title:"Por qué fallamos bajo presión", time:"12 min", tag:"Lectura + Sliders",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M07 · Unidad 1</div>
+<div class="u-heading">La presión no baja la calidad de las decisiones. La revela.</div>
+<div class="prose">Bajo presión tomamos decisiones más rápido. Eso a veces es correcto — y a veces es exactamente el problema. La presión activa sesgos cognitivos que en condiciones normales están más controlados.</div>
+<div class="prose">Los tres errores más frecuentes: <strong>confirmar lo que ya creemos</strong> (buscar datos que validen la decisión ya tomada en lugar de evaluar opciones genuinamente), <strong>estrechar el foco</strong> (ver solo la dimensión técnica o solo la comercial, nunca las dos), y <strong>evitar el conflicto</strong> (decir que sí porque en ese momento es más fácil que defender la posición correcta).</div>
+<div class="callout"><strong>El costo real de la decisión rápida</strong>Una decisión tomada en 5 minutos bajo presión que sale mal puede costar semanas de trabajo correctivo, daño relacional con el cliente, y pérdida de confianza interna. Tomarse 2 horas para decidir bien casi siempre es la inversión correcta.</div>
+${scaleHTML('dec7')}`;
+    scaleInit('dec7');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Árbol de decisiones — escenario real", time:"15 min", tag:"Árbol de decisiones",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M07 · Unidad 2</div>
+<div class="u-heading">Cada decisión lleva a un lugar distinto</div>
+<div class="prose">Un cliente estratégico pide entregar en 2 semanas un proyecto que el equipo estimó en 6. Navegá el escenario — cada elección tiene consecuencias reales.</div>`;
+    decisionInit(c,f);
+   }
+  },
+  {title:"El framework de decisión en 4 pasos", time:"13 min", tag:"Lectura + Revelación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M07 · Unidad 3</div>
+<div class="u-heading">Decidir bien no es decidir rápido</div>
+<div class="prose">Hay una diferencia entre velocidad y urgencia. La velocidad es una característica de la decisión. La urgencia es una característica del contexto. El error es confundir las dos — asumir que porque hay urgencia hay que ser veloz, cuando a veces la urgencia es fabricada y la velocidad es un costo innecesario.</div>
+${revealSeqHTML('fw7')}`;
+    revealSeqInit('fw7');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"La indecisión también es una decisión", time:"12 min", tag:"Lectura + Revelación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M07 · Unidad 4</div>
+<div class="u-heading">No decidir también tiene consecuencias</div>
+<div class="prose">Posponer una decisión no elimina el problema — lo hace crecer, generalmente. Cada día que no decidís, alguien más decide por vos (el cliente, el proveedor, el equipo), o el costo de decidir sube, o la ventana de acción se cierra.</div>
+<div class="prose">Hay momentos donde esperar es genuinamente correcto: cuando falta información crítica que llegará pronto y cuyo impacto en la decisión es alto, cuando el problema puede resolverse solo con el tiempo, cuando hay más que perder decidiendo ahora que esperando. Esos casos existen — pero son la minoría.</div>
+<div class="callout"><strong>La señal de alerta</strong>Cuando la razón para no decidir es incomodidad, no información. La indecisión se siente neutral — no tiene el costo inmediato visible de decidir mal. Pero tiene un costo diferido que casi siempre es mayor.</div>
+${toggleHTML('indec')}`;
+    toggleInit('indec');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+ ]
+},
+
+// ════ M08 ════
+{title:"Marca personal y liderazgo de influencia", layer:3,
+ units:[
+  {title:"Lo que dicen cuando no estás en la sala", time:"13 min", tag:"Lectura + Revelación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M08 · Unidad 1</div>
+<div class="u-heading">Tu marca personal no es tu LinkedIn. Es lo que la gente dice cuando no estás.</div>
+<div class="prose">La marca personal no se construye con un bio bien escrito ni con posts en redes. Se construye con comportamientos consistentes a lo largo del tiempo que generan una reputación específica. "Jay es el tipo que siempre llega con opciones, no con problemas." Esa frase es una marca — y se gana con comportamiento, no con comunicación.</div>
+<div class="prose">Para un líder en empresas TI, la marca tiene tres dimensiones que, juntas, son difíciles de encontrar: <strong>criterio técnico</strong> (entendés lo que estás haciendo), <strong>visión de negocio</strong> (entendés por qué importa), y <strong>confiabilidad</strong> (hacés lo que decís que vas a hacer). Las tres juntas son una ventaja competitiva personal.</div>
+<div class="callout"><strong>La prueba de la silla vacía</strong>Pensá en una reunión donde no estuviste. ¿Cómo te describieron cuando alguien preguntó quién sos? ¿Qué atributos usaron? ¿Eso es lo que querés que digan? Si no, ahí está la brecha entre tu marca actual y la que querés construir.</div>
+${revealSeqHTML('brand8')}`;
+    revealSeqInit('brand8');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Influencia sin autoridad formal", time:"13 min", tag:"Lectura + Toggles",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M08 · Unidad 2</div>
+<div class="u-heading">Cómo mover a personas que no te reportan</div>
+<div class="prose">En empresas de servicios TI, constantemente trabajás con vendors, clientes, y equipos que no dependen de vos. No podés dar órdenes. No podés usar el poder formal del cargo. Tenés que influir — y eso requiere un set de habilidades completamente distinto.</div>
+<div class="prose">El liderazgo de influencia se construye con tres prácticas: hacer que la gente quiera lo mismo que vos querés (no convencer sino alinear intereses), ser útil antes de pedir (la influencia se acumula con valor entregado, no con posición), y ser predecible (que la gente sepa cómo vas a actuar genera la confianza que da influencia real).</div>
+<div class="callout"><strong>La cuenta bancaria de la confianza</strong>Cada vez que sos útil sin pedir nada, cada vez que cumplís lo que dijiste, cada vez que sos honesto aunque incomode — hacés un depósito. Cada vez que pedís algo sin haber depositado suficiente, hacés un retiro. Si la cuenta está en cero, la influencia desaparece.</div>
+${toggleHTML('inf8')}`;
+    toggleInit('inf8');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Presencia ejecutiva", time:"12 min", tag:"Lectura + Sliders",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M08 · Unidad 3</div>
+<div class="u-heading">La presencia no es carisma. Es claridad.</div>
+<div class="prose">La presencia ejecutiva no es hablar fuerte ni tener carisma natural. Es la capacidad de estar completamente presente en la conversación que importa — escuchar de verdad, responder con precisión, sostener la incomodidad sin escapar de ella.</div>
+<div class="prose">Se desarrolla con práctica en tres áreas: comunicación verbal (decir lo que querés decir, no lo que creés que el otro quiere escuchar), comunicación no verbal (cuerpo, mirada, ritmo — la gente lee tu estado antes de escuchar tus palabras), y gestión de la incomodidad (las conversaciones difíciles son exactamente donde se gana o se pierde la credibilidad).</div>
+<div class="callout"><strong>La incomodidad como señal</strong>Cuando sentís incomodidad antes de una conversación difícil, eso no es una razón para evitarla — es una señal de que importa. Los líderes que huyen de la incomodidad eventualmente no tienen conversaciones reales con nadie.</div>
+${scaleHTML('pres8')}`;
+    scaleInit('pres8');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Construí tu narrativa", time:"15 min", tag:"Brand builder",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M08 · Unidad 4 · Entregable final</div>
+<div class="u-heading">En tus propias palabras</div>
+<div class="prose">Este es el entregable final del curso. La narrativa profesional no es un ejercicio de marketing — es una herramienta de claridad. Cuando sabés exactamente qué valor generás, para quién, y qué te hace distinto, todas las conversaciones ejecutivas se vuelven más fáciles.</div>
+<div class="brand-q">
+  <div class="brand-ql">Tu propuesta de valor</div>
+  <div class="brand-qt">¿Qué problema resolvés mejor que la mayoría?</div>
+  <div class="brand-qh">Pensá en el momento en que la gente dice "necesito a Jay para esto" — ¿qué es "esto"?</div>
+  <textarea class="brand-ta" rows="3" id="bv" placeholder="Ej: Traduzco complejidad técnica en decisiones de negocio claras. Cuando hay un proyecto TI complejo con múltiples vendors y un cliente exigente, sé cómo hacerlo funcionar..." oninput="updateBrand()"></textarea>
+</div>
+<div class="brand-q">
+  <div class="brand-ql">Tu diferencial</div>
+  <div class="brand-qt">¿Qué combinación de habilidades tenés que es difícil de encontrar?</div>
+  <div class="brand-qh">La intersección rara — pensá en PM + diseño + criterio técnico + mercado local. ¿Qué combinación es única?</div>
+  <textarea class="brand-ta" rows="3" id="bd" placeholder="Ej: PM técnico con background en UX/UI y conocimiento profundo del mercado TI ecuatoriano. Entiendo la arquitectura, el diseño y el cliente..." oninput="updateBrand()"></textarea>
+</div>
+<div class="brand-q">
+  <div class="brand-ql">Tu audiencia</div>
+  <div class="brand-qt">¿Para quién querés ser la primera opción?</div>
+  <div class="brand-qh">Sé específico — no "empresas en Ecuador" sino "directores de TI en empresas financieras medianas"</div>
+  <textarea class="brand-ta" rows="3" id="ba" placeholder="Ej: Directores de TI y gerentes generales de empresas medianas en Ecuador que necesitan un partner tecnológico de confianza..." oninput="updateBrand()"></textarea>
+</div>
+<div class="brand-prev">
+  <div class="bp-lbl">Tu narrativa · Preview en tiempo real</div>
+  <div class="bp-name">Jay Jaramillo</div>
+  <div class="bp-role">Project Manager → Líder Estratégico · Coresolutions</div>
+  <div class="bp-bio" id="bpbio">Completá los campos para ver tu narrativa.</div>
+</div>`;
+    window.updateBrand=function(){
+      const bv=document.getElementById('bv').value.trim();
+      const bd=document.getElementById('bd').value.trim();
+      const ba=document.getElementById('ba').value.trim();
+      const el=document.getElementById('bpbio');
+      if(!bv&&!bd&&!ba){el.textContent='Completá los campos para ver tu narrativa.';return;}
+      let bio='';
+      if(bv) bio+=bv+' ';
+      if(bd) bio+=bd+' ';
+      if(ba) bio+='Trabajo principalmente con '+ba+'.';
+      el.textContent=bio.trim();
+    };
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Completar curso →</button>`;
+   }
+  },
+ ]
+},
 
 ];
 
-// ═══════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════
-let currentMod=0, currentUnit=0;
-const modProgress = MODULES.map(m=>new Array(m.units.length).fill(false));
+// ──────────────────────────────
+// INTERACTION DATA
+// ──────────────────────────────
 
-// ═══════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+const DRAG_DATA = [
+  // M01 drag
+  {colA:"PM Técnico", colB:"Líder Estratégico",
+   chips:["Define cómo se implementa","Define qué tiene sentido implementar","Coordina vendors del proyecto","Elige con qué vendors construir relaciones","Reporta el avance semanal","Gestiona las expectativas antes de que haya algo que reportar","Asigna tareas y controla la ejecución","Desarrolla la capacidad del equipo","Ve si este proyecto está en riesgo","Ve si estos proyectos nos llevan en la dirección correcta","Traduce requerimientos en arquitectura","Traduce problemas de negocio en decisiones técnicas"],
+   correct:[0,1,0,1,0,1,0,1,0,1,0,1]},
+  // M03 drag
+  {colA:"Estrategia real", colB:"Parece estrategia pero no lo es",
+   chips:["Nos enfocaremos en ciberseguridad para empresas financieras y dejaremos de tomar proyectos de bajo margen fuera de ese sector","Vamos a crecer un 30% este año","Nuestro diferencial es la calidad del servicio y la atención al cliente","Vamos a desarrollar capacidad en VCF porque ningún otro partner en Ecuador la tiene, y eso nos da exclusividad en ese segmento","Queremos ser líderes del mercado TI en Ecuador","Vamos a decirle que no a proyectos bajo $20,000 para liberar capacidad para cuentas enterprise"],
+   correct:[0,1,1,0,1,0]},
+  // M06 drag
+  {colA:"Modo Delegar (Modo 4)", colB:"Modo Instruir (Modo 2)",
+   chips:["Joel configurando un firewall Check Point que ya ha hecho 10 veces","Un ingeniero junior documentando su primer proyecto","Joel escribiendo un informe ejecutivo para un cliente nuevo","Un ingeniero senior asumiendo una tarea técnica en un stack que conoce profundamente","Alguien del equipo haciendo su primera presentación a clientes","Joel coordinando vendors en un proyecto de infraestructura estándar"],
+   correct:[0,1,1,0,1,0]},
+];
+
+const REVEAL_DATA = {
+  // M02 U1
+  default:[
+    {title:"Hablar de outcomes, no de actividades", content:"'Completamos la migración' es una actividad. 'Los 400 usuarios del área comercial tienen acceso al sistema nuevo sin interrupción operativa' es un outcome. La dirección toma decisiones basadas en outcomes — en lo que importa al negocio, no en lo que hiciste para lograrlo."},
+    {title:"El problema antes de la solución", content:"Antes de mostrar cualquier propuesta técnica, establecé el problema de negocio que resuelve. No como introducción — como fundamento. Si la dirección no entiende el problema, no puede evaluar la solución."},
+    {title:"Cuantificar el riesgo de no actuar", content:"Las propuestas que no generan decisión generalmente omiten el costo de no hacer nada. 'Si no implementamos esta solución, el riesgo es...' seguido de un número concreto cambia completamente la conversación."},
+    {title:"Llegar con opciones, no con pedidos", content:"La dirección no quiere escuchar 'necesitamos presupuesto para X'. Quiere escuchar 'tenemos tres opciones con distintos niveles de inversión y riesgo — mi recomendación es la segunda'. Eso muestra que pensaste el problema, no que solo identificaste una necesidad."},
+    {title:"Separar recomendación de información", content:"Un error común es presentar mucha información sin hacer una recomendación clara. La dirección no quiere que le expliques el panorama — quiere que les digas qué hacer. Presentá la información como contexto y la recomendación como el centro."},
+  ],
+  comp:[
+    {title:"Competencia directa — otras empresas de TI", content:"Son visibles y fáciles de mapear. Lo que importa entender es en qué son mejores que vos y en qué no. No se gana siendo mejor en todo — se gana siendo claramente mejor en lo que importa para el segmento que querés."},
+    {title:"Competencia indirecta — el TI interno", content:"Muchos clientes medianos tienen un departamento TI que puede, en teoría, hacer lo que ofrecés. La forma de ganarle no es siendo más barato — es siendo más especializado y más confiable. El TI interno tiene costos ocultos y limitaciones de escala que vale la pena hacer visibles."},
+    {title:"La inercia — la decisión de no hacer nada", content:"Esta es la competencia más difícil. El cliente que dice 'vamos a esperar al próximo presupuesto' no te está rechazando a vos — está optando por el statu quo. Para ganarle a la inercia hay que hacer que el costo de no actuar sea más concreto y visible que el costo de actuar."},
+    {title:"El proveedor internacional directo", content:"Broadcom, Cisco, Microsoft venden directo a grandes cuentas. La ventaja de un partner local es la proximidad, el conocimiento del cliente, y la capacidad de hacer algo que el vendedor directo no puede: estar presente cuando hay un problema."},
+  ],
+  roi:[
+    {title:"Paso 1 — El costo actual del problema", content:"Antes de proponer una solución, cuantificá el problema. ¿Cuántas horas por semana se pierde en el proceso actual? ¿Cuánto cuesta un incidente de seguridad no detectado? ¿Cuál es el costo de downtime por hora? Esos números son la base del argumento."},
+    {title:"Paso 2 — El costo de la solución", content:"No solo el precio de licencias — el costo total de implementación, incluyendo tiempo del equipo, capacitación, y soporte. La dirección va a hacer ese cálculo de todas formas; es mejor que lo hagas vos con transparencia."},
+    {title:"Paso 3 — La diferencia en el tiempo", content:"¿En cuánto tiempo el ahorro supera la inversión? ¿En 6 meses? ¿En 18? Ese es el payback period, y es la pregunta que la dirección se va a hacer antes de aprobar cualquier presupuesto."},
+    {title:"Paso 4 — El riesgo de no actuar", content:"¿Qué pasa si no se hace? No como amenaza — como análisis. Si hay una regulación que se puede incumplir, un competidor que puede sacar ventaja, o un costo que va a crecer — eso tiene que estar en la propuesta."},
+  ],
+  fin:[
+    {title:"Margen bruto — el número que más importa primero", content:"El margen bruto es ingresos menos costos directos del proyecto (trabajo, licencias, hardware). Es el número que dice si un proyecto tiene sentido por sí mismo. Un proyecto grande con 12% de margen puede ser peor que uno pequeño con 40%."},
+    {title:"EBITDA — la rentabilidad operativa real", content:"Earnings Before Interest, Taxes, Depreciation and Amortization. Es la rentabilidad de la operación antes de factores financieros. Es el número que la dirección y los potenciales inversores o compradores de una empresa miran primero."},
+    {title:"Cash flow — flujo de caja", content:"Una empresa puede ser rentable en papel y quedarse sin caja. Eso pasa cuando los proyectos se facturan tarde, cuando los clientes pagan lento, o cuando los gastos se concentran antes que los ingresos. El flujo de caja es la métrica de supervivencia."},
+    {title:"Payback period — recuperación de la inversión", content:"¿En cuánto tiempo la inversión se recupera con los flujos que genera? Es especialmente relevante en proyectos de infraestructura con CAPEX alto. Cuanto más corto el payback, menor el riesgo de la inversión."},
+  ],
+  sales:[
+    {title:"Hacer preguntas antes de proponer soluciones", content:"La pregunta que más separa a un vendedor de un asesor: '¿Por qué esto es importante para vos ahora?' Esa pregunta revela la urgencia real, la presión interna del cliente, y el criterio de decisión — todo lo que necesitás para hacer una propuesta relevante."},
+    {title:"Distinguir el problema presentado del problema real", content:"Los clientes rara vez presentan su problema real en el primer contacto. Dicen 'necesito más almacenamiento' cuando el problema real es que los backups no funcionan. Dicen 'necesito capacitar al equipo' cuando el problema real es que el sistema es demasiado complejo."},
+    {title:"El precio del silencio", content:"No hablar de precio hasta el final no es estratégico — es costoso. Descubrir tarde que el presupuesto del cliente es 40% de tu propuesta implica tiempo desperdiciado para los dos. Calibrar el presupuesto temprano es un servicio al cliente, no una táctica de ventas."},
+    {title:"Cerrar sin presionar", content:"El cierre en venta consultiva no es una técnica — es la consecuencia natural de haber entendido bien el problema y propuesto la solución correcta. Si el cliente no cierra, generalmente es porque hay algo que no entiende o que no está convencido — y eso requiere más preguntas, no más presión."},
+  ],
+  deleg:[
+    {title:"Claridad del resultado — no del proceso", content:"'Necesito que el informe de estado del proyecto esté listo para el viernes' es una instrucción. 'Necesito que el cliente entienda dónde estamos, qué viene, y qué necesitamos de su lado, para el viernes' es un resultado. La segunda deja espacio para que la persona elija cómo llegar ahí."},
+    {title:"Checkpoints que no se sienten como control", content:"La diferencia entre un checkpoint de delegación y microgestión es si estaba acordado de antemano. 'Te veo el miércoles para ver cómo va' acordado desde el inicio es apoyo. Aparecer el miércoles sin haberlo acordado para ver cómo va es control."},
+    {title:"Autoridad real — el componente que falta", content:"Si delegás una tarea pero la persona tiene que consultarte para cada decisión porque no tiene autoridad real, no delegaste nada. Delegaste el trabajo y te quedaste con el control. Eso es lo peor de los dos mundos — para vos y para la persona."},
+    {title:"Cómo manejarlo cuando algo sale mal", content:"Cuando algo delegado sale mal, hay dos respuestas posibles: 'Necesito hacer las cosas yo' (volver al punto de partida), o 'Necesito entender qué faltó y corregirlo' (liderar). La segunda es más difícil y más valiosa."},
+  ],
+  fw7:[
+    {title:"Paso 1 — Clarificar qué hay que decidir", content:"Parece obvio pero no lo es. Muchas veces la discusión sobre cómo resolver algo empieza antes de que quede claro qué exactamente hay que decidir, para cuándo, y quién vive con la consecuencia. Cinco minutos de clarificación pueden ahorrar horas de debate en la dirección equivocada."},
+    {title:"Paso 2 — Mapear opciones reales", content:"Siempre hay al menos tres opciones: la ideal, la conservadora, y no hacer nada. Si solo ves una opción, no terminaste de pensar el problema. El espacio de opciones es lo que permite evaluar trade-offs — sin opciones, no hay decisión, hay ejecución."},
+    {title:"Paso 3 — Identificar el riesgo real (no el técnico)", content:"El riesgo que más duele casi nunca es el técnico. Es el relacional (¿qué pasa con la relación con el cliente si esto sale mal?), el reputacional (¿cómo afecta esto la credibilidad del equipo?), o el estratégico (¿cierra puertas que no podemos volver a abrir?)."},
+    {title:"Paso 4 — Decidir y comunicar el razonamiento", content:"No solo el resultado — el razonamiento. 'Decidimos hacer X porque Y y Z, asumiendo el riesgo de W' construye confianza incluso cuando la decisión es impopular. La gente puede no estar de acuerdo con la decisión y aun así confiar en el proceso."},
+  ],
+  brand8:[
+    {title:"La consistencia como estrategia de marca", content:"Una marca personal no se construye con un post viral. Se construye con comportamientos repetidos que crean una expectativa. Si siempre llegás con opciones, eso se convierte en lo que la gente espera de vos. Esa expectativa es tu marca."},
+    {title:"La especialización visible", content:"Es más fácil ser conocido por una cosa específica que por muchas cosas. 'Jay es el mejor PM para proyectos TI complejos con múltiples vendors en el mercado ecuatoriano' es una marca posicionada. 'Jay es muy bueno en tecnología' no lo es."},
+    {title:"La presencia digital como amplificador", content:"Lo que publicás en redes no construye tu marca — amplifica la que ya tenés por comportamiento. Si tu marca real es de criterio técnico y visión de negocio, tu contenido digital tiene que reflejar eso — no motivación genérica."},
+    {title:"El networking como construcción de valor mutuo", content:"El networking que funciona no es coleccionar contactos — es construir relaciones donde ambos lados reciben valor. Eso requiere ser útil primero, específico en lo que ofrecés, y consistente en el seguimiento."},
+  ],
+};
+
+const TOGGLE_DATA = {
+  default:[
+    {head:"Nunca corrijas una estimación técnica en público", body:"Si creés que una estimación está inflada, discutilo en privado con la persona antes de ir a dirección o al cliente. Hacerlo en público destruye la confianza del equipo en que los respaldás — y esa confianza es lo que hace que te digan la verdad la próxima vez."},
+    {head:"Con dirección: outcomes, no actividades", body:"'Completamos la migración' es una actividad. 'Los 400 usuarios tienen acceso sin interrupción' es un outcome. La dirección toma decisiones basadas en lo que importa al negocio, no en lo que hiciste para lograrlo."},
+    {head:"Asumir los errores del equipo como propios frente a afuera", body:"Cuando algo sale mal en un proyecto, la explicación hacia el cliente o hacia dirección es tuya — no del equipo. Internamente, corregís y desarrollás. Externamente, el equipo siempre tuvo un líder que los respaldó. Eso construye lealtad real."},
+    {head:"Preguntar antes de dar soluciones al equipo técnico", body:"Cuando alguien del equipo viene con un problema, la respuesta más fácil es dar la solución. La más valiosa es preguntar: ¿qué opciones ya evaluaste? ¿Qué harías si yo no estuviera? Eso desarrolla capacidad y libera tu tiempo."},
+    {head:"La información que filtrás también dice algo", body:"Qué le contás al equipo sobre lo que pasa arriba, y qué no le contás, define qué tan alineado está con la dirección real del negocio. El equipo que opera sin contexto toma decisiones sin contexto — y después las consecuencias son tuyas."},
+  ],
+  rel:[
+    {head:"Visibilidad proactiva — contacto que no es venta", body:"Contactar a un cliente solo cuando hay algo para vender o cuando hay un problema crea una asociación negativa. El contacto proactivo sin agenda comercial — una alerta de seguridad relevante, un análisis de su industria, una oportunidad que viste — construye la relación antes de necesitarla."},
+    {head:"Memoria de relación — lo que importa para el cliente", body:"Recordar los plazos críticos del cliente, sus preocupaciones recurrentes, sus restricciones de presupuesto — y traerlos a la conversación antes de que el cliente tenga que repetirlos — es la diferencia entre un proveedor y un asesor."},
+    {head:"Honestidad sostenible — decir cuando algo no es la solución", body:"Decirle a un cliente que lo que está pidiendo no es la mejor solución para su problema, antes de ganar el proyecto, construye más confianza que cualquier propuesta técnica. Y esa confianza es lo que genera la relación de largo plazo."},
+  ],
+  dev:[
+    {head:"Empezar con preguntas, no con feedback", body:"Una conversación de desarrollo que empieza con '¿qué parte de tu trabajo te da más energía?' revela más que una hora de evaluación. Las respuestas dicen qué desarrollar — el feedback viene después como apoyo a lo que el otro ya quiere construir."},
+    {head:"La diferencia entre feedback y diagnóstico", body:"El feedback dice cómo fue algo. El diagnóstico dice qué está bien o mal en la persona. El primero es útil. El segundo genera defensividad. 'En la presentación de ayer, la parte técnica fue muy clara — el contexto de negocio faltó' es feedback. 'Sos bueno en técnico pero no en comunicación' es diagnóstico."},
+    {head:"Frecuencia sobre formalidad", body:"Una conversación de 10 minutos cada semana vale más que una reunión de desarrollo formal cada tres meses. La confianza se construye con consistencia, no con protocolos."},
+  ],
+  indec:[
+    {head:"Cuándo esperar es genuinamente correcto", body:"Cuando falta información crítica que llegará pronto y cuyo impacto en la decisión es alto, cuando el problema puede resolverse solo, o cuando la decisión es irreversible y el contexto está cambiando rápido — esperar es la decisión correcta. Pero hay que poder articular por qué."},
+    {head:"Cuándo la espera es evitación", body:"Si la razón para no decidir es incomodidad, no información, eso es evitación. La señal: si alguien te pregunta por qué no decidiste y la respuesta honesta sería 'porque no quería tener esa conversación' — ahí está el problema."},
+    {head:"El costo diferido de la indecisión", body:"La indecisión no tiene costo inmediato visible. Por eso se siente neutral. Pero cada semana que no decidís, alguien más decide, el costo crece, o la ventana se cierra. El costo diferido casi siempre supera el costo de decidir mal."},
+  ],
+  inf8:[
+    {head:"Ser útil antes de pedir", body:"La influencia se acumula con valor entregado, no con posición. Antes de pedir algo a alguien que no te reporta, pensá: ¿cuánto valor he generado para esta persona? ¿Tiene razones para querer ayudarme? Si no, la probabilidad de influir es baja."},
+    {head:"Alinear intereses en lugar de convencer", body:"Convencer implica que la otra persona tiene que cambiar de opinión. Alinear implica encontrar el punto donde lo que querés vos y lo que quiere la otra persona se superponen. La segunda es mucho más sostenible."},
+    {head:"La previsibilidad como activo de influencia", body:"Que la gente sepa cómo vas a actuar, qué podés comprometer, y qué no, genera confianza. La confianza da influencia. La inconsistencia la destruye — incluso cuando las inconsistencias son positivas sorpresas."},
+  ],
+};
+
+const SCALE_DATA = {
+  default:[
+    {label:"¿Qué % de tu tiempo es ejecución técnica directa?", sub:"Resolver problemas técnicos, configurar, implementar, coordinar la operación diaria", feedback:v=>v>70?"Señal de que todavía estás operando principalmente en modo PM técnico. No es malo — es el punto de partida.":v>40?"Balance razonable para esta etapa. El objetivo es reducir esto gradualmente sin soltar el criterio técnico.":"Bien posicionado. El criterio técnico sigue siendo tuyo, pero no ocupás todo el tiempo en ejecución."},
+    {label:"¿Qué % de decisiones de negocio se toman con tu input?", sub:"Decisiones sobre qué proyectos tomar, qué clientes desarrollar, qué servicios lanzar", feedback:v=>v<30?"Señal de que todavía no estás en las conversaciones estratégicas. Ese es el espacio que hay que ganar.":v<60?"Estás empezando a tener influencia real. El siguiente paso es que tu input sea buscado, no solo recibido.":"Bien posicionado. La clave ahora es que esa influencia sea reconocida como estratégica, no solo técnica."},
+    {label:"¿Con qué frecuencia pensás en los próximos 12 meses vs. el proyecto actual?", sub:"Horizonte de vista en tu trabajo diario", feedback:v=>v<30?"El foco corto es necesario para ejecutar, pero si ocupa casi todo el espacio no hay lugar para construir dirección.":v<60?"Balance razonable. El desafío es proteger tiempo para el pensamiento estratégico — es fácil que el día a día lo devore.":"Bien. El pensamiento de largo plazo no reemplaza la ejecución — la orienta."},
+  ],
+  fin4:[
+    {label:"¿Qué tan cómodo estás leyendo un P&L básico?", sub:"Estado de pérdidas y ganancias — ingresos, costos, margen", feedback:v=>v<40?"Área de desarrollo clave. No necesitás ser experto, pero sí entender los números que la dirección mira.":v<70?"Nivel funcional. Podés profundizar en los ratios que más importan en servicios TI.":"Buen dominio. Asegurate de que ese conocimiento se traduce en argumentos en las conversaciones con dirección."},
+    {label:"¿Qué tan bien entendés el cash flow de un proyecto?", sub:"La diferencia entre rentabilidad en papel y flujo real de caja", feedback:v=>v<40?"Esta es la métrica de supervivencia de las empresas de servicios. Vale la pena profundizar.":v<70?"Comprensión básica. El paso siguiente es poder anticipar problemas de caja antes de que sean urgentes.":"Bien posicionado. La capacidad de anticipar flujo es una ventaja concreta en conversaciones de presupuesto."},
+    {label:"¿Con qué claridad podés construir un argumento de ROI?", sub:"Traducir una propuesta técnica en valor de negocio cuantificado", feedback:v=>v<40?"Área de alto impacto para desarrollar. Es lo que convierte propuestas técnicas en decisiones de negocio.":v<70?"Podés hacerlo pero falta estructura. El framework de 4 pasos de la unidad anterior puede ayudar.":"Capacidad real. Asegurate de usarla consistentemente, no solo en las propuestas grandes."},
+  ],
+  ltv:[
+    {label:"¿Con qué claridad pensás en el valor de largo plazo de cada cliente?", sub:"LTV vs. margen del proyecto actual", feedback:v=>v<40?"Área de desarrollo importante. La diferencia entre gestionar proyectos y gestionar cuentas empieza acá.":v<70?"Comprensión básica. El paso siguiente es que eso cambie cómo priorizás tu tiempo con cada cliente.":"Bien posicionado. El pensamiento en LTV cambia las decisiones de margen — y eso es liderazgo estratégico."},
+    {label:"¿Qué tan sistemático sos con el seguimiento post-proyecto?", sub:"Contacto regular con clientes existentes fuera del contexto de venta activa", feedback:v=>v<40?"Oportunidad concreta. El cliente que ya te conoce es el más fácil de desarrollar — y el que más se pierde por falta de seguimiento.":v<70?"Podés mejorar la consistencia. Un sistema simple de recordatorios puede hacer una diferencia grande.":"Bien. La consistencia en el seguimiento es lo que convierte proyectos en cuentas."},
+  ],
+  dec7:[
+    {label:"¿Qué tan frecuente es el sesgo de confirmación en tus decisiones?", sub:"¿Con qué frecuencia buscás datos que validen lo que ya pensás?", feedback:v=>v>60?"Honestidad valiosa. Reconocer el sesgo es el primer paso para mitigarlo — la práctica es buscar activamente evidencia contraria antes de decidir.":v>30?"Nivel normal. El sesgo de confirmación es universal; lo importante es tenerlo en cuenta en decisiones de alto impacto.":"O tenés muy buen control del sesgo, o estás subestimando su frecuencia. Es difícil detectarlo en uno mismo — vale la pena el escrutinio."},
+    {label:"¿Con qué frecuencia posponés decisiones difíciles?", sub:"Decisiones que sabés que hay que tomar pero que evitás", feedback:v=>v>60?"Señal importante. La indecisión tiene un costo diferido que suele ser mayor que el costo de decidir mal. La unidad 4 de este módulo profundiza en esto.":v>30?"Nivel razonable. Lo clave es distinguir cuándo la espera es estratégica y cuándo es evitación.":"Bien. La disposición a decidir es una característica de liderazgo — siempre que no se convierta en velocidad a expensas de calidad."},
+  ],
+  pres8:[
+    {label:"¿Qué tan cómodo estás en conversaciones difíciles que no podés evitar?", sub:"Dar feedback negativo, comunicar malas noticias, defender posiciones impopulares", feedback:v=>v<40?"Área de desarrollo de alto impacto. La presencia ejecutiva se construye exactamente en esas conversaciones.":v<70?"Podés hacerlo pero hay incomodidad. Eso es normal — y se reduce con práctica deliberada, no con tiempo.":"Buen nivel. La clave es que la comodidad no se convierta en evitar el conflicto constructivo necesario."},
+    {label:"¿Qué tan presente estás en reuniones cuando no sos el centro?", sub:"Escuchar de verdad vs. esperar tu turno para hablar", feedback:v=>v<40?"Área interesante. La escucha real es una de las señales más claras de presencia ejecutiva — y de las más escasas.":v<70?"Nivel funcional. Practicar escucha activa en reuniones de alto impacto puede cambiar significativamente cómo sos percibido.":"Buen nivel. La escucha real es rara y muy valorada — seguí cultivándola."},
+  ],
+};
+
+const SORT_DATA = {
+  default:{
+    items:["Problema de negocio que se resuelve","Opciones disponibles","Tu recomendación específica","Riesgo de no actuar","Lo que necesitás (decisión, presupuesto, personas)"],
+    correct:[0,1,2,3,4],
+    explanation:"El orden correcto sigue la lógica de cómo la dirección procesa información: primero quiere entender el problema, luego qué se puede hacer, luego qué recomendás vos, luego qué pasa si no se hace, y finalmente qué necesitás de ellos. Si empieza con lo que necesitás, la respuesta suele ser 'primero explicame el problema'."
+  },
+  strat:{
+    items:["Desarrollar capacidad diferencial en un área específica (ej: VCF, ciberseguridad para financieras)","Consolidar relaciones con 3-5 cuentas clave de alto LTV","Construir el equipo que ejecuta la visión","Aumentar el número de propuestas enviadas","Optimizar los procesos internos de gestión de proyectos","Ampliar la cartera de productos y servicios"],
+    correct:[0,1,2,3,4,5],
+    explanation:"Las tres primeras tienen impacto estratégico directo: una capacidad diferencial crea ventaja, las cuentas clave generan flujo y referencia, y el equipo es el multiplicador de todo lo demás. Las últimas tres son importantes pero son consecuencia de tener las primeras claras."
+  },
+};
+
+const TEAM_PEOPLE = [
+  {name:"Joel",role:"Ing. de infraestructura",comp:4,mot:3,
+   notes:"Alta competencia técnica en implementaciones de infraestructura estándar. Motivación variable — alta en proyectos nuevos, baja en proyectos repetitivos. <strong>Recomendado:</strong> Modo 4 (Delegar) para implementaciones que conoce, Modo 3 (Apoyar) para comunicación con clientes, Modo 2 (Instruir) para documentación o entregables ejecutivos donde tiene menos experiencia."},
+  {name:"Ing. junior",role:"Soporte y configuración",comp:2,mot:5,
+   notes:"Alta motivación y disposición. Competencia en desarrollo para la mayoría de tareas. Necesita dirección clara, feedback frecuente, y validación de que va bien. <strong>Recomendado:</strong> Modo 2 (Instruir) para la mayoría de tareas — explicá el razonamiento, escuchá, pero tomás la decisión final. Modo 1 (Dirigir) para tareas nuevas."},
+  {name:"Vos — Jay",role:"PM / Futuro líder estratégico",comp:4,mot:5,
+   notes:"Alta competencia técnica, alta motivación estratégica. El desarrollo clave está en el nivel ejecutivo: comunicación con dirección, visión de negocio, influencia sin autoridad formal. <strong>Para desarrollar:</strong> Buscá proyectos que requieran decisiones de negocio, no solo técnicas. Pedí feedback de dirección en presentaciones ejecutivas. Asegurate de tener conversaciones de estrategia, no solo de operación."},
+  {name:"Nuevo hire",role:"Por definir",comp:1,mot:4,
+   notes:"Alta motivación, baja competencia por inexperiencia en el contexto específico. <strong>Recomendado:</strong> Modo 1 (Dirigir) al inicio — definí exactamente el cómo. Transicioná a Modo 2 (Instruir) cuando ya tenga el contexto. El error más común con perfiles así es darles autonomía prematura porque tienen iniciativa."},
+];
+
+const FIN_SCENARIOS = [
+  {sit:"Un cliente te pide 20% de descuento en un proyecto de $80,000 para cerrar esta semana. Tu margen actual es 35%. Si aceptás, el margen cae a 15%.",
+   opts:["A · Aceptar — necesitamos cerrar este mes","B · No aceptar — el margen mínimo de la empresa es 25%","C · Contraoferta — 8% de descuento y ampliar el alcance con servicios de soporte anuales"],
+   good:2, fb:"La contraoferta es la mejor opción. Protege el margen, agrega valor percibido para el cliente, y no crea el precedente de ceder 20% solo por presión de cierre. Si aceptás el 20% una vez, ese se convierte en el precio de referencia para futuras negociaciones."},
+  {sit:"Broadcom cambió el modelo de licenciamiento de VMware. El costo para un cliente clave sube $45,000/año. ¿Cómo lo manejás?",
+   opts:["A · Informar el aumento directamente y esperar su reacción","B · Presentar el aumento con el contexto del mercado, el valor que justifica el costo, y dos alternativas (VCF full vs. por CPU)","C · Esperar a que el cliente pregunte para no generar conflicto"],
+   good:1, fb:"Anticiparte con contexto y alternativas muestra que gestionás la relación proactivamente. El cliente que se entera de un aumento de $45,000 por tu gestión activa confía más en vos que el que lo descubre solo. Esperar es el peor movimiento — el conflicto llega igual, pero sin que vos hayas tenido el control."},
+  {sit:"Tenés la posibilidad de tomar un proyecto de $120,000 con 12% de margen o uno de $35,000 con 42% de margen. El equipo puede hacer uno de los dos.",
+   opts:["A · El de $120,000 — mayor volumen absoluto","B · El de $35,000 — mejor margen porcentual","C · Depende de otros factores estratégicos — relación con el cliente, capacidad que construye, pipeline que abre"],
+   good:2, fb:"La respuesta correcta siempre es C. El proyecto grande puede ser estratégico si el cliente es una cuenta clave que querés desarrollar. El pequeño puede ser correcto si libera capacidad para algo mayor. La decisión financiera aislada del contexto estratégico casi nunca es la óptima."},
+];
+
+const DECISION_TREE = {
+  q:"Un cliente estratégico pide entregar en 2 semanas un proyecto estimado en 6. ¿Cuál es tu primer movimiento?",
+  opts:[
+    {text:"Comprometerse con el cliente y resolver internamente después",
+     next:{q:"El equipo dice que es imposible sin trabajar fines de semana y sacrificar calidad.",opts:[
+       {text:"Pedirles que trabajen los fines de semana — es un cliente estratégico",
+        outcome:{type:"bad",label:"Resultado negativo",text:"Quemás al equipo, creás un precedente de presión irreal, y si de todas formas no se cumple el plazo, el daño es doble: con el cliente y con el equipo. Comprometiste sin información — y ahora la presión recae en quien menos la generó."}},
+       {text:"Volver al cliente con la realidad aunque ya te comprometiste",
+        outcome:{type:"ok",label:"Resultado mixto",text:"Mejor que mantener un compromiso inviable, pero ya perdiste credibilidad por haber prometido sin validar. La confianza del cliente en tu criterio toma un golpe. Podés recuperar parte de eso con una comunicación honesta y un plan alternativo concreto."}},
+     ]}},
+    {text:"Pedir 24h para validar con el equipo antes de comprometerse",
+     next:{q:"El equipo dice que 4 semanas es el mínimo viable con calidad. ¿Qué le proponés al cliente?",opts:[
+       {text:"4 semanas completas — el equipo necesita ese tiempo",
+        outcome:{type:"ok",label:"Resultado aceptable",text:"Honesto y defendible. El riesgo es que el cliente sienta que no hay flexibilidad. Funciona mejor si viene acompañado de una explicación de por qué ese plazo protege la calidad — y de qué se puede entregar parcialmente antes."}},
+       {text:"4 semanas con entrega funcional parcial en la semana 2",
+        outcome:{type:"good",label:"Resultado óptimo",text:"Excelente. Respondés con realismo, ofrecés algo concreto para la urgencia inmediata del cliente, y respetás la estimación del equipo. Eso construye confianza con los dos lados. Es la respuesta que distingue a un líder que gestiona bien la presión."}},
+       {text:"3 semanas como punto medio entre lo que pedís vos y lo que pide el cliente",
+        outcome:{type:"bad",label:"Resultado negativo",text:"El punto medio parece diplomático pero es arbitrario. Si el equipo dijo 4 semanas y vos ofrecés 3, ¿qué cambia técnicamente? Nada — solo la presión sobre el equipo. Comprometiste algo que el equipo no validó, igual que en el primer camino."}},
+     ]}},
+    {text:"Preguntar al cliente qué es lo más crítico para la semana 2",
+     next:{q:"El cliente dice que lo crítico es tener el acceso remoto funcionando para ventas. El resto puede esperar.",opts:[
+       {text:"Comprometer solo el acceso remoto para la semana 2 y el resto en 6 semanas",
+        outcome:{type:"good",label:"Resultado óptimo",text:"La mejor respuesta posible. Entendiste el problema real antes de proponer la solución completa. El cliente tiene su urgencia resuelta, el equipo tiene un plazo realista, y vos demostraste criterio estratégico: no resolver lo que pediste sino lo que importa."}},
+       {text:"Comprometer todo para la semana 2 ya que solo el acceso remoto es crítico",
+        outcome:{type:"bad",label:"Resultado negativo",text:"No tiene lógica comprometer todo para la semana 2 si el cliente mismo dijo que solo el acceso remoto es urgente. Esto recarga al equipo innecesariamente y no agrega valor al cliente."}},
+     ]}},
+  ]
+};
+
+// ──────────────────────────────
+// STATE
+// ──────────────────────────────
+let curMod=0, curUnit=0;
+const progress = MODS.map(m=>new Array(m.units.length).fill(false));
+const unitXP = MODS.map(m=>new Array(m.units.length).fill(0));
+
+// ──────────────────────────────
+// NAV
+// ──────────────────────────────
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function goHome(){updateHome();show('home')}
+function goMod(){renderMod();show('module')}
+function openMod(i){curMod=i;renderMod();show('module')}
+function openUnit(i){curUnit=i;renderUnitScreen();show('unit')}
+
+function completeUnit(){
+  progress[curMod][curUnit]=true;
+  totalXP+=XP_PER_UNIT;
+  const m=MODS[curMod];
+  if(curUnit<m.units.length-1){
+    curUnit++;renderUnitScreen();
+  } else {
+    showComp();
+  }
+  updateHome();
 }
 
-function goHome(){show('home');updateHomeProgress();}
-function goModule(){show('module');renderModule();}
+function showComp(){
+  document.getElementById('ubody').innerHTML=`<div class="comp-wrap">
+    <div class="comp-mark">✓</div>
+    <div class="comp-title">Módulo completado</div>
+    <div class="comp-sub">${MODS[curMod].title}<br>Todas las unidades completadas.</div>
+    <div class="comp-insight">El aprendizaje no es lo que leíste — es lo que cambia en cómo actuás mañana en Coresolutions.</div>
+    <div class="comp-xp">+${MODS[curMod].units.length * XP_PER_UNIT} XP</div>
+    <div class="comp-xp-label">puntos ganados en este módulo</div>
+  </div>`;
+  document.getElementById('ufoot').innerHTML=`<button class="btn-s" onclick="goMod()">Ver módulo</button><button class="btn-p" onclick="goHome()">Inicio →</button>`;
+}
 
-function updateHomeProgress(){
-  const total=MODULES.reduce((a,m)=>a+m.units.length,0);
-  const done=modProgress.reduce((a,m)=>a+m.filter(Boolean).length,0);
+// ──────────────────────────────
+// HOME RENDER
+// ──────────────────────────────
+function updateHome(){
+  const total=MODS.reduce((a,m)=>a+m.units.length,0);
+  const done=progress.reduce((a,m)=>a+m.filter(Boolean).length,0);
   const pct=Math.round(done/total*100);
-  document.getElementById('home-prog').style.width=pct+'%';
-  document.getElementById('home-prog-label').textContent=pct+'% completado';
-  MODULES.forEach((_,i)=>{
-    const el=document.getElementById('ms-'+i);
-    const mp=modProgress[i];
-    if(mp.every(Boolean)){el.textContent='✓';el.className='mod-status done';}
-    else if(mp.some(Boolean)){el.textContent='·';el.className='mod-status active';}
-    else{el.textContent='→';el.className='mod-status active';}
+  document.getElementById('hprog').style.width=pct+'%';
+  document.getElementById('hprog-lbl').textContent=pct+'%';
+  const list=document.getElementById('mod-list');
+  const layers=[{n:1,label:"Capa 1 · Identidad y Liderazgo"},{n:2,label:"Capa 2 · Negocio y Estrategia"},{n:3,label:"Capa 3 · Operación y Cultura"}];
+  list.innerHTML='';
+  layers.forEach(layer=>{
+    list.innerHTML+=`<div class="layer-label">${layer.label}</div>`;
+    MODS.forEach((m,i)=>{
+      if(m.layer!==layer.n) return;
+      const mp=progress[i];
+      const done=mp.every(Boolean);
+      list.innerHTML+=`<div class="mod-row" onclick="openMod(${i})">
+        <div class="mod-num">M0${i+1}</div>
+        <div class="mod-info"><div class="mod-title">${m.title}</div><div class="mod-meta">${m.units.length} unidades · ${m.units[0].tag.split(' ')[0]}…</div></div>
+        <div class="mod-ico${done?' done':''}">${done?'✓':'→'}</div>
+      </div>`;
+    });
   });
 }
 
-function openModule(i){
-  currentMod=i;
-  renderModule();
-  show('module');
-}
-
-function renderModule(){
-  const m=MODULES[currentMod];
-  document.getElementById('mod-topbar-title').textContent=m.title;
-  const done=modProgress[currentMod].filter(Boolean).length;
-  document.getElementById('mod-units-done').textContent=done+'/'+m.units.length;
-  const ul=document.getElementById('unit-list');
-  ul.innerHTML='';
+function renderMod(){
+  const m=MODS[curMod];
+  document.getElementById('tb-title').textContent=m.title;
+  const done=progress[curMod].filter(Boolean).length;
+  document.getElementById('tb-right').textContent=done+'/'+m.units.length;
+  const rows=document.getElementById('unit-rows');
+  rows.innerHTML='';
   m.units.forEach((u,i)=>{
-    const d=modProgress[currentMod][i];
-    ul.innerHTML+=`<div class="unit-item" onclick="openUnit(${i})">
-      <div class="unit-dot${d?' done':''}"></div>
-      <div class="unit-item-body">
-        <div class="unit-item-title">${u.title}</div>
-        <div class="unit-item-meta">${u.time}</div>
-        <div class="unit-item-mechanic">${u.mechanic}</div>
+    const d=progress[curMod][i];
+    rows.innerHTML+=`<div class="unit-row" onclick="openUnit(${i})">
+      <div class="ur-dot${d?' done':''}"></div>
+      <div class="ur-body">
+        <div class="ur-title">${u.title}</div>
+        <div class="ur-meta">${u.time}</div>
+        <div class="ur-tag">${u.tag}</div>
       </div>
     </div>`;
   });
 }
 
-function openUnit(i){
-  currentUnit=i;
-  renderUnit();
-  show('unit');
+function renderUnitScreen(){
+  const m=MODS[curMod];
+  const u=m.units[curUnit];
+  // dots
+  const dots=document.getElementById('udots');
+  dots.innerHTML=m.units.map((_,i)=>`<div class="u-dot${progress[curMod][i]?' done':i===curUnit?' cur':''}"></div>`).join('');
+  const c=document.getElementById('ubody');
+  const f=document.getElementById('ufoot');
+  c.innerHTML='';f.innerHTML='';
+  c.scrollTop=0;
+  u.render(c,f);
 }
 
-// ═══════════════════════════════════════
-// UNIT RENDER
-// ═══════════════════════════════════════
-function renderUnit(){
-  const m=MODULES[currentMod];
-  const u=m.units[currentUnit];
-  const c=u.content;
-
-  // progress dots
-  const dots=document.getElementById('unit-prog-dots');
-  dots.innerHTML=m.units.map((_,i)=>
-    `<div class="unit-prog-dot${modProgress[currentMod][i]?' done':i===currentUnit?' current':''}"></div>`
-  ).join('');
-
-  const content=document.getElementById('unit-content');
-  const footer=document.getElementById('unit-footer');
-  content.innerHTML='';
-  footer.innerHTML='';
-
-  content.innerHTML=`<div class="unit-eyebrow">M0${currentMod+1} · Unidad ${currentUnit+1}</div>
-    <div class="unit-heading">${c.heading}</div>`;
-
-  if(u.type==='read') renderRead(c,content,footer);
-  else if(u.type==='drag') renderDrag(c,content,footer);
-  else if(u.type==='canvas') renderCanvas(c,content,footer);
-  else if(u.type==='convo') renderConvo(c,content,footer);
-  else if(u.type==='finance') renderFinance(c,content,footer);
-  else if(u.type==='pipeline') renderPipeline(c,content,footer);
-  else if(u.type==='team') renderTeam(c,content,footer);
-  else if(u.type==='decision') renderDecision(c,content,footer);
-  else if(u.type==='brand') renderBrand(c,content,footer);
-}
-
-function doneBtn(footer,label='Completar unidad'){
-  footer.innerHTML=`<button class="btn-primary" onclick="completeUnit()">${label}</button>`;
-}
-
-function completeUnit(){
-  modProgress[currentMod][currentUnit]=true;
-  const m=MODULES[currentMod];
-  if(currentUnit<m.units.length-1){
-    currentUnit++;renderUnit();
-  } else {
-    showCompletion();
-  }
-  updateHomeProgress();
-}
-
-function showCompletion(){
-  const content=document.getElementById('unit-content');
-  const footer=document.getElementById('unit-footer');
-  content.innerHTML=`<div class="completion-screen">
-    <div class="completion-check">✓</div>
-    <div class="completion-title">Módulo completado</div>
-    <div class="completion-sub">${MODULES[currentMod].title}<br>Todas las unidades completadas.</div>
-    <div class="completion-insight">El aprendizaje no es lo que leíste — es lo que cambia en cómo actuás mañana.</div>
-  </div>`;
-  footer.innerHTML=`<button class="btn-secondary" onclick="goModule()">Ver módulo</button>
-    <button class="btn-primary" onclick="goHome()">Ir al inicio</button>`;
-}
-
-// ═══════════════════════════════════════
-// INTERACTIONS
-// ═══════════════════════════════════════
-
-function renderRead(c,content,footer){
-  content.innerHTML+=`<div class="unit-body-text">${c.text.replace(/\n/g,'<br>')}</div>`;
-  footer.innerHTML=`<button class="btn-primary" onclick="completeUnit()">Marcar como leído →</button>`;
-}
-
-function renderDrag(c,content,footer){
-  content.innerHTML+=`<p class="unit-body-text">${c.text||'Arrastrá cada concepto a la columna correcta.'}</p>
-  <div class="drag-bank" id="bank">${c.chips.map((ch,i)=>`<div class="drag-chip" draggable="true" data-idx="${i}" ondragstart="dragStart(event)" ontouchstart="touchStart(event)">${ch}</div>`).join('')}</div>
-  <div class="drag-map">
-    <div><div class="drag-col-title">${c.colA}</div><div class="drag-zone" id="zoneA" ondragover="dragOver(event)" ondrop="drop(event,'A')" ontouchend="touchDrop(event,'A')"></div></div>
-    <div><div class="drag-col-title">${c.colB}</div><div class="drag-zone" id="zoneB" ondragover="dragOver(event)" ondrop="drop(event,'B')" ontouchend="touchDrop(event,'B')"></div></div>
+// ──────────────────────────────
+// DRAG
+// ──────────────────────────────
+function dragHTML(idx){
+  const d=DRAG_DATA[idx];
+  return `<div class="chip-pool" id="pool${idx}">${d.chips.map((ch,i)=>`<div class="chip" draggable="true" data-di="${idx}" data-ci="${i}" ondragstart="dStart(event)" ontouchstart="tStart(event)">${ch}</div>`).join('')}</div>
+  <div class="drag-cols">
+    <div><div class="dcol-title">${d.colA}</div><div class="drop-zone" id="dza${idx}" ondragover="dOver(event)" ondrop="dDrop(event,'A','${idx}')" ontouchend="tDrop(event,'A','${idx}')"></div></div>
+    <div><div class="dcol-title">${d.colB}</div><div class="drop-zone" id="dzb${idx}" ondragover="dOver(event)" ondrop="dDrop(event,'B','${idx}')" ontouchend="tDrop(event,'B','${idx}')"></div></div>
   </div>
-  <div id="drag-feedback" style="font-size:13px;color:var(--muted);margin-top:8px"></div>`;
-  footer.innerHTML=`<button class="btn-secondary" onclick="checkDrag()" style="flex:1">Verificar</button><button class="btn-primary" onclick="completeUnit()">Continuar →</button>`;
+  <div class="drag-result" id="dr${idx}"></div>`;
 }
-
-let dragIdx=null, touchChip=null;
-function dragStart(e){dragIdx=e.target.dataset.idx;}
-function dragOver(e){e.preventDefault();e.currentTarget.classList.add('over');}
-function drop(e,zone){
-  e.preventDefault();
-  e.currentTarget.classList.remove('over');
-  const chip=document.querySelector(`.drag-chip[data-idx="${dragIdx}"]`);
-  if(chip) e.currentTarget.appendChild(chip);
+function dragInit(idx){}
+let _dragEl=null,_touchEl=null;
+function dStart(e){_dragEl=e.target;}
+function dOver(e){e.preventDefault();e.currentTarget.classList.add('over');}
+function dDrop(e,zone,idx){
+  e.preventDefault();e.currentTarget.classList.remove('over');
+  if(_dragEl) e.currentTarget.appendChild(_dragEl);_dragEl=null;
 }
-function touchStart(e){touchChip=e.target;}
-function touchDrop(e,zone){
-  if(!touchChip) return;
-  document.getElementById('zone'+zone).appendChild(touchChip);
-  touchChip=null;
+function tStart(e){_touchEl=e.currentTarget;}
+function tDrop(e,zone,idx){
+  if(!_touchEl) return;
+  document.getElementById('dz'+zone.toLowerCase()+idx).appendChild(_touchEl);_touchEl=null;
 }
-function checkDrag(){
-  const correct=MODULES[currentMod].units[currentUnit].content.correct;
-  let ok=0,total=Object.keys(correct).length;
-  ['A','B'].forEach(z=>{
-    document.querySelectorAll(`#zone${z} .drag-chip`).forEach(chip=>{
-      const idx=chip.dataset.idx;
-      const isOk=correct[idx]===z;
-      chip.classList.toggle('correct',isOk);
-      chip.classList.toggle('wrong',!isOk);
-      if(isOk) ok++;
+function checkDrag(idx){
+  const d=DRAG_DATA[idx];
+  let ok=0;
+  ['a','b'].forEach(z=>{
+    document.querySelectorAll(`#dz${z}${idx} .chip`).forEach(chip=>{
+      const ci=parseInt(chip.dataset.ci);
+      const expected=d.correct[ci]===0&&z==='a'||d.correct[ci]===1&&z==='b';
+      chip.classList.toggle('ok',expected);
+      chip.classList.toggle('bad',!expected);
+      if(expected) ok++;
     });
   });
-  document.getElementById('drag-feedback').textContent=`${ok} / ${total} correctos`;
+  document.getElementById('dr'+idx).textContent=`${ok} / ${d.chips.length} correctos`;
 }
 
-function renderCanvas(c,content,footer){
-  content.innerHTML+=`<p class="unit-body-text">${c.text}</p>
-  <div class="canvas-grid">${c.cells.map((cell,i)=>`
-    <div class="canvas-cell">
-      <div class="canvas-cell-label">${cell.label}</div>
-      <textarea placeholder="${cell.placeholder}" id="cv${i}"></textarea>
-    </div>`).join('')}</div>`;
-  footer.innerHTML=`<button class="btn-primary" onclick="completeUnit()">Guardar y continuar →</button>`;
+// ──────────────────────────────
+// REVEAL SEQUENCE
+// ──────────────────────────────
+function revealSeqHTML(key){
+  const data=REVEAL_DATA[key||'default'];
+  return `<div class="reveal-seq" id="rs${key||'def'}">`+data.map((item,i)=>`
+  <div class="rs-step${i===0?' unlocked':''}" id="rs${key||'def'}${i}" onclick="revealStep('${key||'def'}',${i},${data.length})">
+    <div class="rs-step-num">${String(i+1).padStart(2,'0')}</div>
+    <div class="rs-step-title">${item.title}</div>
+    <div class="rs-step-content">${item.content}</div>
+    ${i>0?'<div class="rs-step-lock">·</div>':''}
+  </div>`).join('')+'</div>';
 }
-
-function renderConvo(c,content,footer){
-  let step=0, score=0;
-  const s=c.scenario;
-  content.innerHTML+=`<p class="unit-body-text">${c.text}</p>
-  <div class="convo-window">
-    <div class="convo-history" id="ch"></div>
-    <div class="convo-options" id="co"></div>
-  </div>`;
-  footer.innerHTML=`<button class="btn-primary" id="convo-next" onclick="completeUnit()" style="display:none">Continuar →</button>`;
-
-  function renderStep(){
-    const ch=document.getElementById('ch');
-    const co=document.getElementById('co');
-    ch.innerHTML+=`<div class="msg them">${s[step].speaker==='them'?s[step].msg:''}</div>`;
-    ch.scrollTop=ch.scrollHeight;
-    co.innerHTML=s[step].options.map((o,i)=>`<button class="convo-option" onclick="pickOpt(${i})">${o.text}</button>`).join('');
-  }
-
-  window.pickOpt=function(i){
-    const co=document.getElementById('co');
-    const ch=document.getElementById('ch');
-    const opt=s[step].options[i];
-    ch.innerHTML+=`<div class="msg you">${opt.text}</div>`;
-    ch.innerHTML+=`<div class="msg feedback">${opt.feedback}</div>`;
-    ch.scrollTop=ch.scrollHeight;
-    co.innerHTML='';
-    step++;
-    if(step<s.length){
-      setTimeout(()=>renderStep(),600);
-    } else {
-      document.getElementById('convo-next').style.display='block';
+function revealSeqInit(key){}
+function revealStep(key,i,total){
+  const el=document.getElementById(`rs${key}${i}`);
+  if(!el.classList.contains('unlocked')) return;
+  el.classList.toggle('opened');
+  if(el.classList.contains('opened')){
+    el.querySelector('.rs-step-lock')&&(el.querySelector('.rs-step-lock').style.display='none');
+    // unlock next
+    if(i+1<total){
+      const next=document.getElementById(`rs${key}${i+1}`);
+      if(next) next.classList.add('unlocked');
     }
-  };
+  }
+}
+
+// ──────────────────────────────
+// TOGGLES
+// ──────────────────────────────
+function toggleHTML(key){
+  const data=TOGGLE_DATA[key||'default'];
+  return `<div class="toggle-group">`+data.map((item,i)=>`
+  <div class="toggle-item">
+    <div class="toggle-head" onclick="togHead(this)"><span>${item.head}</span><span class="arr">›</span></div>
+    <div class="toggle-body">${item.body}</div>
+  </div>`).join('')+'</div>';
+}
+function toggleInit(key){}
+function togHead(el){
+  el.classList.toggle('open');
+  const body=el.nextElementSibling;
+  body.classList.toggle('show');
+}
+
+// ──────────────────────────────
+// SCALE
+// ──────────────────────────────
+function scaleHTML(key){
+  const data=SCALE_DATA[key||'default'];
+  return `<div class="scale-wrap">`+data.map((item,i)=>`
+  <div class="scale-item">
+    <div class="scale-label">${item.label}</div>
+    <div class="scale-sub">${item.sub}</div>
+    <div class="scale-track">
+      <div class="scale-fill" id="sf${key||'d'}${i}" style="width:50%"></div>
+      <input class="scale-input" type="range" min="0" max="100" value="50" oninput="updateScale('${key||'d'}',${i},this.value)">
+    </div>
+    <div class="scale-pct" id="sp${key||'d'}${i}">50%</div>
+    <div class="scale-feedback" id="sfb${key||'d'}${i}"></div>
+  </div>`).join('')+'</div>';
+}
+function scaleInit(key){}
+function updateScale(key,i,val){
+  document.getElementById(`sf${key}${i}`).style.width=val+'%';
+  document.getElementById(`sp${key}${i}`).textContent=val+'%';
+  const data=SCALE_DATA[key==='d'?'default':key];
+  if(data&&data[i]) document.getElementById(`sfb${key}${i}`).textContent=data[i].feedback(parseInt(val));
+}
+
+// ──────────────────────────────
+// SORT
+// ──────────────────────────────
+function sortHTML(key){
+  const d=SORT_DATA[key||'default'];
+  const items=[...d.items].sort(()=>Math.random()-.5);
+  return `<div class="sort-list" id="sl${key||'def'}" ondragover="sortOver(event)" ondrop="sortDrop(event)">`+
+  items.map((item,i)=>`<div class="sort-item" draggable="true" data-sort="${item}" ondragstart="sortStart(event)"><span class="sort-handle">⠿</span><span>${item}</span></div>`).join('')+
+  `</div><div class="sort-feedback" id="srt${key||'def'}"></div>`;
+}
+function sortInit(key){}
+let _sortEl=null;
+function sortStart(e){_sortEl=e.currentTarget;}
+function sortOver(e){e.preventDefault();}
+function sortDrop(e){
+  e.preventDefault();
+  if(!_sortEl) return;
+  const list=e.currentTarget;
+  const items=[...list.querySelectorAll('.sort-item')];
+  const target=e.target.closest('.sort-item');
+  if(target&&target!==_sortEl){
+    const idx=items.indexOf(target);
+    list.insertBefore(_sortEl,idx>items.indexOf(_sortEl)?target.nextSibling:target);
+  }
+}
+function checkSort(key){
+  const d=SORT_DATA[key||'default'];
+  const list=document.getElementById('sl'+(key||'def'));
+  const items=[...list.querySelectorAll('.sort-item')].map(el=>el.dataset.sort);
+  let ok=0;
+  items.forEach((item,i)=>{if(item===d.items[d.correct[i]]) ok++;});
+  const fb=document.getElementById('srt'+(key||'def'));
+  fb.textContent=ok===d.items.length?`✓ Orden correcto. ${d.explanation}`:`${ok}/${d.items.length} en la posición correcta. ${d.explanation}`;
+}
+
+// ──────────────────────────────
+// CONVO
+// ──────────────────────────────
+function convoInit(c,f,scenario){
+  c.innerHTML+=`<div class="convo-box"><div class="convo-hist" id="chist"></div><div class="convo-opts" id="copts"></div></div>`;
+  let step=0;
+  function renderStep(){
+    const hist=document.getElementById('chist');
+    const opts=document.getElementById('copts');
+    if(!hist) return;
+    const s=scenario[step];
+    if(s.from==='them'){
+      const msg=document.createElement('div');
+      msg.className='msg them';msg.textContent=s.msg;
+      hist.appendChild(msg);hist.scrollTop=hist.scrollHeight;
+      opts.innerHTML=s.opts.map((o,i)=>`<button class="copt" onclick="pickCopt(${i})">${o.t}</button>`).join('');
+    }
+    window.pickCopt=function(i){
+      const o=s.opts[i];
+      opts.querySelectorAll('.copt').forEach(b=>b.disabled=true);
+      const you=document.createElement('div');
+      you.className='msg you';you.textContent=o.t;hist.appendChild(you);
+      const fb=document.createElement('div');
+      fb.className=`msg fb ${o.q}`;fb.textContent=o.fb;hist.appendChild(fb);
+      hist.scrollTop=hist.scrollHeight;opts.innerHTML='';
+      step++;
+      if(step<scenario.length){setTimeout(renderStep,700);}
+      else{const cont=document.getElementById('convo-cont');if(cont) cont.style.display='block';}
+    };
+  }
   renderStep();
 }
 
-function renderFinance(c,content,footer){
-  let current=0;
-  const sc=c.scenarios;
-  content.innerHTML+=`<p class="unit-body-text">${c.text}</p><div id="fin-container"></div>`;
-  footer.innerHTML=`<button class="btn-primary" id="fin-next" onclick="completeUnit()" style="display:none">Continuar →</button>`;
-
-  function renderScenario(){
-    if(current>=sc.length){document.getElementById('fin-next').style.display='block';return;}
-    const s=sc[current];
-    document.getElementById('fin-container').innerHTML=`
-      <div class="finance-scenario"><strong>Situación:</strong> ${s.situation}</div>
-      <div class="finance-opts">${s.options.map((o,i)=>`<button class="finance-opt" id="fo${i}" onclick="pickFin(${i})"><span class="opt-letter">${o.letter}</span>${o.text}</button>`).join('')}</div>
-      <div class="finance-feedback" id="ffb">${s.feedback}</div>`;
+// ──────────────────────────────
+// FINANCE
+// ──────────────────────────────
+function finInit(c,f){
+  let cur=0;
+  c.innerHTML+=`<div id="fin-wrap"></div>`;
+  f.innerHTML=`<button class="btn-p" id="fin-cont" onclick="completeUnit()" style="display:none">Continuar →</button>`;
+  function renderFin(){
+    if(cur>=FIN_SCENARIOS.length){document.getElementById('fin-cont').style.display='block';return;}
+    const s=FIN_SCENARIOS[cur];
+    document.getElementById('fin-wrap').innerHTML=`
+    <div class="fin-scenario">${s.sit}</div>
+    <div class="fin-opts">${s.opts.map((o,i)=>`<button class="fopt" id="fo${i}" onclick="pickFin(${i})"><span class="fl">${String.fromCharCode(65+i)}</span>${o.replace(/^[A-C] · /,'')}</button>`).join('')}</div>
+    <div class="fin-fb" id="ffb"></div>
+    <div class="fin-score" id="fscore"></div>`;
+    window.pickFin=function(i){
+      document.querySelectorAll('.fopt').forEach((b,j)=>{
+        b.onclick=null;
+        if(j===s.good) b.classList.add('good');
+        else if(j===i&&i!==s.good) b.classList.add('bad');
+      });
+      document.getElementById('ffb').style.display='block';
+      document.getElementById('ffb').textContent=s.fb;
+      cur++;
+      setTimeout(renderFin,2000);
+    };
   }
-
-  window.pickFin=function(i){
-    const s=sc[current];
-    document.querySelectorAll('.finance-opt').forEach((b,j)=>{
-      b.onclick=null;
-      if(j===s.good) b.classList.add('selected-good');
-      else if(j===i&&i!==s.good) b.classList.add('selected-bad');
-    });
-    document.getElementById('ffb').style.display='block';
-    current++;
-    if(current<sc.length){
-      setTimeout(renderScenario,1800);
-    } else {
-      setTimeout(()=>document.getElementById('fin-next').style.display='block',1800);
-    }
-  };
-  renderScenario();
+  renderFin();
 }
 
-function renderPipeline(c,content,footer){
-  content.innerHTML+=`<p class="unit-body-text">${c.text}</p>
-  ${c.stages.map((s,i)=>`
-  <div class="pipeline-stage">
-    <div class="pipeline-stage-label">${s.label}</div>
-    <div class="pipeline-input-row">
-      <input class="pipeline-input" type="text" placeholder="${s.placeholder}" id="pi${i}">
-      <button class="pipeline-add-btn" onclick="addPipeline(${i})">+ Agregar</button>
+// ──────────────────────────────
+// PIPELINE
+// ──────────────────────────────
+function pipelineInit(c,f){
+  const stages=[
+    {label:"Identificadas — existe la oportunidad", ph:"Ej: Renovación Check Point — Banco del Austro"},
+    {label:"Calificadas — hay presupuesto y decisor identificado", ph:"Ej: Proyecto SIEM — Cooperativa X"},
+    {label:"Propuesta enviada", ph:"Ej: Ampliación VMware — Indurama"},
+    {label:"Negociación activa", ph:"Ej: Soporte anual — Solca"},
+  ];
+  c.innerHTML+=stages.map((s,i)=>`
+  <div class="pip-stage">
+    <div class="pip-stage-label">${s.label}</div>
+    <div class="pip-row">
+      <input class="pip-in" type="text" placeholder="${s.ph}" id="pi${i}">
+      <button class="pip-add" onclick="addPip(${i})">+</button>
     </div>
-    <div class="pipeline-items" id="pl${i}"></div>
-  </div>`).join('')}`;
-  footer.innerHTML=`<button class="btn-primary" onclick="completeUnit()">Guardar pipeline →</button>`;
-  window.addPipeline=function(i){
+    <div class="pip-items" id="pl${i}"></div>
+  </div>`).join('');
+  c.innerHTML+=`<div class="pip-summary" id="psum"><strong>Resumen del pipeline</strong><div id="psumcontent"></div></div>`;
+  f.innerHTML=`<button class="btn-s" onclick="showPipSum()">Ver resumen</button><button class="btn-p" onclick="completeUnit()">Guardar →</button>`;
+  window.addPip=function(i){
     const inp=document.getElementById('pi'+i);
-    const val=inp.value.trim();
-    if(!val) return;
+    const val=inp.value.trim();if(!val) return;
     const list=document.getElementById('pl'+i);
     const div=document.createElement('div');
-    div.className='pipeline-item';
-    div.innerHTML=`<span>${val}</span><button class="pipeline-item-del" onclick="this.parentNode.remove()">×</button>`;
-    list.appendChild(div);
-    inp.value='';
+    div.className='pip-item';
+    div.innerHTML=`<span>${val}</span><button class="pip-del" onclick="this.parentNode.remove()">×</button>`;
+    list.appendChild(div);inp.value='';
+  };
+  window.showPipSum=function(){
+    const labels=["Identificadas","Calificadas","Propuesta enviada","Negociación"];
+    const sum=document.getElementById('psum');
+    const cont=document.getElementById('psumcontent');
+    sum.style.display='block';
+    cont.innerHTML=labels.map((l,i)=>{
+      const items=[...document.querySelectorAll(`#pl${i} .pip-item span`)].map(s=>s.textContent);
+      return `<div style="margin-top:8px"><strong>${l}:</strong> ${items.length>0?items.join(', '):'— ninguna registrada'}</div>`;
+    }).join('');
   };
 }
 
-function renderTeam(c,content,footer){
-  content.innerHTML+=`<p class="unit-body-text">${c.text}</p>
-  <div class="org-grid">${c.people.map((p,i)=>{
+// ──────────────────────────────
+// TEAM
+// ──────────────────────────────
+function teamInit(c,f){
+  c.innerHTML+=`<div class="team-grid">`+TEAM_PEOPLE.map((p,i)=>{
     const modeLabels=['','Dirigir','Instruir','Apoyar','Delegar'];
-    const avgMode=Math.round((p.comp+p.mot)/2);
-    return `<div class="person-card" id="pc${i}" onclick="selectPerson(${i})">
-      <div class="person-name">${p.name}</div>
-      <div class="person-role">${p.role}</div>
-      <div class="person-score">Comp: ${p.comp}/5 · Mot: ${p.mot}/5</div>
-      <div class="mode-badge">Modo ${avgMode}: ${modeLabels[avgMode]}</div>
-    </div>`;}).join('')}
-  </div>
-  <div class="detail-panel" id="detail-panel"></div>`;
-  footer.innerHTML=`<button class="btn-primary" onclick="completeUnit()">Continuar →</button>`;
-  window.selectPerson=function(i){
-    document.querySelectorAll('.person-card').forEach(c=>c.classList.remove('selected'));
-    document.getElementById('pc'+i).classList.add('selected');
-    const p=c.people[i];
-    const panel=document.getElementById('detail-panel');
-    panel.className='detail-panel open';
-    panel.innerHTML=`<strong>${p.name} · ${p.role}</strong><br><br>${p.notes}`;
+    const mode=Math.round((p.comp+p.mot)/2);
+    return `<div class="pcard" id="pc${i}" onclick="selPerson(${i})">
+      <div class="pn">${p.name}</div><div class="pr">${p.role}</div>
+      <div class="p-bars">
+        <div class="p-bar-row">Comp <div class="p-bar-track"><div class="p-bar-fill" style="width:${p.comp/5*100}%"></div></div> ${p.comp}/5</div>
+        <div class="p-bar-row">Mot <div class="p-bar-track"><div class="p-bar-fill" style="width:${p.mot/5*100}%"></div></div> ${p.mot}/5</div>
+      </div>
+      <div class="p-mode">Modo ${mode}: ${modeLabels[mode]}</div>
+    </div>`;
+  }).join('')+'</div><div class="detail-box" id="detbox"></div>';
+  window.selPerson=function(i){
+    document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('sel'));
+    document.getElementById('pc'+i).classList.add('sel');
+    const p=TEAM_PEOPLE[i];
+    const box=document.getElementById('detbox');
+    box.className='detail-box open';
+    box.innerHTML=`<h4>${p.name} · ${p.role}</h4>${p.notes}`;
   };
 }
 
-function renderDecision(c,content,footer){
-  const tree=c.tree;
-  let path=[];
-  content.innerHTML+=`<p class="unit-body-text">${c.text}</p><div id="dtree"></div>`;
-  footer.innerHTML=`<button class="btn-primary" id="dt-next" onclick="completeUnit()" style="display:none">Continuar →</button>`;
-
+// ──────────────────────────────
+// DECISION TREE
+// ──────────────────────────────
+function decisionInit(c,f){
+  c.innerHTML+=`<div id="dtree"></div>`;
+  f.innerHTML=`<button class="btn-p" id="dt-cont" onclick="completeUnit()" style="display:none">Continuar →</button>`;
+  const path=[];
   function renderNode(node,depth){
     const dt=document.getElementById('dtree');
-    if(path.length>0){
-      dt.innerHTML+=`<div class="decision-path">→ ${path.join(' → ')}</div>`;
+    if(!dt) return;
+    if(path.length){
+      const pd=document.createElement('div');
+      pd.className='dtree-path';pd.textContent='Camino: '+path.join(' → ');
+      dt.appendChild(pd);
     }
     if(node.outcome){
-      dt.innerHTML+=`<div class="decision-outcome"><div class="outcome-label">${node.outcome.label}</div>${node.outcome.text}</div>`;
-      document.getElementById('dt-next').style.display='block';
+      const out=document.createElement('div');
+      out.className=`doutcome ${node.outcome.type}`;
+      out.innerHTML=`<div class="dout-label ${node.outcome.type}">${node.outcome.label}</div>${node.outcome.text}`;
+      dt.appendChild(out);
+      document.getElementById('dt-cont').style.display='block';
       return;
     }
-    dt.innerHTML+=`<div class="decision-node" id="dn${depth}">
-      <div class="decision-q">${node.q}</div>
-      <div class="decision-opts">${node.opts.map((o,i)=>`<button class="decision-opt" onclick="pickDecision(${i},${depth})">${o.text}</button>`).join('')}</div>
-    </div>`;
-    window.pickDecision=function(i,d){
-      document.querySelectorAll(`#dn${d} .decision-opt`).forEach((b,j)=>{
+    const nd=document.createElement('div');
+    nd.className='dnode';nd.id='dn'+depth;
+    nd.innerHTML=`<div class="dq">${node.q}</div><div class="dopts">${node.opts.map((o,i)=>`<button class="dopt" onclick="pickD(${i},${depth})">${o.text}</button>`).join('')}</div>`;
+    dt.appendChild(nd);
+    window.pickD=function(i,d){
+      document.querySelectorAll(`#dn${d} .dopt`).forEach((b,j)=>{
         b.onclick=null;
         if(j===i) b.classList.add('chosen');
       });
-      path.push(node.opts[i].text.slice(0,30)+'...');
-      setTimeout(()=>renderNode(node.opts[i].next,d+1),400);
+      path.push(node.opts[i].text.slice(0,36)+'…');
+      setTimeout(()=>renderNode(node.opts[i].next,d+1),500);
     };
   }
-  renderNode(tree,0);
+  renderNode(DECISION_TREE,0);
 }
 
-function renderBrand(c,content,footer){
-  content.innerHTML+=`<p class="unit-body-text">${c.text}</p>
-  <div class="brand-q">
-    <div class="brand-q-label">Tu propuesta de valor</div>
-    <div class="brand-q-text">¿Qué problema resolvés mejor que la mayoría?</div>
-    <textarea class="brand-input" rows="2" id="bv" placeholder="Ej: Traducir complejidad técnica en decisiones de negocio claras..." oninput="updateBrand()"></textarea>
-  </div>
-  <div class="brand-q">
-    <div class="brand-q-label">Tu diferencial</div>
-    <div class="brand-q-text">¿Qué combinación de habilidades tenés que es difícil de encontrar?</div>
-    <textarea class="brand-input" rows="2" id="bd" placeholder="Ej: PM técnico con criterio de diseño y visión comercial..." oninput="updateBrand()"></textarea>
-  </div>
-  <div class="brand-q">
-    <div class="brand-q-label">Tu audiencia</div>
-    <div class="brand-q-text">¿Para quién querés ser la primera opción?</div>
-    <textarea class="brand-input" rows="2" id="ba" placeholder="Ej: Directores de empresas TI en Ecuador que quieren escalar..." oninput="updateBrand()"></textarea>
-  </div>
-  <div class="brand-preview" id="brand-preview">
-    <div class="brand-preview-label">Tu narrativa · Preview</div>
-    <div class="brand-preview-name">Jay Jaramillo</div>
-    <div class="brand-preview-role" id="bp-role">Project Manager → Líder Estratégico</div>
-    <div class="brand-preview-bio" id="bp-bio">Completá los campos para ver tu narrativa.</div>
-  </div>`;
-  footer.innerHTML=`<button class="btn-primary" onclick="completeUnit()">Guardar narrativa →</button>`;
-  window.updateBrand=function(){
-    const bv=document.getElementById('bv').value;
-    const bd=document.getElementById('bd').value;
-    const ba=document.getElementById('ba').value;
-    if(bv||bd||ba){
-      document.getElementById('bp-bio').textContent=
-        [bv&&`Resuelvo: ${bv}`,bd&&`Me distingue: ${bd}`,ba&&`Trabajo para: ${ba}`].filter(Boolean).join('. ');
-    }
-  };
-}
-
-updateHomeProgress();
+// ──────────────────────────────
+// INIT
+// ──────────────────────────────
+updateHome();
 </script>
 </body>
 </html>
