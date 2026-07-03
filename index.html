@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f8f7f4;--ink:#0f0f0f;--ink2:#3a3a3a;--muted:#888;--border:#e2dfd8;--surface:#f0ede6;--s2:#e8e5de;--green:#1e6e42;--red:#8a1f1f;--gold:#7a5c00}
+:root{--bg:#f8f7f4;--ink:#0f0f0f;--ink2:#3a3a3a;--muted:#888;--border:#e2dfd8;--surface:#f0ede6;--s2:#e8e5de;--green:#1e6e42;--red:#8a1f1f;--gold:#7a5c00;
+--l1:#c65a3e;--l1-soft:rgba(198,90,62,.16);--l1-glow:rgba(198,90,62,.32);
+--l2:#3f7a8c;--l2-soft:rgba(63,122,140,.16);--l2-glow:rgba(63,122,140,.32);
+--l3:#af8b2e;--l3-soft:rgba(175,139,46,.16);--l3-glow:rgba(175,139,46,.32);}
 html,body{height:100%;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
 button{font-family:inherit;cursor:pointer}
 .screen{position:absolute;inset:0;overflow-y:auto;display:none;flex-direction:column}
@@ -14,16 +17,28 @@ button{font-family:inherit;cursor:pointer}
 
 /* HOME */
 #home{padding:0}
-.home-hero{padding:40px 28px 28px;border-bottom:1px solid var(--border)}
+.home-hero{position:relative;padding:40px 28px 28px;border-bottom:1px solid var(--border)}
+.home-blob{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+.home-blob::before{content:'';position:absolute;top:-20%;left:-10%;right:-10%;bottom:-20%;
+  background:
+    radial-gradient(circle at 12% 10%,var(--l1-glow) 0%,transparent 45%),
+    radial-gradient(circle at 88% -10%,var(--l2-glow) 0%,transparent 42%),
+    radial-gradient(circle at 70% 100%,var(--l3-glow) 0%,transparent 40%);
+  filter:blur(38px);opacity:.55}
+.home-hero>*:not(.home-blob){position:relative;z-index:1}
 .eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 .home-title{font-size:30px;font-weight:500;line-height:1.15;margin-bottom:6px}
 .home-sub{font-size:13px;color:var(--ink2);margin-bottom:20px}
 .prog-row{display:flex;align-items:center;gap:10px}
 .prog-bar{flex:1;height:2px;background:var(--border)}
-.prog-fill{height:100%;background:var(--ink);transition:width .5s}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--l1),var(--l2),var(--l3));transition:width .5s}
 .prog-label{font-size:11px;color:var(--muted);white-space:nowrap}
+.resume-row{margin-top:14px}
+.resume-btn{font-size:12px;color:var(--ink);background:var(--surface);border:1px solid var(--border);padding:8px 14px;letter-spacing:.02em;transition:opacity .15s}
+.resume-btn:hover{opacity:.7}
 .modules-list{padding:20px 28px 60px}
-.layer-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:24px 0 10px;display:flex;align-items:center;gap:10px}
+.layer-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:24px 0 10px;display:flex;align-items:center;gap:8px}
+.layer-label::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0;background:var(--dot,var(--muted))}
 .layer-label::after{content:'';flex:1;height:1px;background:var(--border)}
 .mod-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .15s}
 .mod-row:hover{opacity:.65}
@@ -32,7 +47,13 @@ button{font-family:inherit;cursor:pointer}
 .mod-title{font-size:14px;font-weight:500}
 .mod-meta{font-size:11px;color:var(--muted);margin-top:2px}
 .mod-ico{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:all .2s}
+.mod-ico[data-l="1"]{border-color:var(--l1-soft)}
+.mod-ico[data-l="2"]{border-color:var(--l2-soft)}
+.mod-ico[data-l="3"]{border-color:var(--l3-soft)}
 .mod-ico.done{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.mod-ico.done[data-l="1"]{background:var(--l1);border-color:var(--l1)}
+.mod-ico.done[data-l="2"]{background:var(--l2);border-color:var(--l2)}
+.mod-ico.done[data-l="3"]{background:var(--l3);border-color:var(--l3)}
 
 /* MODULE LIST */
 #module{padding:0}
@@ -56,7 +77,7 @@ button{font-family:inherit;cursor:pointer}
 .unit-topbar{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
 .u-dots{display:flex;gap:4px;flex:1;justify-content:center}
 .u-dot{width:22px;height:3px;border-radius:2px;background:var(--border);transition:background .3s}
-.u-dot.done{background:var(--ink)}
+.u-dot.done{background:var(--dot,var(--ink))}
 .u-dot.cur{background:var(--ink2)}
 .unit-body{flex:1;overflow-y:auto;padding:28px 24px}
 .u-eyebrow{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
@@ -235,11 +256,14 @@ button{font-family:inherit;cursor:pointer}
 .sort-feedback{font-size:13px;color:var(--muted);margin-top:8px;min-height:18px}
 
 /* COMPLETION */
-.comp-wrap{padding:40px 28px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.comp-wrap{position:relative;overflow:hidden;padding:40px 28px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.comp-wrap::before{content:'';position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:70%;padding-bottom:70%;border-radius:50%;
+  background:radial-gradient(circle,var(--dot-glow,var(--l1-glow)) 0%,transparent 65%);filter:blur(30px);opacity:.6;z-index:0;pointer-events:none}
+.comp-wrap>*{position:relative;z-index:1}
 .comp-mark{font-size:48px;margin-bottom:20px}
 .comp-title{font-size:26px;font-weight:500;margin-bottom:8px}
 .comp-sub{font-size:14px;color:var(--ink2);margin-bottom:24px;line-height:1.7}
-.comp-insight{border-left:2px solid var(--ink);padding:14px 16px;font-size:13px;color:var(--ink2);line-height:1.75;margin-bottom:28px}
+.comp-insight{border-left:2px solid var(--dot,var(--ink));padding:14px 16px;font-size:13px;color:var(--ink2);line-height:1.75;margin-bottom:28px}
 .comp-xp{font-size:22px;font-weight:500;color:var(--ink);margin-bottom:4px}
 .comp-xp-label{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px}
 </style>
@@ -249,6 +273,7 @@ button{font-family:inherit;cursor:pointer}
 <!-- HOME -->
 <div class="screen active" id="home">
   <div class="home-hero">
+    <div class="home-blob"></div>
     <div class="eyebrow">Jay MBA Applied</div>
     <div class="home-title">Tu MBA.<br>Tu contexto.</div>
     <div class="home-sub">8 módulos · Diseñado para sesiones de 15 min</div>
@@ -256,6 +281,7 @@ button{font-family:inherit;cursor:pointer}
       <div class="prog-bar"><div class="prog-fill" id="hprog" style="width:0%"></div></div>
       <div class="prog-label" id="hprog-lbl">0%</div>
     </div>
+    <div class="resume-row" id="resume-row" style="display:none"><button class="resume-btn" id="resume-btn">Continuar donde quedaste →</button></div>
   </div>
   <div class="modules-list" id="mod-list"></div>
 </div>
@@ -1046,13 +1072,54 @@ const progress = MODS.map(m=>new Array(m.units.length).fill(false));
 const unitXP = MODS.map(m=>new Array(m.units.length).fill(0));
 
 // ──────────────────────────────
+// PERSISTENCE (localStorage)
+// ──────────────────────────────
+const STORE_KEY='jaymba_state_v1';
+function saveState(){
+  try{
+    localStorage.setItem(STORE_KEY,JSON.stringify({progress,totalXP,curMod,curUnit}));
+  }catch(e){}
+}
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORE_KEY);
+    if(!raw) return;
+    const s=JSON.parse(raw);
+    if(s.progress) s.progress.forEach((mod,i)=>{if(progress[i]) mod.forEach((v,j)=>{if(j<progress[i].length) progress[i][j]=v;});});
+    if(typeof s.totalXP==='number') totalXP=s.totalXP;
+    if(typeof s.curMod==='number'&&MODS[s.curMod]) curMod=s.curMod;
+    if(typeof s.curUnit==='number'&&MODS[curMod]&&MODS[curMod].units[s.curUnit]) curUnit=s.curUnit;
+  }catch(e){}
+}
+function fieldKey(id){return `jaymba_field_${curMod}_${curUnit}_${id}`;}
+function restoreAndAutosaveFields(){
+  const root=document.getElementById('ubody');
+  if(!root) return;
+  root.querySelectorAll('textarea[id], input[type="range"][id]').forEach(el=>{
+    const key=fieldKey(el.id);
+    let saved=null;
+    try{saved=localStorage.getItem(key);}catch(e){}
+    if(saved!==null){
+      el.value=saved;
+      el.dispatchEvent(new Event('input',{bubbles:true}));
+    }
+    el.addEventListener('input',()=>{
+      try{localStorage.setItem(key,el.value);}catch(e){}
+    });
+  });
+}
+
+// ──────────────────────────────
 // NAV
 // ──────────────────────────────
+function layerVars(n){
+  return {1:{dot:'var(--l1)',glow:'var(--l1-glow)'},2:{dot:'var(--l2)',glow:'var(--l2-glow)'},3:{dot:'var(--l3)',glow:'var(--l3-glow)'}}[n]||{dot:'var(--ink)',glow:'var(--l1-glow)'};
+}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
 function goHome(){updateHome();show('home')}
 function goMod(){renderMod();show('module')}
 function openMod(i){curMod=i;renderMod();show('module')}
-function openUnit(i){curUnit=i;renderUnitScreen();show('unit')}
+function openUnit(i){curUnit=i;renderUnitScreen();saveState();show('unit')}
 
 function completeUnit(){
   progress[curMod][curUnit]=true;
@@ -1063,11 +1130,13 @@ function completeUnit(){
   } else {
     showComp();
   }
+  saveState();
   updateHome();
 }
 
 function showComp(){
-  document.getElementById('ubody').innerHTML=`<div class="comp-wrap">
+  const lv=layerVars(MODS[curMod].layer);
+  document.getElementById('ubody').innerHTML=`<div class="comp-wrap" style="--dot:${lv.dot};--dot-glow:${lv.glow}">
     <div class="comp-mark">✓</div>
     <div class="comp-title">Módulo completado</div>
     <div class="comp-sub">${MODS[curMod].title}<br>Todas las unidades completadas.</div>
@@ -1087,11 +1156,20 @@ function updateHome(){
   const pct=Math.round(done/total*100);
   document.getElementById('hprog').style.width=pct+'%';
   document.getElementById('hprog-lbl').textContent=pct+'%';
+  const resumeRow=document.getElementById('resume-row');
+  const resumeBtn=document.getElementById('resume-btn');
+  if(done>0&&done<total){
+    resumeRow.style.display='block';
+    resumeBtn.onclick=()=>openUnit(curUnit);
+  } else {
+    resumeRow.style.display='none';
+  }
   const list=document.getElementById('mod-list');
   const layers=[{n:1,label:"Capa 1 · Identidad y Liderazgo"},{n:2,label:"Capa 2 · Negocio y Estrategia"},{n:3,label:"Capa 3 · Operación y Cultura"}];
   list.innerHTML='';
   layers.forEach(layer=>{
-    list.innerHTML+=`<div class="layer-label">${layer.label}</div>`;
+    const lv=layerVars(layer.n);
+    list.innerHTML+=`<div class="layer-label" style="--dot:${lv.dot}">${layer.label}</div>`;
     MODS.forEach((m,i)=>{
       if(m.layer!==layer.n) return;
       const mp=progress[i];
@@ -1099,7 +1177,7 @@ function updateHome(){
       list.innerHTML+=`<div class="mod-row" onclick="openMod(${i})">
         <div class="mod-num">M0${i+1}</div>
         <div class="mod-info"><div class="mod-title">${m.title}</div><div class="mod-meta">${m.units.length} unidades · ${m.units[0].tag.split(' ')[0]}…</div></div>
-        <div class="mod-ico${done?' done':''}">${done?'✓':'→'}</div>
+        <div class="mod-ico${done?' done':''}" data-l="${layer.n}">${done?'✓':'→'}</div>
       </div>`;
     });
   });
@@ -1130,12 +1208,14 @@ function renderUnitScreen(){
   const u=m.units[curUnit];
   // dots
   const dots=document.getElementById('udots');
+  dots.style.setProperty('--dot',layerVars(m.layer).dot);
   dots.innerHTML=m.units.map((_,i)=>`<div class="u-dot${progress[curMod][i]?' done':i===curUnit?' cur':''}"></div>`).join('');
   const c=document.getElementById('ubody');
   const f=document.getElementById('ufoot');
   c.innerHTML='';f.innerHTML='';
   c.scrollTop=0;
   u.render(c,f);
+  restoreAndAutosaveFields();
 }
 
 // ──────────────────────────────
@@ -1457,6 +1537,7 @@ function decisionInit(c,f){
 // ──────────────────────────────
 // INIT
 // ──────────────────────────────
+loadState();
 updateHome();
 </script>
 </body>
