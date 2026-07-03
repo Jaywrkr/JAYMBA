@@ -8,7 +8,8 @@
 :root{--bg:#f8f7f4;--ink:#0f0f0f;--ink2:#3a3a3a;--muted:#888;--border:#e2dfd8;--surface:#f0ede6;--s2:#e8e5de;--green:#1e6e42;--red:#8a1f1f;--gold:#7a5c00;
 --l1:#c65a3e;--l1-soft:rgba(198,90,62,.16);--l1-glow:rgba(198,90,62,.32);
 --l2:#3f7a8c;--l2-soft:rgba(63,122,140,.16);--l2-glow:rgba(63,122,140,.32);
---l3:#af8b2e;--l3-soft:rgba(175,139,46,.16);--l3-glow:rgba(175,139,46,.32);}
+--l3:#af8b2e;--l3-soft:rgba(175,139,46,.16);--l3-glow:rgba(175,139,46,.32);
+--l4:#6a5a96;--l4-soft:rgba(106,90,150,.16);--l4-glow:rgba(106,90,150,.32);}
 html,body{height:100%;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
 button{font-family:inherit;cursor:pointer}
 .screen{position:absolute;inset:0;overflow-y:auto;display:none;flex-direction:column}
@@ -50,10 +51,12 @@ button{font-family:inherit;cursor:pointer}
 .mod-ico[data-l="1"]{border-color:var(--l1-soft)}
 .mod-ico[data-l="2"]{border-color:var(--l2-soft)}
 .mod-ico[data-l="3"]{border-color:var(--l3-soft)}
+.mod-ico[data-l="4"]{border-color:var(--l4-soft)}
 .mod-ico.done{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .mod-ico.done[data-l="1"]{background:var(--l1);border-color:var(--l1)}
 .mod-ico.done[data-l="2"]{background:var(--l2);border-color:var(--l2)}
 .mod-ico.done[data-l="3"]{background:var(--l3);border-color:var(--l3)}
+.mod-ico.done[data-l="4"]{background:var(--l4);border-color:var(--l4)}
 
 /* MODULE LIST */
 #module{padding:0}
@@ -266,6 +269,51 @@ button{font-family:inherit;cursor:pointer}
 .comp-insight{border-left:2px solid var(--dot,var(--ink));padding:14px 16px;font-size:13px;color:var(--ink2);line-height:1.75;margin-bottom:28px}
 .comp-xp{font-size:22px;font-weight:500;color:var(--ink);margin-bottom:4px}
 .comp-xp-label{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px}
+
+/* GLOSSARY */
+.gloss-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--ink2);font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.gloss-btn:hover{background:var(--surface)}
+.gloss-overlay{position:fixed;inset:0;background:rgba(15,15,15,.25);z-index:40;display:none}
+.gloss-overlay.open{display:block}
+.gloss-drawer{position:fixed;top:0;right:0;bottom:0;width:88%;max-width:360px;background:var(--bg);z-index:41;box-shadow:-8px 0 24px rgba(0,0,0,.12);transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column}
+.gloss-drawer.open{transform:translateX(0)}
+.gloss-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.gloss-title{font-size:13px;font-weight:500;letter-spacing:.02em}
+.gloss-close{background:none;border:none;font-size:18px;color:var(--muted);line-height:1}
+.gloss-search{margin:14px 20px;padding:9px 12px;border:1px solid var(--border);background:var(--surface);font-family:inherit;font-size:13px;color:var(--ink);width:calc(100% - 40px)}
+.gloss-search:focus{outline:none;border-color:var(--ink)}
+.gloss-list{overflow-y:auto;padding:0 20px 24px;flex:1}
+.gloss-item{padding:12px 0;border-bottom:1px solid var(--border)}
+.gloss-term{font-size:13px;font-weight:500;margin-bottom:4px}
+.gloss-def{font-size:12px;color:var(--ink2);line-height:1.65}
+.gloss-empty{font-size:12px;color:var(--muted);padding:20px 0;text-align:center}
+
+/* CASE TAG */
+.ur-tag.case{border-color:var(--l1);color:var(--l1)}
+
+/* DOC SCREEN */
+#doc{padding:0}
+.doc-hero{position:relative;padding:36px 28px 24px;border-bottom:1px solid var(--border)}
+.doc-hero .home-blob{opacity:.8}
+.doc-hero>*{position:relative;z-index:1}
+.doc-title{font-size:24px;font-weight:500;margin-bottom:6px}
+.doc-sub{font-size:12px;color:var(--muted);line-height:1.6}
+.doc-body{padding:8px 28px 60px}
+.doc-section{margin-top:28px}
+.doc-section-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.doc-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.doc-field{margin-bottom:16px}
+.doc-field-label{font-size:11px;color:var(--muted);margin-bottom:3px}
+.doc-field-value{font-size:14px;color:var(--ink);line-height:1.65}
+.doc-field-value.empty{color:var(--muted);font-style:italic}
+.doc-actions{display:flex;gap:8px;margin-top:10px}
+.doc-copy-note{font-size:11px;color:var(--muted);margin-top:8px;min-height:14px}
+
+/* NEGOTIATION */
+.nego-anchor{margin:16px 0}
+.nego-anchor-label{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.nego-track{position:relative;height:6px;background:var(--border);border-radius:3px}
+.nego-marker{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:var(--ink);border:2px solid var(--bg);box-shadow:0 0 0 1px var(--border);transform:translate(-50%,-50%);left:50%;transition:left .4s cubic-bezier(.4,0,.2,1)}
 </style>
 </head>
 <body>
@@ -276,12 +324,13 @@ button{font-family:inherit;cursor:pointer}
     <div class="home-blob"></div>
     <div class="eyebrow">Jay MBA Applied</div>
     <div class="home-title">Tu MBA.<br>Tu contexto.</div>
-    <div class="home-sub">8 módulos · Diseñado para sesiones de 15 min</div>
+    <div class="home-sub" id="home-sub-txt">Diseñado para sesiones de 15 min</div>
     <div class="prog-row">
       <div class="prog-bar"><div class="prog-fill" id="hprog" style="width:0%"></div></div>
       <div class="prog-label" id="hprog-lbl">0%</div>
     </div>
     <div class="resume-row" id="resume-row" style="display:none"><button class="resume-btn" id="resume-btn">Continuar donde quedaste →</button></div>
+    <div class="resume-row"><button class="resume-btn" onclick="openDoc()">Tu documento →</button> <button class="resume-btn" onclick="openGlossary()">Glosario</button></div>
   </div>
   <div class="modules-list" id="mod-list"></div>
 </div>
@@ -292,6 +341,7 @@ button{font-family:inherit;cursor:pointer}
     <button class="back" onclick="goHome()">← Inicio</button>
     <div class="tb-title" id="tb-title"></div>
     <div class="tb-right" id="tb-right"></div>
+    <button class="gloss-btn" onclick="openGlossary()">?</button>
   </div>
   <div class="unit-rows" id="unit-rows"></div>
 </div>
@@ -301,10 +351,35 @@ button{font-family:inherit;cursor:pointer}
   <div class="unit-topbar">
     <button class="back" onclick="goMod()">← Módulo</button>
     <div class="u-dots" id="udots"></div>
-    <div style="width:60px"></div>
+    <button class="gloss-btn" onclick="openGlossary()">?</button>
   </div>
   <div class="unit-body" id="ubody"></div>
   <div class="unit-footer" id="ufoot"></div>
+</div>
+
+<!-- DOC -->
+<div class="screen" id="doc">
+  <div class="topbar">
+    <button class="back" onclick="goHome()">← Inicio</button>
+    <div class="tb-title">Tu documento</div>
+    <div class="tb-right"></div>
+  </div>
+  <div class="doc-hero">
+    <div class="home-blob"></div>
+    <div class="doc-title">Tu documento de liderazgo</div>
+    <div class="doc-sub">Todo lo que escribiste en los canvas del curso, en un solo lugar. Se arma solo — a medida que completás unidades, se completa.</div>
+    <div class="doc-actions"><button class="resume-btn" onclick="copyDoc()">Copiar como texto</button></div>
+    <div class="doc-copy-note" id="doc-copy-note"></div>
+  </div>
+  <div class="doc-body" id="doc-body"></div>
+</div>
+
+<!-- GLOSSARY -->
+<div class="gloss-overlay" id="gloss-overlay" onclick="closeGlossary()"></div>
+<div class="gloss-drawer" id="gloss-drawer">
+  <div class="gloss-head"><div class="gloss-title">Glosario</div><button class="gloss-close" onclick="closeGlossary()">×</button></div>
+  <input class="gloss-search" id="gloss-search" type="text" placeholder="Buscar término..." oninput="renderGlossary()">
+  <div class="gloss-list" id="gloss-list"></div>
 </div>
 
 <script>
@@ -825,7 +900,7 @@ ${scaleHTML('pres8')}`;
   {title:"Construí tu narrativa", time:"15 min", tag:"Brand builder",
    render(c,f){
     c.innerHTML=`
-<div class="u-eyebrow">M08 · Unidad 4 · Entregable final</div>
+<div class="u-eyebrow">M08 · Unidad 4 · Entregable</div>
 <div class="u-heading">En tus propias palabras</div>
 <div class="prose">Este es el entregable final del curso. La narrativa profesional no es un ejercicio de marketing — es una herramienta de claridad. Cuando sabés exactamente qué valor generás, para quién, y qué te hace distinto, todas las conversaciones ejecutivas se vuelven más fáciles.</div>
 <div class="brand-q">
@@ -864,6 +939,113 @@ ${scaleHTML('pres8')}`;
       if(ba) bio+='Trabajo principalmente con '+ba+'.';
       el.textContent=bio.trim();
     };
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+ ]
+},
+
+// ════ M09 ════
+{title:"Negociación aplicada", layer:4,
+ units:[
+  {title:"Anclar antes de que te anclen", time:"13 min", tag:"Lectura + Revelación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M09 · Unidad 1</div>
+<div class="u-heading">La primera cifra que se dice pesa más de lo que debería</div>
+<div class="prose">Negociar no es una habilidad reservada para compras o ventas formales. Renovás licencias, ajustás alcances, definís plazos con clientes, pedís presupuesto a dirección — todo eso es negociación, y la mayoría de los líderes técnicos la improvisan en vez de prepararla.</div>
+<div class="prose">La buena noticia es que negociar bien no depende de carisma ni de presión. Depende de un puñado de principios que se pueden aprender y practicar — igual que un framework de decisión o una estructura de propuesta.</div>
+<div class="callout"><strong>El caso que vas a trabajar</strong>Indurama, un cliente clave de Coresolutions, necesita renovar su contrato de licenciamiento VMware justo cuando Broadcom subió los precios. Vas a negociar esa renovación en la Unidad 2 — este marco es la preparación.</div>
+<div class="prose">Descubrí los cinco principios, en el orden en que importan.</div>
+${revealSeqHTML('nego1')}`;
+    revealSeqInit('nego1');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Simulador — renovación de licenciamiento", time:"16 min", tag:"Caso continuo · Simulador de negociación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M09 · Unidad 2 · Caso continuo</div>
+<div class="u-heading">Indurama necesita renovar. Broadcom subió el precio. Negociá.</div>
+<div class="prose">Cada elección mueve la aguja hacia un lado u otro. No hay una única secuencia perfecta, pero hay decisiones que construyen una mejor posición y otras que regalan margen sin darte cuenta. Prestá atención a por qué se mueve la aguja, no solo a que se mueva.</div>`;
+    negoInit(c,f,NEGO_SCENARIO);
+   }
+  },
+  {title:"Tácticas que sí funcionan", time:"12 min", tag:"Lectura + Toggles",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M09 · Unidad 3</div>
+<div class="u-heading">Lo que separa una negociación efectiva de una conversación incómoda</div>
+<div class="prose">Hay tácticas de negociación que suenan agresivas en la teoría pero que, aplicadas con criterio, simplemente protegen el valor de lo que estás ofreciendo o pidiendo. No son trucos — son disciplina.</div>
+<div class="prose">El objetivo no es "ganar" cada negociación a costa de la relación. En un mercado donde volvés a negociar con los mismos proveedores y clientes año tras año, la reputación de cómo negociás pesa tanto como el resultado de una negociación puntual.</div>
+${toggleHTML('nego3')}`;
+    toggleInit('nego3');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"BATNA — conocé tu alternativa", time:"11 min", tag:"Lectura + Sliders",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M09 · Unidad 4</div>
+<div class="u-heading">El poder en una negociación no viene de la personalidad — viene de la alternativa</div>
+<div class="prose">BATNA — Best Alternative To a Negotiated Agreement — es tu mejor opción si esta negociación específica no llega a nada. Cuando la conocés con claridad, negociás sin ansiedad: sabés exactamente en qué punto te conviene más caminar que aceptar.</div>
+<div class="callout"><strong>Por qué esto cambia todo</strong>Sin BATNA clara, cualquier oferta parece aceptable porque no tenés con qué compararla. Con BATNA clara, podés decir que no a un acuerdo mediocre con total tranquilidad — porque sabés exactamente qué pasa si decís que no.</div>
+<div class="prose">Evaluá tu preparación actual para negociar.</div>
+${scaleHTML('nego4')}`;
+    scaleInit('nego4');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+ ]
+},
+
+// ════ M10 ════
+{title:"Contratación y armado de equipo", layer:4,
+ units:[
+  {title:"Qué buscar más allá del currículum", time:"13 min", tag:"Lectura + Revelación",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M10 · Unidad 1</div>
+<div class="u-heading">El currículum contesta la pregunta equivocada</div>
+<div class="prose">M06 te dio herramientas para liderar al equipo que ya tenés. Este módulo es sobre cómo construir el equipo que todavía no tenés — la decisión que más impacto de largo plazo tiene y a la que menos tiempo estructurado se le dedica.</div>
+<div class="prose">El error más común al contratar en empresas TI de servicios es optimizar por currículum: años de experiencia, certificaciones, stack conocido. Esas señales predicen conocimiento acumulado. No predicen lo que más importa a mediano plazo: cómo piensa esa persona frente a un problema que nunca vio.</div>
+<div class="callout"><strong>El caso continuo</strong>El equipo de infraestructura de Coresolutions necesita crecer para sostener cuentas como Indurama y Solca sin quemar a Joel. Vas a decidir a quién contratar en la Unidad 3.</div>
+<div class="prose">Descubrí qué buscar, en el orden en que conviene evaluarlo.</div>
+${revealSeqHTML('hire1')}`;
+    revealSeqInit('hire1');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"La entrevista que revela criterio", time:"12 min", tag:"Lectura + Toggles",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M10 · Unidad 2</div>
+<div class="u-heading">Las preguntas que importan no son las que parecen técnicas</div>
+<div class="prose">Una entrevista mal diseñada mide qué tan bien alguien se presenta bajo presión social. Una entrevista bien diseñada mide cómo esa persona resuelve problemas — que es lo que realmente vas a necesitar de ella todos los días.</div>
+${toggleHTML('hire2')}`;
+    toggleInit('hire2');
+    f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Continuar →</button>`;
+   }
+  },
+  {title:"Árbol de decisión — a quién contratar", time:"14 min", tag:"Caso continuo · Árbol de decisiones",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M10 · Unidad 3 · Caso continuo</div>
+<div class="u-heading">Dos candidatos. Una vacante. Navegá la decisión.</div>
+<div class="prose">Tenés dos candidatos para el puesto de ingeniero de infraestructura que el equipo necesita. Uno trae más años y certificaciones. El otro trae menos experiencia pero mejor criterio bajo ambigüedad, según lo que viste en la entrevista técnica.</div>`;
+    decisionInit(c,f,DECISION_TREE_HIRING);
+   }
+  },
+  {title:"Onboarding con intención", time:"12 min", tag:"Lectura + Sliders",
+   render(c,f){
+    c.innerHTML=`
+<div class="u-eyebrow">M10 · Unidad 4 · Entregable final</div>
+<div class="u-heading">Contratar bien y no tener un plan de integración desperdicia la mitad de la decisión</div>
+<div class="prose">La primera impresión que alguien nuevo se lleva de vos como líder no es la entrevista — es su primera semana. Un onboarding claro (contexto, expectativas, primeros checkpoints) acorta el tiempo hasta que esa persona aporta valor real, y reduce la ansiedad de ambos lados.</div>
+<div class="callout"><strong>Cierre del curso</strong>Este es el final del programa. Todo lo que trabajaste — de la mentalidad estratégica en M01 hasta contratar y desarrollar al equipo acá — vive en <em>Tu documento</em>, accesible desde el inicio. Volvé a él en 30, 60 y 90 días: las respuestas que hoy parecen ciertas van a cambiar a medida que actúes distinto.</div>
+<div class="prose">Evaluá tu proceso actual de integración de nuevas personas.</div>
+${scaleHTML('hire4')}`;
+    scaleInit('hire4');
     f.innerHTML=`<button class="btn-p" onclick="completeUnit()">Completar curso →</button>`;
    }
   },
@@ -942,6 +1124,19 @@ const REVEAL_DATA = {
     {title:"La presencia digital como amplificador", content:"Lo que publicás en redes no construye tu marca — amplifica la que ya tenés por comportamiento. Si tu marca real es de criterio técnico y visión de negocio, tu contenido digital tiene que reflejar eso — no motivación genérica."},
     {title:"El networking como construcción de valor mutuo", content:"El networking que funciona no es coleccionar contactos — es construir relaciones donde ambos lados reciben valor. Eso requiere ser útil primero, específico en lo que ofrecés, y consistente en el seguimiento."},
   ],
+  nego1:[
+    {title:"Anclar primero, con criterio", content:"Quien pone la primera cifra sobre la mesa influye desproporcionadamente en el resultado final — es el efecto de anclaje. No significa inventar un número al azar: significa llegar con un ancla basada en datos (costo real, comparables de mercado, valor entregado) antes de que el otro lado imponga la suya."},
+    {title:"Separar posiciones de intereses", content:"La posición es lo que alguien pide ('necesito $58,000'). El interés es por qué lo pide ('necesito justificar el aumento de costos de licenciamiento ante mi propia dirección'). Negociar sobre posiciones genera empate técnico. Negociar sobre intereses abre opciones que ninguno de los dos había puesto sobre la mesa."},
+    {title:"El silencio como herramienta", content:"Después de proponer un número o de recibir uno, el silencio incomoda — y esa incomodidad empuja a la otra parte a hablar primero, a veces cediendo terreno sin que se lo pidas. Llenar el silencio con justificaciones no solicitadas es uno de los errores más comunes en negociación."},
+    {title:"Concesiones que cuestan algo", content:"Ceder algo sin pedir nada a cambio le enseña a la otra parte que tus posiciones son blandas. Cada concesión — un descuento, un plazo más corto, un alcance ampliado — tiene que venir acompañada de un pedido equivalente. Eso no es rigidez: es lo que mantiene el intercambio balanceado."},
+    {title:"No partir la diferencia por reflejo", content:"'Dividamos la diferencia' se siente justo, pero es arbitrario — no tiene relación con el valor real de lo que se negocia. Partir la diferencia entre un ancla bien fundamentada y una cifra inflada premia a quien anclÓ más alto sin justificación."},
+  ],
+  hire1:[
+    {title:"El currículum predice conocimiento, no criterio", content:"Años de experiencia y certificaciones dicen qué tan probable es que alguien conozca la respuesta a un problema conocido. No dicen nada sobre cómo actúa esa persona frente a un problema que nunca vio — que es, en la práctica, la mayoría de los problemas reales."},
+    {title:"Preguntas que revelan curiosidad real", content:"'Contame de un problema técnico que no supiste resolver al principio' revela más que '¿qué certificaciones tenés?'. La respuesta muestra si la persona busca entender lo desconocido o se frustra y abandona — esa es la señal que predice crecimiento."},
+    {title:"El error de contratar un espejo", content:"Es natural sentir más confianza en candidatos que piensan como vos. Pero un equipo de espejos tiene los mismos puntos ciegos multiplicados. Buscar criterio complementario — no solo técnico similar — fortalece al equipo de formas que no se notan hasta que aparece el problema que nadie del equipo actual sabría resolver."},
+    {title:"La prueba técnica corta vale más que la entrevista larga", content:"Una hora de conversación genera impresión. Un ejercicio real de 30 minutos genera evidencia. Cuando sea posible, una prueba técnica acotada — aunque sea simple — reduce el riesgo de contratar por simpatía o por currículum bien presentado."},
+  ],
 };
 
 const TOGGLE_DATA = {
@@ -972,6 +1167,17 @@ const TOGGLE_DATA = {
     {head:"Alinear intereses en lugar de convencer", body:"Convencer implica que la otra persona tiene que cambiar de opinión. Alinear implica encontrar el punto donde lo que querés vos y lo que quiere la otra persona se superponen. La segunda es mucho más sostenible."},
     {head:"La previsibilidad como activo de influencia", body:"Que la gente sepa cómo vas a actuar, qué podés comprometer, y qué no, genera confianza. La confianza da influencia. La inconsistencia la destruye — incluso cuando las inconsistencias son positivas sorpresas."},
   ],
+  nego3:[
+    {head:"La primera oferta casi nunca es la última", body:"Aceptar la primera cifra que pone un proveedor o cliente — aunque parezca razonable — deja sobre la mesa el margen que esa parte reservó para negociar. Casi toda oferta inicial tiene espacio de movimiento incorporado."},
+    {head:"Cada concesión pide algo a cambio", body:"'Bajamos el precio si ampliás el plazo del contrato' mantiene el intercambio equilibrado. 'Bajamos el precio porque insististe' no — y establece que insistir funciona, lo cual te va a costar en la próxima negociación."},
+    {head:"El silencio después de un número", body:"Cuando decís una cifra o una condición, el impulso es seguir hablando para suavizarla. Resistite. El silencio pone la presión de responder del otro lado — y muchas veces esa respuesta cede más de lo que hubieras pedido."},
+    {head:"Preguntar por qué antes de negociar el número", body:"'¿Por qué ese número específico?' revela si la cifra tiene una base real (costos, políticas internas) o es un punto de partida arbitrario. Esa información cambia completamente cómo contraofertás."},
+  ],
+  hire2:[
+    {head:"Empezar con un problema real, no una pregunta teórica", body:"'¿Cómo resolverías X?' en abstracto invita a respuestas de manual. Un problema real y específico del contexto de la empresa — con restricciones reales — revela cómo piensa la persona bajo condiciones parecidas a las del trabajo real."},
+    {head:"Dejar espacio para el 'no sé'", body:"Cómo alguien maneja no saber algo en la entrevista predice cómo lo va a manejar en el trabajo. Buscar 'no sé, pero así lo averiguaría' es una señal mucho mejor que una respuesta inventada con seguridad."},
+    {head:"Verificar con evidencia, no solo con la conversación", body:"Una prueba técnica corta o una llamada de referencia centrada en proyectos reales agrega una segunda fuente de información. Decidir solo con la impresión de una hora de entrevista es la parte más débil del proceso, no la más fuerte."},
+  ],
 };
 
 const SCALE_DATA = {
@@ -996,6 +1202,14 @@ const SCALE_DATA = {
   pres8:[
     {label:"¿Qué tan cómodo estás en conversaciones difíciles que no podés evitar?", sub:"Dar feedback negativo, comunicar malas noticias, defender posiciones impopulares", feedback:v=>v<40?"Área de desarrollo de alto impacto. La presencia ejecutiva se construye exactamente en esas conversaciones.":v<70?"Podés hacerlo pero hay incomodidad. Eso es normal — y se reduce con práctica deliberada, no con tiempo.":"Buen nivel. La clave es que la comodidad no se convierta en evitar el conflicto constructivo necesario."},
     {label:"¿Qué tan presente estás en reuniones cuando no sos el centro?", sub:"Escuchar de verdad vs. esperar tu turno para hablar", feedback:v=>v<40?"Área interesante. La escucha real es una de las señales más claras de presencia ejecutiva — y de las más escasas.":v<70?"Nivel funcional. Practicar escucha activa en reuniones de alto impacto puede cambiar significativamente cómo sos percibido.":"Buen nivel. La escucha real es rara y muy valorada — seguí cultivándola."},
+  ],
+  nego4:[
+    {label:"¿Qué tan clara tenés tu BATNA antes de entrar a negociar?", sub:"Tu mejor alternativa si esta negociación específica no llega a nada", feedback:v=>v<40?"Área de alto impacto. Sin BATNA clara, es difícil saber cuándo un acuerdo es realmente bueno o solo aceptable por cansancio.":v<70?"La tenés en mente pero no siempre la usás para calibrar tu posición durante la conversación.":"Buen nivel. Entrar con la alternativa clara es lo que te permite negociar sin ansiedad."},
+    {label:"¿Con qué frecuencia investigás antes de negociar (costos reales, comparables, contexto del otro lado)?", sub:"Preparación antes de la primera conversación", feedback:v=>v<40?"Oportunidad concreta — la preparación es lo que separa un ancla con criterio de un número inventado.":v<70?"Nivel funcional. Un poco más de preparación sistemática puede mejorar significativamente tus resultados.":"Buen nivel. Esa preparación es la base de cada anclaje efectivo que hiciste en este módulo."},
+  ],
+  hire4:[
+    {label:"¿Qué tan estructurado es tu proceso de onboarding para alguien nuevo?", sub:"Más allá de las credenciales de acceso — contexto, expectativas, primeras semanas", feedback:v=>v<40?"Área de desarrollo. Un onboarding sin intención hace que la primera impresión del nuevo hire sea de desorden, no de criterio.":v<70?"Base funcional. El siguiente paso es documentarlo para que no dependa de tu memoria cada vez.":"Buen nivel. Un onboarding claro acelera el tiempo hasta que la persona aporta valor real."},
+    {label:"¿Qué tan pronto das la primera retroalimentación real a alguien nuevo?", sub:"No la evaluación formal — la primera señal honesta de cómo va", feedback:v=>v<40?"Oportunidad clara. Cuanto más tarde llega la primera señal honesta, más difícil es corregir el rumbo sin que se sienta como un golpe.":v<70?"Nivel razonable. Encontrar el momento correcto en las primeras semanas hace una diferencia grande.":"Buen nivel. El feedback temprano y frecuente es lo que hace que alguien nuevo se integre rápido."},
   ],
 };
 
@@ -1035,6 +1249,45 @@ const FIN_SCENARIOS = [
    good:2, fb:"La respuesta correcta siempre es C. El proyecto grande puede ser estratégico si el cliente es una cuenta clave que querés desarrollar. El pequeño puede ser correcto si libera capacidad para algo mayor. La decisión financiera aislada del contexto estratégico casi nunca es la óptima."},
 ];
 
+const GLOSSARY_DATA = [
+  {term:"Margen bruto", def:"Ingresos menos costos directos del proyecto (trabajo, licencias, hardware). El número que dice si un proyecto tiene sentido por sí mismo."},
+  {term:"EBITDA", def:"Earnings Before Interest, Taxes, Depreciation and Amortization. La rentabilidad de la operación antes de factores financieros — lo primero que miran dirección e inversores."},
+  {term:"Cash flow (flujo de caja)", def:"El dinero que entra y sale de la empresa en el tiempo. Una empresa puede ser rentable en papel y quedarse sin caja — son problemas distintos."},
+  {term:"Payback period", def:"El tiempo que toma recuperar una inversión con los flujos que genera. Cuanto más corto, menor el riesgo de la inversión."},
+  {term:"LTV (Lifetime Value)", def:"El valor total que un cliente genera durante toda la relación, no solo en el primer proyecto. Cambia cómo se prioriza el margen de cada proyecto individual."},
+  {term:"ROI", def:"Retorno sobre la inversión. En propuestas ejecutivas no se calcula con una fórmula — se construye mostrando el costo del problema, el costo de la solución, el tiempo de recuperación y el riesgo de no actuar."},
+  {term:"BATNA", def:"Best Alternative To a Negotiated Agreement — tu mejor alternativa si la negociación actual no llega a nada. Conocerla de antemano es lo que te da poder real en la mesa."},
+  {term:"Anclaje", def:"La primera cifra o condición que se pone sobre la mesa en una negociación, que influye desproporcionadamente en el resultado final. Quien ancla primero (con criterio) suele quedar mejor posicionado."},
+  {term:"Liderazgo situacional", def:"La idea de que no hay un solo modo de liderazgo correcto — depende de la competencia y motivación de la persona para la tarea específica. Los cuatro modos: Dirigir, Instruir, Apoyar, Delegar."},
+  {term:"Forecasting", def:"Proyección dinámica de ingresos y gastos que permite anticipar problemas de caja o de rentabilidad antes de que ocurran, en vez de solo reportarlos después."},
+  {term:"Pipeline comercial", def:"El conjunto de oportunidades de venta organizadas por etapa (identificada, calificada, propuesta enviada, negociación). Lo que no está en el pipeline no existe en términos de gestión comercial."},
+  {term:"Venta consultiva", def:"Un modelo de venta donde primero se entiende el problema real del cliente a través de preguntas, y solo después se propone una solución. Aplica a servicios complejos como infraestructura o ciberseguridad."},
+];
+
+const DOC_SOURCES = [
+  {section:"Tu transición (M01)", items:[
+    {mod:0,unit:3,field:'cv0',label:'Rol hoy'},
+    {mod:0,unit:3,field:'cv1',label:'Rol en 12 meses'},
+    {mod:0,unit:3,field:'cv2',label:'Decisiones que tomás hoy'},
+    {mod:0,unit:3,field:'cv3',label:'Decisiones que deberías tomar'},
+    {mod:0,unit:3,field:'cv4',label:'Tu mayor fortaleza actual'},
+    {mod:0,unit:3,field:'cv5',label:'Tu brecha principal'},
+  ]},
+  {section:"Posicionamiento de Coresolutions (M03)", items:[
+    {mod:2,unit:1,field:'cv0',label:'Qué problema resuelve Coresolutions'},
+    {mod:2,unit:1,field:'cv1',label:'Para quién lo resuelve mejor'},
+    {mod:2,unit:1,field:'cv2',label:'Por qué nos eligen a nosotros'},
+    {mod:2,unit:1,field:'cv3',label:'Qué dispersa el foco'},
+    {mod:2,unit:1,field:'cv4',label:'Oportunidad desatendida'},
+    {mod:2,unit:1,field:'cv5',label:'En 12 meses, qué tiene que ser verdad'},
+  ]},
+  {section:"Tu narrativa (M08)", items:[
+    {mod:7,unit:3,field:'bv',label:'Tu propuesta de valor'},
+    {mod:7,unit:3,field:'bd',label:'Tu diferencial'},
+    {mod:7,unit:3,field:'ba',label:'Tu audiencia'},
+  ]},
+];
+
 const DECISION_TREE = {
   q:"Un cliente estratégico pide entregar en 2 semanas un proyecto estimado en 6. ¿Cuál es tu primer movimiento?",
   opts:[
@@ -1063,6 +1316,57 @@ const DECISION_TREE = {
      ]}},
   ]
 };
+
+const DECISION_TREE_HIRING = {
+  q:"Necesitás un ingeniero de infraestructura para el equipo. Tenés dos candidatos: uno con 6 años de experiencia y certificaciones, otro con 2 años pero que resolvió bien un caso técnico en la entrevista. ¿Cuál es tu primer movimiento?",
+  opts:[
+    {text:"Elegir al de más experiencia — es la apuesta más segura",
+     next:{q:"A los tres meses, el de más experiencia ejecuta bien lo conocido pero no propone nada nuevo y evita los proyectos ambiguos.",opts:[
+       {text:"Aceptarlo — al menos lo conocido lo hace bien",
+        outcome:{type:"ok",label:"Resultado mixto",text:"Vas a tener un ejecutor confiable pero no vas a ganar capacidad de crecimiento. Las certificaciones predicen conocimiento, no predicen si alguien busca resolver lo que no sabe — y eso es lo que necesitás a medida que el equipo crece."}},
+       {text:"Reconocer que evaluaste la certificación, no la curiosidad — ajustar el criterio para la próxima contratación",
+        outcome:{type:"good",label:"Resultado óptimo",text:"El aprendizaje correcto. La experiencia certificada predice competencia en lo conocido. No predice cómo alguien actúa frente a lo ambiguo — que es exactamente lo que un líder necesita del equipo a medida que la empresa crece."}},
+     ]}},
+    {text:"Elegir al de menos experiencia por cómo resolvió el caso técnico",
+     next:{q:"A los tres meses, tiene curva de aprendizaje más lenta en tareas rutinarias pero ya propuso dos mejoras al proceso de despliegue.",opts:[
+       {text:"Invertir en su desarrollo — el criterio ya está, la experiencia se construye",
+        outcome:{type:"good",label:"Resultado óptimo",text:"Correcto. Contrataste criterio, no solo conocimiento acumulado. El conocimiento se enseña más rápido de lo que se enseña el criterio para resolver lo desconocido. Esa apuesta paga a mediano plazo."}},
+       {text:"Preocuparte porque tarda más en tareas que un senior resolvería en minutos",
+        outcome:{type:"ok",label:"Resultado mixto",text:"La preocupación es válida a corto plazo, pero comparar contra un senior que no contrataste no es la métrica correcta. La pregunta es si el ritmo de aprendizaje y el criterio compensan la curva inicial — y las señales dicen que sí."}},
+     ]}},
+    {text:"Diseñar una prueba técnica corta y pedir referencias de proyectos reales antes de decidir",
+     next:{q:"La prueba y las referencias confirman que el candidato con menos experiencia tiene mejor criterio bajo ambigüedad, y el de más experiencia es sólido pero rígido.",opts:[
+       {text:"Contratar en base a la evidencia adicional, no a la primera impresión",
+        outcome:{type:"good",label:"Resultado óptimo",text:"La mejor secuencia posible. No decidiste con una sola señal — buscaste evidencia adicional antes de comprometerte. Eso reduce el riesgo de contratar por currículum en lugar de por capacidad real."}},
+       {text:"Descartar la evidencia adicional y quedarte con la impresión inicial de la entrevista",
+        outcome:{type:"bad",label:"Resultado negativo",text:"Si invertiste tiempo en conseguir mejor evidencia y no la usás para decidir, el esfuerzo fue en vano. La entrevista inicial es la señal más débil que tenés — no la más fuerte."}},
+     ]}},
+  ]
+};
+
+const NEGO_SCENARIO = [
+  {from:"them", msg:"Jay, Broadcom subió el modelo de licenciamiento de VMware. Para renovar el contrato de Indurama necesitamos cerrar $58,000/año — un 29% más que el año pasado. Es lo que hay.",
+   opts:[
+    {t:"Entendido, lo revisamos con Indurama y les avisamos.", q:"bad", fb:"Aceptaste la primera cifra como si fuera fija. En la mayoría de renegociaciones de licenciamiento hay margen — por volumen, por término del contrato, por bundling de soporte. Anclaste tu propia posición antes de preguntar nada.", shift:-15},
+    {t:"¿Qué parte de ese aumento es licenciamiento puro y qué parte es el modelo de soporte que agregaron?", q:"good", fb:"Correcto. Antes de aceptar o rechazar un número, lo desagregás. La mayoría de los aumentos de licenciamiento empaquetan cosas que no todas son negociables — separarlas te da información real para anclar tu contraoferta.", shift:12},
+    {t:"$58,000 es demasiado, tiene que bajar.", q:"ok", fb:"La objeción es válida pero sin sustento no es una posición negociable — es una queja. Sin datos ni alternativas, el proveedor no tiene motivo para moverse.", shift:2},
+   ]
+  },
+  {from:"them", msg:"El licenciamiento puro es $46,000. El resto es soporte premium 24/7 que antes no ofrecíamos.",
+   opts:[
+    {t:"Indurama no necesita soporte 24/7 — su operación es horario comercial. Cotizanos sin ese paquete.", q:"good", fb:"Excelente anclaje. Identificaste una condición que no aporta valor real al cliente y la usaste para bajar el número base, en vez de negociar un descuento genérico sobre el total.", shift:15},
+    {t:"Aceptamos el soporte 24/7 pero pedimos 15% de descuento sobre el total.", q:"ok", fb:"Es una jugada razonable, pero estás pidiendo un descuento sobre algo que no necesitás en primer lugar. Es más fuerte remover lo que no aporta valor que descontar lo que no vas a usar.", shift:5},
+    {t:"Ok, aceptamos el precio con soporte incluido.", q:"bad", fb:"Aceptaste pagar por algo que el cliente no pidió ni necesita. Eso no es cerrar rápido — es dejar dinero sobre la mesa por evitar una conversación de dos minutos.", shift:-12},
+   ]
+  },
+  {from:"them", msg:"Sin el soporte premium quedaría en $46,000. Es lo máximo que puedo bajar por mi cuenta — para más necesito escalarlo.",
+   opts:[
+    {t:"Perfecto, escalalo. Mientras tanto, ¿podemos cerrar los términos de pago — trimestral en vez de anual — para que el flujo de Indurama no se vea afectado?", q:"good", fb:"Movida madura. No presionás más sobre el precio cuando el otro lado ya te dijo que necesita escalarlo — en cambio, ganás valor en otra variable (términos de pago) que también le importa al cliente. Eso es negociar sobre el paquete completo, no solo el número.", shift:13},
+    {t:"$46,000 sigue siendo alto, necesito que bajes más antes de escalarlo.", q:"ok", fb:"Insistir cuando la otra parte ya te dijo honestamente que llegó a su límite de autoridad puede quemar la relación sin ganar nada — el próximo movimiento tiene que venir de un nivel superior, no de más presión sobre la misma persona.", shift:0},
+    {t:"Está bien, cerramos en $46,000 anual, gracias.", q:"bad", fb:"Cerraste apenas se detuvo la primera caída, sin explorar si había más margen en otras variables (plazos, bundling, términos de pago). No toda ganancia adicional viene del precio — el punto de partida.", shift:-6},
+   ]
+  },
+];
 
 // ──────────────────────────────
 // STATE
@@ -1113,13 +1417,69 @@ function restoreAndAutosaveFields(){
 // NAV
 // ──────────────────────────────
 function layerVars(n){
-  return {1:{dot:'var(--l1)',glow:'var(--l1-glow)'},2:{dot:'var(--l2)',glow:'var(--l2-glow)'},3:{dot:'var(--l3)',glow:'var(--l3-glow)'}}[n]||{dot:'var(--ink)',glow:'var(--l1-glow)'};
+  return {1:{dot:'var(--l1)',glow:'var(--l1-glow)'},2:{dot:'var(--l2)',glow:'var(--l2-glow)'},3:{dot:'var(--l3)',glow:'var(--l3-glow)'},4:{dot:'var(--l4)',glow:'var(--l4-glow)'}}[n]||{dot:'var(--ink)',glow:'var(--l1-glow)'};
 }
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
 function goHome(){updateHome();show('home')}
 function goMod(){renderMod();show('module')}
 function openMod(i){curMod=i;renderMod();show('module')}
 function openUnit(i){curUnit=i;renderUnitScreen();saveState();show('unit')}
+
+// ──────────────────────────────
+// GLOSSARY
+// ──────────────────────────────
+function openGlossary(){
+  renderGlossary();
+  document.getElementById('gloss-overlay').classList.add('open');
+  document.getElementById('gloss-drawer').classList.add('open');
+}
+function closeGlossary(){
+  document.getElementById('gloss-overlay').classList.remove('open');
+  document.getElementById('gloss-drawer').classList.remove('open');
+}
+function renderGlossary(){
+  const q=(document.getElementById('gloss-search').value||'').trim().toLowerCase();
+  const list=document.getElementById('gloss-list');
+  const items=GLOSSARY_DATA.filter(g=>!q||g.term.toLowerCase().includes(q)||g.def.toLowerCase().includes(q));
+  list.innerHTML=items.length?items.map(g=>`<div class="gloss-item"><div class="gloss-term">${g.term}</div><div class="gloss-def">${g.def}</div></div>`).join(''):`<div class="gloss-empty">Sin resultados para "${q}"</div>`;
+}
+
+// ──────────────────────────────
+// DOC
+// ──────────────────────────────
+function openDoc(){renderDoc();show('doc')}
+function renderDoc(){
+  const body=document.getElementById('doc-body');
+  body.innerHTML=DOC_SOURCES.map(sec=>`
+  <div class="doc-section">
+    <div class="doc-section-title">${sec.section}</div>
+    ${sec.items.map(it=>{
+      let val='';
+      try{val=localStorage.getItem(`jaymba_field_${it.mod}_${it.unit}_${it.field}`)||'';}catch(e){}
+      val=val.trim();
+      return `<div class="doc-field"><div class="doc-field-label">${it.label}</div><div class="doc-field-value${val?'':' empty'}">${val?val:'Sin completar aún.'}</div></div>`;
+    }).join('')}
+  </div>`).join('');
+}
+function copyDoc(){
+  const lines=[];
+  DOC_SOURCES.forEach(sec=>{
+    lines.push(sec.section.toUpperCase());
+    sec.items.forEach(it=>{
+      let val='';
+      try{val=localStorage.getItem(`jaymba_field_${it.mod}_${it.unit}_${it.field}`)||'';}catch(e){}
+      val=val.trim()||'(sin completar)';
+      lines.push(`${it.label}: ${val}`);
+    });
+    lines.push('');
+  });
+  const text=lines.join('\n');
+  const note=document.getElementById('doc-copy-note');
+  navigator.clipboard.writeText(text).then(()=>{
+    note.textContent='Copiado ✓';
+    setTimeout(()=>note.textContent='',2000);
+  }).catch(()=>{note.textContent='No se pudo copiar automáticamente.';});
+}
 
 function completeUnit(){
   progress[curMod][curUnit]=true;
@@ -1164,8 +1524,10 @@ function updateHome(){
   } else {
     resumeRow.style.display='none';
   }
+  const subTxt=document.getElementById('home-sub-txt');
+  if(subTxt) subTxt.textContent=`${MODS.length} módulos · Diseñado para sesiones de 15 min`;
   const list=document.getElementById('mod-list');
-  const layers=[{n:1,label:"Capa 1 · Identidad y Liderazgo"},{n:2,label:"Capa 2 · Negocio y Estrategia"},{n:3,label:"Capa 3 · Operación y Cultura"}];
+  const layers=[{n:1,label:"Capa 1 · Identidad y Liderazgo"},{n:2,label:"Capa 2 · Negocio y Estrategia"},{n:3,label:"Capa 3 · Operación y Cultura"},{n:4,label:"Capa 4 · Habilidades Avanzadas"}];
   list.innerHTML='';
   layers.forEach(layer=>{
     const lv=layerVars(layer.n);
@@ -1175,7 +1537,7 @@ function updateHome(){
       const mp=progress[i];
       const done=mp.every(Boolean);
       list.innerHTML+=`<div class="mod-row" onclick="openMod(${i})">
-        <div class="mod-num">M0${i+1}</div>
+        <div class="mod-num">M${String(i+1).padStart(2,'0')}</div>
         <div class="mod-info"><div class="mod-title">${m.title}</div><div class="mod-meta">${m.units.length} unidades · ${m.units[0].tag.split(' ')[0]}…</div></div>
         <div class="mod-ico${done?' done':''}" data-l="${layer.n}">${done?'✓':'→'}</div>
       </div>`;
@@ -1192,12 +1554,13 @@ function renderMod(){
   rows.innerHTML='';
   m.units.forEach((u,i)=>{
     const d=progress[curMod][i];
+    const isCase=/caso continuo/i.test(u.tag)||/caso continuo/i.test(u.title);
     rows.innerHTML+=`<div class="unit-row" onclick="openUnit(${i})">
       <div class="ur-dot${d?' done':''}"></div>
       <div class="ur-body">
         <div class="ur-title">${u.title}</div>
         <div class="ur-meta">${u.time}</div>
-        <div class="ur-tag">${u.tag}</div>
+        <div class="ur-tag${isCase?' case':''}">${u.tag}</div>
       </div>
     </div>`;
   });
@@ -1498,7 +1861,8 @@ function teamInit(c,f){
 // ──────────────────────────────
 // DECISION TREE
 // ──────────────────────────────
-function decisionInit(c,f){
+function decisionInit(c,f,tree){
+  tree=tree||DECISION_TREE;
   c.innerHTML+=`<div id="dtree"></div>`;
   f.innerHTML=`<button class="btn-p" id="dt-cont" onclick="completeUnit()" style="display:none">Continuar →</button>`;
   const path=[];
@@ -1531,7 +1895,48 @@ function decisionInit(c,f){
       setTimeout(()=>renderNode(node.opts[i].next,d+1),500);
     };
   }
-  renderNode(DECISION_TREE,0);
+  renderNode(tree,0);
+}
+
+// ──────────────────────────────
+// NEGOTIATION (anchor simulator)
+// ──────────────────────────────
+function negoInit(c,f,scenario){
+  c.innerHTML+=`<div class="nego-anchor">
+    <div class="nego-anchor-label"><span>Ellos ganan</span><span>Punto medio</span><span>Vos ganás</span></div>
+    <div class="nego-track"><div class="nego-marker" id="nego-marker"></div></div>
+  </div>
+  <div class="convo-box"><div class="convo-hist" id="chist"></div><div class="convo-opts" id="copts"></div></div>`;
+  f.innerHTML=`<button class="btn-p" id="nego-cont" onclick="completeUnit()" style="display:none">Continuar →</button>`;
+  let step=0,pos=50;
+  function renderStep(){
+    const hist=document.getElementById('chist');
+    const opts=document.getElementById('copts');
+    if(!hist) return;
+    const s=scenario[step];
+    if(s.from==='them'){
+      const msg=document.createElement('div');
+      msg.className='msg them';msg.textContent=s.msg;
+      hist.appendChild(msg);hist.scrollTop=hist.scrollHeight;
+      opts.innerHTML=s.opts.map((o,i)=>`<button class="copt" onclick="pickNego(${i})">${o.t}</button>`).join('');
+    }
+    window.pickNego=function(i){
+      const o=s.opts[i];
+      opts.querySelectorAll('.copt').forEach(b=>b.disabled=true);
+      const you=document.createElement('div');
+      you.className='msg you';you.textContent=o.t;hist.appendChild(you);
+      const fb=document.createElement('div');
+      fb.className=`msg fb ${o.q}`;fb.textContent=o.fb;hist.appendChild(fb);
+      hist.scrollTop=hist.scrollHeight;opts.innerHTML='';
+      pos=Math.max(5,Math.min(95,pos+o.shift));
+      document.getElementById('nego-marker').style.left=pos+'%';
+      step++;
+      if(step<scenario.length){setTimeout(renderStep,700);}
+      else{const cont=document.getElementById('nego-cont');if(cont) cont.style.display='block';}
+    };
+  }
+  document.getElementById('nego-marker').style.left='50%';
+  renderStep();
 }
 
 // ──────────────────────────────
